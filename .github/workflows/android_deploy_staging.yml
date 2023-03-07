@@ -3,7 +3,7 @@ name: Android - Deploy Staging build to Firebase
 on:
   push:
     branches:
-      - develop
+      - 'test/cicd'
 
 jobs:
   build_and_deploy_android:
