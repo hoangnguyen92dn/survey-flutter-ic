@@ -1,6 +1,4 @@
-# Sample CodeCov config for private repository
 codecov:
-  bot: luongvo
   require_ci_to_pass: yes
 
 coverage:
