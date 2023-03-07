@@ -1,3 +1,6 @@
+[![CI](https://github.com/hoangnguyen92dn/survey-flutter-ic/actions/workflows/test.yml/badge.svg)](https://github.com/hoangnguyen92dn/survey-flutter-ic/actions/workflows/test.yml)
+[![codecov](https://codecov.io/github/hoangnguyen92dn/survey-flutter-ic/branch/main/graph/badge.svg?token=XHHBI111RO)](https://codecov.io/github/hoangnguyen92dn/survey-flutter-ic)
+
 # Survey Flutter
 
 Survey application built with Flutter
