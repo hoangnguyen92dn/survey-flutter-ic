@@ -1,4 +1,4 @@
-name: Android - Deploy Production build to Firebase
+name: Android - Deploy Staging build to Firebase
 
 on:
   push:
