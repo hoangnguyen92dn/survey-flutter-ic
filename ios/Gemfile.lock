@@ -275,10 +275,11 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-20
 
 DEPENDENCIES
   cocoapods
   fastlane
 
 BUNDLED WITH
-   2.3.10
+   2.3.12
