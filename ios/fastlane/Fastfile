@@ -37,7 +37,7 @@ platform :ios do
 
   desc 'Sync AppStore Production match signing'
   lane :sync_appstore_production_signing do
-    match_manager.sync_app_store_signing(app_identifier: [Constants.BUNDLE_ID])
+    match_manager.sync_app_store_signing(app_identifier: [Constants.BUNDLE_ID_PRODUCTION])
   end
 
   desc 'Register new devices'
