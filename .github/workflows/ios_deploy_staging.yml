@@ -36,7 +36,7 @@ jobs:
       run: cd ./ios && bundle install
 
     - name: Pod install
-      run: cd ./ios && pod install
+      run: cd ./ios && bundle exec pod install
 
     - name: Match AppStore
       run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
