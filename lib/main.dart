@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: routePathHomeScreen,
         builder: (BuildContext context, GoRouterState state) =>
-        const HomeScreen(),
+            const HomeScreen(),
       ),
     ],
   );
