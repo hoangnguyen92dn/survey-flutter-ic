@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:survey_flutter_ic/ui/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +13,7 @@ void main() async {
 }
 
 const routePathRootScreen = '/';
-const routePathSecondScreen = 'second';
+const routePathHomeScreen = '/home';
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
@@ -22,14 +23,12 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: routePathRootScreen,
         builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen(),
-        routes: [
-          GoRoute(
-            path: routePathSecondScreen,
-            builder: (BuildContext context, GoRouterState state) =>
-                const SecondScreen(),
-          ),
-        ],
+            const SplashScreen(),
+      ),
+      GoRoute(
+        path: routePathHomeScreen,
+        builder: (BuildContext context, GoRouterState state) =>
+        const HomeScreen(),
       ),
     ],
   );
@@ -51,6 +50,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// TODO: Extract to new class
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -83,28 +83,8 @@ class HomeScreen extends StatelessWidget {
               FlutterConfig.get('SECRET'),
               style: const TextStyle(color: Colors.black, fontSize: 24),
             ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () => context.go('/$routePathSecondScreen'),
-              child: const Text("Navigate to Second Screen"),
-            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Second Screen"),
       ),
     );
   }
