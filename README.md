@@ -1,3 +1,6 @@
+[![CI](https://github.com/hoangnguyen92dn/survey-flutter-ic/actions/workflows/test.yml/badge.svg)](https://github.com/hoangnguyen92dn/survey-flutter-ic/actions/workflows/test.yml)
+[![codecov](https://codecov.io/github/hoangnguyen92dn/survey-flutter-ic/branch/main/graph/badge.svg?token=XHHBI111RO)](https://codecov.io/github/hoangnguyen92dn/survey-flutter-ic)
+
 # Survey Flutter
 
 Survey application built with Flutter
@@ -10,7 +13,7 @@ Clone the repository
 
 ## Prerequisite
 
-- Flutter 2.10.3
+- Flutter 3.3.10
 - Flutter version manager (recommend): [fvm](https://fvm.app/)
 
 ## Getting Started

@@ -1,22 +1,17 @@
-name: ios-deploy-to-testflight
+name: iOS - Deploy Production build to TestFlight
 on:
   # Trigger the workflow on push action
   push:
     branches:
-      - develop
+      - 'release/**'
 
 jobs:
   build_and_upload_to_testflight:
     name: Build And Upload iOS Application To TestFlight
     runs-on: macOS-latest
     env:
-      TEAM_ID: ${{ secrets.TEAM_ID }}
-      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-      FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      APPSTORE_CONNECT_API_KEY: ${{ secrets.APPSTORE_CONNECT_API_KEY }}
     steps:
     - uses: actions/checkout@v1
 
@@ -25,10 +20,11 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - uses: subosito/flutter-action@v1
+    - name: Setup Flutter environment
+      uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-        flutter-version: '2.10.3'
+        flutter-version: '3.3.10'
 
     - name: Get flutter dependencies
       run: flutter pub get
@@ -40,11 +36,11 @@ jobs:
       run: cd ./ios && bundle install
 
     - name: Pod install
-      run: cd ./ios && pod install
+      run: cd ./ios && bundle exec pod install
 
     - name: Match AppStore
-      run: cd ./ios && bundle exec fastlane sync_appstore_staging_signing
+      run: cd ./ios && bundle exec fastlane sync_appstore_production_signing
 
     - name: Deploy to TestFlight
       run: |
-        cd ./ios && bundle exec fastlane build_and_upload_testflight_app
+        cd ./ios && bundle exec fastlane build_and_upload_testflight_production_app
