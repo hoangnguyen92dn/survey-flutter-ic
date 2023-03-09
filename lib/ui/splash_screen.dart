@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: Assets.images.bgSplash.provider(), fit: BoxFit.fill),
+              image: AssetImage(Assets.images.bgSplash.path), fit: BoxFit.fill),
         ),
         child: Center(
           child: Assets.images.icLogo.svg(),
