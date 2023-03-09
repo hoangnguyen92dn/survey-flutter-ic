@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/main.dart';
 
-const delayInMilliseconds = 2000;
+const splashTransitionDelayInMilliseconds = 2000;
+const logoVisibilityDelayInMilliseconds = 500;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,13 +15,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _logoVisible = false;
+
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    Future.delayed(const Duration(milliseconds: delayInMilliseconds), () {
+
+    Future.delayed(
+        const Duration(milliseconds: splashTransitionDelayInMilliseconds), () {
       context.go(routePathHomeScreen);
     });
+
+    Future.delayed(
+        const Duration(milliseconds: logoVisibilityDelayInMilliseconds), () {
+      setState(() {
+        _logoVisible = true;
+      });
+    });
+
     super.initState();
   }
 
@@ -33,7 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
               image: AssetImage(Assets.images.bgSplash.path), fit: BoxFit.fill),
         ),
         child: Center(
-          child: Assets.images.icLogo.svg(),
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 1000),
+            opacity: _logoVisible ? 1.0 : 0.0,
+            child: Assets.images.icLogo.svg(),
+          ),
         ),
       ),
     );
