@@ -29,7 +29,8 @@ class TestUtil {
         packageName: '',
         version: '',
         buildNumber: '',
-        buildSignature: '');
+        buildSignature: '',
+        installerStore: '');
     FlutterConfig.loadValueForTesting({'SECRET': 'This is only for testing'});
   }
 }
