@@ -54,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Assets.images.icLogo
                       .svg(width: 168, height: 40, fit: BoxFit.none),
                 ),
-                Expanded(child: _buildSignInContent()),
+                _buildSignInContent(),
                 Expanded(
                   child: Container(),
                 ),
