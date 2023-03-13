@@ -54,9 +54,8 @@ class _TextInputFieldState extends State<TextInputField> {
       keyboardType: widget.textInputType,
       style: const TextStyle(color: Colors.white),
       obscureText: widget.isObscureText,
-      obscuringCharacter: (widget.isObscureText)
-          ? widget.obscuringCharacter ?? "●"
-          : "●",
+      obscuringCharacter:
+          (widget.isObscureText) ? widget.obscuringCharacter ?? "●" : "●",
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
     );
