@@ -1,4 +1,4 @@
-import 'package:survey_flutter_ic/usecases/base/base_use_case.dart';
+import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 import '../api/exception/network_exceptions.dart';
 import '../api/repository/auth_repository.dart';
 
