@@ -19,8 +19,5 @@ class UseCaseException implements Exception {
 class Failed<T> extends Result<T> {
   final UseCaseException exception;
 
-  String getErrorMessage() =>
-      NetworkExceptions.getErrorMessage(exception.actualException);
-
   Failed(this.exception) : super._();
 }
