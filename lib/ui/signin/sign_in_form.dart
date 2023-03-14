@@ -25,6 +25,7 @@ class _SignInFormState extends State<SignInForm> {
         TextInputField(
           hintText: context.localization.sign_in_email_label,
           textInputType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
           onChanged: (input) => {
             setState(() {
               _emailInput = input;
@@ -41,8 +42,8 @@ class _SignInFormState extends State<SignInForm> {
         const SizedBox(height: space20),
         TextInputField(
           hintText: context.localization.sign_in_password_label,
+          textInputAction: TextInputAction.done,
           isObscureText: true,
-          obscuringCharacter: "●",
           onChanged: (input) => {
             setState(() {
               _passwordInput = input;

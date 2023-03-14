@@ -6,19 +6,7 @@ class AppTheme {
     return ThemeData(
       primaryColor: colorScheme.primary,
       scaffoldBackgroundColor: Colors.white,
-      colorScheme: ColorScheme(
-        primary: colorScheme.primary,
-        secondary: colorScheme.secondary,
-        surface: Colors.white,
-        background: Colors.white,
-        error: colorScheme.error,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: Colors.black,
-        onBackground: Colors.black,
-        onError: Colors.white,
-        brightness: colorScheme.brightness,
-      ),
+      colorScheme: colorScheme,
       fontFamily: Assets.fonts.neuzeit,
     );
   }

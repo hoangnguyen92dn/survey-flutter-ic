@@ -4,6 +4,7 @@ import 'package:survey_flutter_ic/theme/dimens.dart';
 class TextInputField extends StatefulWidget {
   final String hintText;
   final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
   final bool isObscureText;
   final String? obscuringCharacter;
   final Function(String) onChanged;
@@ -13,6 +14,7 @@ class TextInputField extends StatefulWidget {
     super.key,
     required this.hintText,
     this.textInputType,
+    this.textInputAction,
     this.isObscureText = false,
     this.obscuringCharacter,
     required this.onChanged,
@@ -41,6 +43,7 @@ class _TextInputFieldState extends State<TextInputField> {
           hintStyle: const TextStyle(color: Colors.white30)),
       cursorColor: Colors.white,
       keyboardType: widget.textInputType,
+      textInputAction: widget.textInputAction,
       style: const TextStyle(color: Colors.white),
       obscureText: widget.isObscureText,
       obscuringCharacter:
