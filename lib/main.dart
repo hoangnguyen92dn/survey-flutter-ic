@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Text(AppLocalizations.of(context)!.hello),
             Text(
-              FlutterConfig.get('SECRET'),
+              FlutterConfig.get('CLIENT_SECRET'),
               style: const TextStyle(color: Colors.black, fontSize: 24),
             ),
           ],
