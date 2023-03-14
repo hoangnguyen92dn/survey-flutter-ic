@@ -23,7 +23,7 @@ void main() {
     });
 
     test(
-        'When calling login successfully, it emits the corresponding AuthModel',
+        'When calling signIn successfully, it emits the corresponding AuthModel',
         () async {
       final response = AuthResponse(
         accessToken: 'accessToken',
@@ -33,9 +33,9 @@ void main() {
         createdAt: 0,
       );
 
-      when(mockAuthService.login(any)).thenAnswer((_) async => response);
+      when(mockAuthService.signIn(any)).thenAnswer((_) async => response);
 
-      final result = await repository.login(
+      final result = await repository.signIn(
         email: 'email',
         password: 'password',
       );
@@ -43,11 +43,11 @@ void main() {
       expect(result, AuthModel.fromResponse(response));
     });
 
-    test('When calling login failed, it returns NetworkExceptions error',
+    test('When calling signIn failed, it returns NetworkExceptions error',
         () async {
-      when(mockAuthService.login(any)).thenThrow(MockDioError());
+      when(mockAuthService.signIn(any)).thenThrow(MockDioError());
 
-      result() => repository.login(email: 'email', password: 'password');
+      result() => repository.signIn(email: 'email', password: 'password');
 
       expect(result, throwsA(isA<NetworkExceptions>()));
     });

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
-import '../request/login_request.dart';
+import '../request/sign_in_request.dart';
 import '../response/auth_response.dart';
 
 part 'auth_service.g.dart';
 
 abstract class AuthService {
-  Future<AuthResponse> login(
-    @Body() LoginRequest body,
+  Future<AuthResponse> signIn(
+    @Body() SignInRequest body,
   );
 }
 
@@ -17,7 +17,7 @@ abstract class AuthServiceImpl extends AuthService {
 
   @override
   @POST('/api/v1/oauth/token')
-  Future<AuthResponse> login(
-    @Body() LoginRequest body,
+  Future<AuthResponse> signIn(
+    @Body() SignInRequest body,
   );
 }

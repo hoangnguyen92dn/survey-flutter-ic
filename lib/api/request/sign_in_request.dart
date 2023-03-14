@@ -1,16 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'login_request.g.dart';
+part 'sign_in_request.g.dart';
 
 @JsonSerializable()
-class LoginRequest {
+class SignInRequest {
   final String grantType;
   final String email;
   final String password;
   final String clientId;
   final String clientSecret;
 
-  LoginRequest({
+  SignInRequest({
     required this.grantType,
     required this.email,
     required this.password,
@@ -18,8 +18,8 @@ class LoginRequest {
     required this.clientSecret,
   });
 
-  factory LoginRequest.fromJson(Map<String, dynamic> json) =>
-      _$LoginRequestFromJson(json);
+  factory SignInRequest.fromJson(Map<String, dynamic> json) =>
+      _$SignInRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginRequestToJson(this);
+  Map<String, dynamic> toJson() => _$SignInRequestToJson(this);
 }
