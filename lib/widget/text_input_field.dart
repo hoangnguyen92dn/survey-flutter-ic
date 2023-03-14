@@ -46,7 +46,10 @@ class _TextInputFieldState extends State<TextInputField> {
           fillColor: Colors.white12,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius12),
-            borderSide: const BorderSide(width: 0.0, style: BorderStyle.none),
+            borderSide: const BorderSide(
+              width: 0.0,
+              style: BorderStyle.none,
+            ),
           ),
           hintText: widget.hintText,
           hintStyle: const TextStyle(color: Colors.white30)),

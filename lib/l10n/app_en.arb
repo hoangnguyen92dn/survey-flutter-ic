@@ -2,6 +2,6 @@
   "hello": "Hello!",
 
   "sign_in_email_label": "Email",
-  "sign_in_password_label": "Password",
-  "sign_in_button": "Log in"
+  "sign_in_button": "Log in",
+  "sign_in_password_label": "Password"
 }

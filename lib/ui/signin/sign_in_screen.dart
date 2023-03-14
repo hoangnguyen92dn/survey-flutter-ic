@@ -55,8 +55,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       .svg(width: 168, height: 40, fit: BoxFit.none),
                 ),
                 _buildSignInContent(),
-                Expanded(
-                  child: Container(),
+                const Expanded(
+                  child: SizedBox.shrink(),
                 ),
               ],
             ),

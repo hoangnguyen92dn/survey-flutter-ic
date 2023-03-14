@@ -33,16 +33,21 @@ class _FlatButtonTextState extends State<FlatButtonText> {
     return TextButton(
       onPressed: _isEnabled ? widget.onPressed : null,
       style: TextButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: space18),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(borderRadius10)))),
+        backgroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: space18),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(borderRadius10),
+          ),
+        ),
+      ),
       child: Text(
         context.localization.sign_in_button,
         style: TextStyle(
-            color: _isEnabled ? textColorGray : textColorGrayDisabled,
-            fontSize: fontSize17,
-            fontWeight: FontWeight.w800),
+          color: _isEnabled ? textColorGray : textColorGrayDisabled,
+          fontSize: fontSize17,
+          fontWeight: FontWeight.w800,
+        ),
       ),
     );
   }
