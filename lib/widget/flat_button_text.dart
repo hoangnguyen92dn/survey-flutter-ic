@@ -20,18 +20,10 @@ class FlatButtonText extends StatefulWidget {
 }
 
 class _FlatButtonTextState extends State<FlatButtonText> {
-  bool _isEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isEnabled = widget.isEnabled;
-  }
-
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: _isEnabled ? widget.onPressed : null,
+      onPressed: widget.isEnabled ? widget.onPressed : null,
       style: TextButton.styleFrom(
         backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: space18),
@@ -44,17 +36,11 @@ class _FlatButtonTextState extends State<FlatButtonText> {
       child: Text(
         context.localization.sign_in_button,
         style: TextStyle(
-          color: _isEnabled ? textColorGray : textColorGrayDisabled,
+          color: widget.isEnabled ? textColorGray : textColorGrayDisabled,
           fontSize: fontSize17,
           fontWeight: FontWeight.w800,
         ),
       ),
     );
-  }
-
-  void setEnable(bool isEnabled) {
-    setState(() {
-      _isEnabled = isEnabled;
-    });
   }
 }

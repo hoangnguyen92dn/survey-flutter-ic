@@ -1,11 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
-import 'package:survey_flutter_ic/widget/flat_button_text.dart';
-import 'package:survey_flutter_ic/widget/text_input_field.dart';
+import 'package:survey_flutter_ic/ui/signin/sign_in_form.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -54,48 +52,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Assets.images.icLogo
                       .svg(width: 168, height: 40, fit: BoxFit.none),
                 ),
-                _buildSignInContent(),
+                const SignInForm(),
                 const Expanded(
                   child: SizedBox.shrink(),
                 ),
               ],
             ),
           ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildSignInContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextInputField(
-          hintText: context.localization.sign_in_email_label,
-          textInputType: TextInputType.emailAddress,
-          onChanged: (input) => {
-            // TODO: Handle listener: enable/disable SignIn button
-          },
-          onSubmitted: (input) => {},
-        ),
-        const SizedBox(height: space20),
-        TextInputField(
-          hintText: context.localization.sign_in_password_label,
-          isObscureText: true,
-          obscuringCharacter: "●",
-          onChanged: (input) => {
-            // TODO: Handle listener: enable/disable SignIn button
-          },
-          onSubmitted: (input) => {},
-        ),
-        const SizedBox(height: space20),
-        FlatButtonText(
-          text: context.localization.sign_in_button,
-          isEnabled: false,
-          onPressed: () => {
-            // TODO: Integrate ViewModel signIn
-          },
         )
       ],
     );
