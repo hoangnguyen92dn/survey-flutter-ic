@@ -3,4 +3,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 extension ContextExtension on BuildContext {
   AppLocalizations get localization => AppLocalizations.of(this)!;
+
+  hideKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(this);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 }

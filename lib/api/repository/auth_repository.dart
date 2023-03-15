@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import '../../env.dart';
 import '../../model/auth_model.dart';
 import '../exception/network_exceptions.dart';
@@ -13,6 +15,7 @@ abstract class AuthRepository {
   });
 }
 
+@Singleton(as: AuthRepository)
 class AuthRepositoryImpl extends AuthRepository {
   final AuthService _authService;
 

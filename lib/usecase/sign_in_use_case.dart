@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:injectable/injectable.dart';
+import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
-import '../api/exception/network_exceptions.dart';
+
 import '../api/repository/auth_repository.dart';
 
 class SignInInput {
@@ -12,6 +16,7 @@ class SignInInput {
   });
 }
 
+@Injectable()
 class SignInUseCase extends UseCase<void, SignInInput> {
   final AuthRepository _repository;
 
@@ -21,7 +26,7 @@ class SignInUseCase extends UseCase<void, SignInInput> {
   Future<Result<void>> call(SignInInput params) {
     return _repository
         .signIn(email: params.email, password: params.password)
-        // ignore: unnecessary_cast
+    // ignore: unnecessary_cast
         .then((value) => Success(null) as Result<void>)
         .onError<NetworkExceptions>(
             (exception, stackTrace) => Failed(UseCaseException(exception)));

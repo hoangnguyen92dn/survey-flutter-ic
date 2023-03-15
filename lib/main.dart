@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/app_color_scheme.dart';
 import 'package:survey_flutter_ic/theme/app_theme.dart';
@@ -12,14 +14,15 @@ import 'package:survey_flutter_ic/ui/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
-  runApp(MyApp());
+  configureInjection();
+  runApp(ProviderScope(child: MyApp()));
 }
 
 const routePathRootScreen = '/';
 const routePathHomeScreen = '/home';
 const routePathSignInScreen = '/sign_in';
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   MyApp({Key? key}) : super(key: key);
 
   // TODO: Refactor to injectable the instance of router
@@ -44,7 +47,7 @@ class MyApp extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       theme: AppTheme.theme(AppColorScheme.light()),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
