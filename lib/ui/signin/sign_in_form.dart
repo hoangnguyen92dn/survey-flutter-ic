@@ -10,7 +10,7 @@ class SignInForm extends ConsumerStatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
 
   @override
-  _SignInFormState createState() => _SignInFormState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignInFormState();
 }
 
 class _SignInFormState extends ConsumerState<SignInForm> {
@@ -63,8 +63,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         FlatButtonText(
           text: context.localization.sign_in_button,
           isEnabled: _isSignInButtonEnabled,
-          onPressed: () =>
-          {
+          onPressed: () => {
             context.hideKeyboard(),
             ref
                 .read(signInViewModelProvider.notifier)
@@ -84,7 +83,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
   }
 
   bool _validateEmail(String email) {
-    RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
   }
 }
