@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
+import 'package:survey_flutter_ic/navigation/route.dart';
 import 'package:survey_flutter_ic/theme/app_color_scheme.dart';
 import 'package:survey_flutter_ic/theme/app_theme.dart';
-import 'package:survey_flutter_ic/ui/signin/sign_in_screen.dart';
-import 'package:survey_flutter_ic/ui/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,33 +16,8 @@ void main() async {
   runApp(ProviderScope(child: MyApp()));
 }
 
-const routePathRootScreen = '/';
-const routePathHomeScreen = '/home';
-const routePathSignInScreen = '/sign_in';
-
 class MyApp extends ConsumerWidget {
   MyApp({Key? key}) : super(key: key);
-
-  // TODO: Refactor to injectable the instance of router
-  final GoRouter _router = GoRouter(
-    routes: <GoRoute>[
-      GoRoute(
-        path: routePathRootScreen,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SplashScreen(),
-      ),
-      GoRoute(
-        path: routePathSignInScreen,
-        builder: (BuildContext context, GoRouterState state) =>
-            const SignInScreen(),
-      ),
-      GoRoute(
-        path: routePathHomeScreen,
-        builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen(),
-      ),
-    ],
-  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,9 +25,9 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.theme(AppColorScheme.light()),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routeInformationProvider: _router.routeInformationProvider,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
     );
   }
 }
