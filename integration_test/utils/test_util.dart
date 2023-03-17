@@ -14,7 +14,7 @@ class TestUtil {
   /// localization, routes, etc)
   static Widget pumpWidgetWithRealApp(String initialRoute) {
     _initDependencies();
-    return MyApp();
+    return const MyApp();
   }
 
   /// We normally use this function to test a specific [widget] without
