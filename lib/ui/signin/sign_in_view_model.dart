@@ -25,9 +25,7 @@ class SignInViewModel extends StateNotifier<SignInViewState> {
 
     if (result is Failed) {
       final error = result.getErrorMessage();
-      if (error != null) {
-        state = SignInViewState.error(error);
-      }
+      state = SignInViewState.error(error);
     } else {
       state = const SignInViewState.success();
     }

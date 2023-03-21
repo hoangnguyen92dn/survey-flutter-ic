@@ -12,6 +12,7 @@ void main() {
   group('SignInViewModel', () {
     late MockSignInUseCase mockSignInUseCase;
     late ProviderContainer container;
+    late SignInViewModel viewModel;
 
     setUp(() {
       mockSignInUseCase = MockSignInUseCase();
@@ -21,6 +22,7 @@ void main() {
             .overrideWith((ref) => SignInViewModel(mockSignInUseCase))
       ]);
       addTearDown(() => container.dispose());
+      viewModel = container.read(signInViewModelProvider.notifier);
     });
 
     test('When initializing SignInViewModel, its state is Init', () {
@@ -29,36 +31,28 @@ void main() {
     });
 
     test('When calling signIn success, it returns success state', () {
-      final stateStream =
-          container.read(signInViewModelProvider.notifier).stream;
       when(mockSignInUseCase.call(any)).thenAnswer((_) async => Success(null));
 
       expect(
-          stateStream,
+          viewModel.stream,
           emitsInOrder([
             const SignInViewState.loading(),
             const SignInViewState.success(),
           ]));
-      container
-          .read(signInViewModelProvider.notifier)
-          .signIn('email', 'password');
+      viewModel.signIn('email', 'password');
     });
 
     test('When calling signIn failed, it returns error state', () {
-      final stateStream =
-          container.read(signInViewModelProvider.notifier).stream;
       when(mockSignInUseCase.call(any)).thenAnswer((_) async => Failed(
           UseCaseException(const NetworkExceptions.defaultError("Error"))));
 
       expect(
-          stateStream,
+          viewModel.stream,
           emitsInOrder([
             const SignInViewState.loading(),
             const SignInViewState.error("Error"),
           ]));
-      container
-          .read(signInViewModelProvider.notifier)
-          .signIn('email', 'password');
+      viewModel.signIn('email', 'password');
     });
   });
 }

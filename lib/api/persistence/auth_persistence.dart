@@ -22,10 +22,10 @@ abstract class AuthPersistence {
 }
 
 @Singleton(as: AuthPersistence)
-class SecureStorageImpl extends AuthPersistence {
+class AuthPersistenceImpl extends AuthPersistence {
   final FlutterSecureStorage _storage;
 
-  SecureStorageImpl(this._storage);
+  AuthPersistenceImpl(this._storage);
 
   @override
   Future<String?> get tokenType => _storage.read(key: _keyTokenType);

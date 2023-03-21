@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_view_model.dart';
+import 'package:survey_flutter_ic/ui/signin/sign_in_widget_id.dart';
 import 'package:survey_flutter_ic/widget/flat_button_text.dart';
 import 'package:survey_flutter_ic/widget/text_input_field.dart';
 
@@ -25,6 +26,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextInputField(
+          key: SignInWidgetId.emailInputField,
           hintText: context.localization.sign_in_email_label,
           textInputType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -43,6 +45,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         ),
         const SizedBox(height: space20),
         TextInputField(
+          key: SignInWidgetId.passwordInputField,
           hintText: context.localization.sign_in_password_label,
           textInputAction: TextInputAction.done,
           isObscureText: true,
@@ -61,6 +64,7 @@ class _SignInFormState extends ConsumerState<SignInForm> {
         ),
         const SizedBox(height: space20),
         FlatButtonText(
+          key: SignInWidgetId.signInButton,
           text: context.localization.sign_in_button,
           isEnabled: _isSignInButtonEnabled,
           onPressed: () => {

@@ -8,22 +8,24 @@ const routePathRootScreen = '/';
 const routePathHomeScreen = '/home';
 const routePathSignInScreen = '/sign_in';
 
-GoRouter router = GoRouter(
-  routes: <GoRoute>[
-    GoRoute(
-      path: routePathRootScreen,
-      builder: (BuildContext context, GoRouterState state) =>
-          const SplashScreen(),
-    ),
-    GoRoute(
-      path: routePathSignInScreen,
-      builder: (BuildContext context, GoRouterState state) =>
-          const SignInScreen(),
-    ),
-    GoRoute(
-      path: routePathHomeScreen,
-      builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreen(),
-    ),
-  ],
-);
+// TODO Extract to class and inject by GetIt
+GoRouter router([String? initialLocation]) => GoRouter(
+      initialLocation: initialLocation ?? routePathRootScreen,
+      routes: <GoRoute>[
+        GoRoute(
+          path: routePathRootScreen,
+          builder: (BuildContext context, GoRouterState state) =>
+              const SplashScreen(),
+        ),
+        GoRoute(
+          path: routePathSignInScreen,
+          builder: (BuildContext context, GoRouterState state) =>
+              const SignInScreen(),
+        ),
+        GoRoute(
+          path: routePathHomeScreen,
+          builder: (BuildContext context, GoRouterState state) =>
+              const HomeScreen(),
+        ),
+      ],
+    );

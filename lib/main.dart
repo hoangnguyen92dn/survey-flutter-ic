@@ -25,9 +25,9 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.theme(AppColorScheme.light()),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routeInformationProvider: router.routeInformationProvider,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
+      routeInformationProvider: router().routeInformationProvider,
+      routeInformationParser: router().routeInformationParser,
+      routerDelegate: router().routerDelegate,
     );
   }
 }

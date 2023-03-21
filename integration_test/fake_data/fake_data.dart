@@ -33,7 +33,7 @@ class FakeData {
       keySignIn: FakeResponseModel(
         200,
         await FileUtil.loadFile(
-            'integration_test/fake_data/sign_in_response.json'),
+            'test_resource/fake_response/fake_sign_in_response.json'),
       ),
     });
   }
