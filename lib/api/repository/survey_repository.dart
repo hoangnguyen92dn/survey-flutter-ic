@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/api/service/survey_service.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
@@ -9,6 +10,7 @@ abstract class SurveyRepository {
   });
 }
 
+@Singleton(as: SurveyRepository)
 class SurveyRepositoryImpl extends SurveyRepository {
   final SurveyService _surveyService;
 

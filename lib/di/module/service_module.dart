@@ -17,8 +17,7 @@ abstract class ServiceModule {
   @Singleton(as: SurveyService)
   SurveyServiceImpl provideSurveyService(DioProvider dioProvider) {
     return SurveyServiceImpl(
-      // dioProvider.getDio(requireAuthenticate: true),
-      dioProvider.getDio(),
+      dioProvider.getDio(requireAuthenticate: true),
       baseUrl: Env.restApiEndpoint,
     );
   }
