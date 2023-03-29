@@ -59,13 +59,15 @@ class AppInterceptor extends Interceptor {
 
         // Create request with new access token
         final options = Options(
-            method: err.requestOptions.method,
-            headers: err.requestOptions.headers);
+          method: err.requestOptions.method,
+          headers: err.requestOptions.headers,
+        );
         final newRequest = await _dio.request(
-            "${err.requestOptions.baseUrl}${err.requestOptions.path}",
-            options: options,
-            data: err.requestOptions.data,
-            queryParameters: err.requestOptions.queryParameters);
+          "${err.requestOptions.baseUrl}${err.requestOptions.path}",
+          options: options,
+          data: err.requestOptions.data,
+          queryParameters: err.requestOptions.queryParameters,
+        );
         handler.resolve(newRequest);
       } else {
         handler.next(err);

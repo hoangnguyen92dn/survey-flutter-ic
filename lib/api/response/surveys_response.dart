@@ -14,5 +14,5 @@ class SurveysResponse {
   });
 
   factory SurveysResponse.fromJson(Map<String, dynamic> json) =>
-      _$SurveysResponseFromJson(fromDataJsonApi(json));
+      _$SurveysResponseFromJson(fromRootJsonApi(json));
 }
