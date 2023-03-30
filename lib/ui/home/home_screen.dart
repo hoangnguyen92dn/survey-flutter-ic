@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,13 +6,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
+    return const Scaffold(
         body: SafeArea(
           child: HomeHeader(),
         ),
-      ),
-    );
+      );
   }
 }

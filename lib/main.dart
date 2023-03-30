@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,13 +20,16 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp.router(
-      theme: AppTheme.theme(AppColorScheme.light()),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routeInformationProvider: router().routeInformationProvider,
-      routeInformationParser: router().routeInformationParser,
-      routerDelegate: router().routerDelegate,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: MaterialApp.router(
+        theme: AppTheme.theme(AppColorScheme.light()),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routeInformationProvider: router().routeInformationProvider,
+        routeInformationParser: router().routeInformationParser,
+        routerDelegate: router().routerDelegate,
+      ),
     );
   }
 }
