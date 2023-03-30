@@ -51,7 +51,7 @@ Clone the repository
 
   - For example:
 
-    `$ fvm flutter drive --driver=test_driver/integration_test.dart --target=integration_test/my_home_page_test.dart --flavor staging`
+    `$ fvm flutter drive --driver=test_driver/integration_test.dart --target=integration_test/home_screen_test.dart --flavor staging`
 
 - Code coverage integration:
 
