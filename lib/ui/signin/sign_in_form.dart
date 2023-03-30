@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
+import 'package:survey_flutter_ic/extension/string_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_view_model.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_widget_id.dart';
@@ -81,13 +82,8 @@ class _SignInFormState extends ConsumerState<SignInForm> {
   _validateInputFields() {
     setState(() {
       bool isNotEmpty = _emailInput.trim() != "" && _passwordInput.trim() != "";
-      bool isValidEmail = _validateEmail(_emailInput);
+      bool isValidEmail = _emailInput.isValidEmail();
       _isSignInButtonEnabled = isNotEmpty && isValidEmail;
     });
-  }
-
-  bool _validateEmail(String email) {
-    RegExp emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
-    return emailRegex.hasMatch(email);
   }
 }

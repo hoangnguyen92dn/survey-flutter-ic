@@ -25,12 +25,12 @@ void main() {
       viewModel = container.read(signInViewModelProvider.notifier);
     });
 
-    test('When initializing SignInViewModel, its state is Init', () {
+    test('When initializing SignInViewModel, it returns Init state', () {
       expect(container.read(signInViewModelProvider),
           const SignInViewState.init());
     });
 
-    test('When calling signIn success, it returns success state', () {
+    test('When calling signIn success, it returns Success state', () {
       when(mockSignInUseCase.call(any)).thenAnswer((_) async => Success(null));
 
       expect(
@@ -42,7 +42,7 @@ void main() {
       viewModel.signIn('email', 'password');
     });
 
-    test('When calling signIn failed, it returns error state', () {
+    test('When calling signIn failed, it returns Error state', () {
       when(mockSignInUseCase.call(any)).thenAnswer((_) async => Failed(
           UseCaseException(const NetworkExceptions.defaultError("Error"))));
 
