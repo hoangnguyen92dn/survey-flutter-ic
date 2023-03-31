@@ -34,7 +34,7 @@ jobs:
         env:
           ENV_STAGING: ${{ secrets.ENV }}
         run: |
-          echo $ENV > .env
+          echo "$ENV" > .env
 
       # App Bundle requires Firebase connected to Play Store to upload https://appdistribution.page.link/KPoa
       - name: Build Android apk
