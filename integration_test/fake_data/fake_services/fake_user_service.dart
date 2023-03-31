@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:survey_flutter_ic/api/response/profile_response.dart';
-import 'package:survey_flutter_ic/api/service/profile_service.dart';
+import 'package:survey_flutter_ic/api/service/user_service.dart';
 
 import '../fake_data.dart';
 
-class FakeProfileService extends Fake implements ProfileService {
+class FakeUserService extends Fake implements UserService {
   @override
   Future<ProfileResponse> getProfile() async {
     await Future.delayed(const Duration(seconds: 5));

@@ -30,7 +30,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.date,
+                      widget.date.toUpperCase(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: fontSize13,

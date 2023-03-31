@@ -12,6 +12,7 @@ import '../../mocks/generate_mocks.mocks.dart';
 void main() {
   group('HomeViewModel', () {
     late MockGetProfileUseCase mockGetProfileUseCase;
+    late HomeViewModel viewModel;
     late ProviderContainer container;
 
     setUp(() {
@@ -21,6 +22,7 @@ void main() {
         homeViewModelProvider
             .overrideWith((ref) => HomeViewModel(mockGetProfileUseCase))
       ]);
+      viewModel = container.read(homeViewModelProvider.notifier);
       addTearDown(() => container.dispose());
     });
 
@@ -32,12 +34,11 @@ void main() {
         'When calling getProfile success, it returns GetUserProfileSuccess state',
         () {
       const profile = ProfileModel(avatarUrl: "avatarUrl");
-      final stateStream = container.read(homeViewModelProvider.notifier).stream;
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
       expect(
-          stateStream,
+          viewModel.stream,
           emitsInOrder([
             const HomeViewState.loading(),
             const HomeViewState.getUserProfileSuccess(profile),
@@ -47,12 +48,11 @@ void main() {
     });
 
     test('When calling getProfile failed, it returns Error state', () {
-      final stateStream = container.read(homeViewModelProvider.notifier).stream;
       when(mockGetProfileUseCase.call()).thenAnswer((_) async => Failed(
           UseCaseException(const NetworkExceptions.defaultError("Error"))));
 
       expect(
-          stateStream,
+          viewModel.stream,
           emitsInOrder([
             const HomeViewState.loading(),
             const HomeViewState.error("Error"),

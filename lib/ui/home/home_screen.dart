@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/date_extension.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
@@ -43,18 +42,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
           orElse: () => {});
     });
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        body: SafeArea(
-          child: Consumer(
-            builder: (context, widgetRef, _) {
-              return HomeHeader(
-                date: DateTime.now().getFormattedString(),
-                avatar: widgetRef.watch(_profileAvatarProvider),
-              );
-            },
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Consumer(
+          builder: (context, widgetRef, _) {
+            return HomeHeader(
+              date: DateTime.now().getFormattedString(),
+              avatar: widgetRef.watch(_profileAvatarProvider),
+            );
+          },
         ),
       ),
     );
