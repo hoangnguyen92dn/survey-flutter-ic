@@ -9,11 +9,11 @@ import '../mocks/generate_mocks.mocks.dart';
 
 void main() {
   group('GetProfileUseCase', () {
-    late MockProfileRepository mockRepository;
+    late MockUserRepository mockRepository;
     late GetProfileUseCase useCase;
 
     setUp(() {
-      mockRepository = MockProfileRepository();
+      mockRepository = MockUserRepository();
       useCase = GetProfileUseCase(mockRepository);
     });
 

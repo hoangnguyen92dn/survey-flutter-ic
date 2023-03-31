@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
-import 'package:survey_flutter_ic/api/repository/profile_repository.dart';
+import 'package:survey_flutter_ic/api/repository/user_repository.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 
 @Injectable()
 class GetProfileUseCase extends NoParamsUseCase<ProfileModel> {
-  final ProfileRepository _repository;
+  final UserRepository _repository;
 
   const GetProfileUseCase(this._repository);
 

@@ -2,7 +2,7 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
-import 'package:survey_flutter_ic/api/repository/profile_repository.dart';
+import 'package:survey_flutter_ic/api/repository/user_repository.dart';
 import 'package:survey_flutter_ic/api/response/profile_response.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
 
@@ -14,13 +14,13 @@ void main() {
     'CLIENT_SECRET': 'CLIENT_SECRET',
   });
 
-  group('ProfileRepository', () {
-    late MockProfileService mockProfileService;
-    late ProfileRepository repository;
+  group('UserRepository', () {
+    late MockUserService mockUserService;
+    late UserRepository repository;
 
     setUp(() {
-      mockProfileService = MockProfileService();
-      repository = ProfileRepositoryImpl(mockProfileService);
+      mockUserService = MockUserService();
+      repository = UserRepositoryImpl(mockUserService);
     });
 
     test(
@@ -33,7 +33,7 @@ void main() {
         avatarUrl: 'avatarUrl',
       );
 
-      when(mockProfileService.getProfile()).thenAnswer((_) async => response);
+      when(mockUserService.getProfile()).thenAnswer((_) async => response);
 
       final result = await repository.getProfile();
 
@@ -42,7 +42,7 @@ void main() {
 
     test('When calling getProfile failed, it returns NetworkExceptions error',
         () async {
-      when(mockProfileService.getProfile()).thenThrow(MockDioError());
+      when(mockUserService.getProfile()).thenThrow(MockDioError());
 
       result() => repository.getProfile();
 

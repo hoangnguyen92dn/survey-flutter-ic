@@ -1,23 +1,23 @@
 import 'package:injectable/injectable.dart';
-import 'package:survey_flutter_ic/api/service/profile_service.dart';
+import 'package:survey_flutter_ic/api/service/user_service.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
 
 import '../exception/network_exceptions.dart';
 
-abstract class ProfileRepository {
+abstract class UserRepository {
   Future<ProfileModel> getProfile();
 }
 
-@Singleton(as: ProfileRepository)
-class ProfileRepositoryImpl extends ProfileRepository {
-  final ProfileService _profileService;
+@Singleton(as: UserRepository)
+class UserRepositoryImpl extends UserRepository {
+  final UserService _userService;
 
-  ProfileRepositoryImpl(this._profileService);
+  UserRepositoryImpl(this._userService);
 
   @override
   Future<ProfileModel> getProfile() async {
     try {
-      final response = await _profileService.getProfile();
+      final response = await _userService.getProfile();
       return ProfileModel.fromResponse(response);
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);

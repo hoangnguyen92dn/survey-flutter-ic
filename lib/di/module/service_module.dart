@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/api/service/auth_service.dart';
-import 'package:survey_flutter_ic/api/service/profile_service.dart';
 import 'package:survey_flutter_ic/api/service/survey_service.dart';
+import 'package:survey_flutter_ic/api/service/user_service.dart';
 import 'package:survey_flutter_ic/di/provider/dio_provider.dart';
 
 import '../../env.dart';
@@ -24,9 +24,9 @@ abstract class ServiceModule {
     );
   }
 
-  @Singleton(as: ProfileService)
-  ProfileServiceImpl provideProfileService(DioProvider dioProvider) {
-    return ProfileServiceImpl(
+  @Singleton(as: UserService)
+  UserServiceImpl provideUserService(DioProvider dioProvider) {
+    return UserServiceImpl(
       dioProvider.getDio(requireAuthenticate: true),
       baseUrl: Env.restApiEndpoint,
     );

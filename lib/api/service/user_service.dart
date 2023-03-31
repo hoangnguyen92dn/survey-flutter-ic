@@ -2,15 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:survey_flutter_ic/api/response/profile_response.dart';
 
-part 'profile_service.g.dart';
+part 'user_service.g.dart';
 
-abstract class ProfileService {
+abstract class UserService {
   Future<ProfileResponse> getProfile();
 }
 
 @RestApi()
-abstract class ProfileServiceImpl extends ProfileService {
-  factory ProfileServiceImpl(Dio dio, {String baseUrl}) = _ProfileServiceImpl;
+abstract class UserServiceImpl extends UserService {
+  factory UserServiceImpl(Dio dio, {String baseUrl}) = _UserServiceImpl;
 
   @override
   @GET('/api/v1/me')
