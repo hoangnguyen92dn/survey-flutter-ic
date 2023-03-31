@@ -82,7 +82,10 @@ flutter:
   fonts:
     - family: neuzeit
       fonts:
-        - asset: assets/fonts/neuzeit.otf
+        - asset: assets/fonts/neuzeit_normal.otf
+          weight: 400
+        - asset: assets/fonts/neuzeit_bold.otf
+          weight: 800
 
 flutter_gen:
   integrations:
