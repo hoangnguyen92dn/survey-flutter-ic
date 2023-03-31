@@ -20,4 +20,10 @@ class Failed<T> extends Result<T> {
   final UseCaseException exception;
 
   Failed(this.exception) : super._();
+
+  String getErrorMessage() {
+    return NetworkExceptions.getErrorMessage(
+      exception.actualException,
+    );
+  }
 }
