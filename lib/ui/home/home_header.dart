@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
+import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 
 class HomeHeader extends StatefulWidget {
   final String date;
@@ -29,7 +30,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // TODO: Integrate with VM to get the current date
                       widget.date ?? '',
                       style: const TextStyle(
                         color: Colors.white,
@@ -50,6 +50,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                 ),
               ),
               CircleAvatar(
+                key: HomeWidgetId.profileAvatarImage,
                 backgroundColor: Colors.white,
                 radius: circleAvatarProfileSize / 2,
                 backgroundImage: widget.avatar.isEmpty
