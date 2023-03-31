@@ -32,7 +32,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       state.maybeWhen(
           getUserProfileSuccess: (profile) => {
                 ref.read(_profileAvatarProvider.notifier).state =
-                    profile.avatarUrl ?? '',
+                    profile.avatarUrl,
               },
           loading: () {
             ref.read(_loadingStateProvider.notifier).state = true;

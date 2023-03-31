@@ -30,7 +30,7 @@ class _HomeHeaderState extends State<HomeHeader> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.date ?? '',
+                      widget.date,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: fontSize13,
@@ -65,6 +65,5 @@ class _HomeHeaderState extends State<HomeHeader> {
         ),
       ],
     );
-    ;
   }
 }

@@ -23,9 +23,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
 
     if (result is Failed<ProfileModel>) {
       final error = result.getErrorMessage();
-      if (error != null) {
-        state = HomeViewState.error(error);
-      }
+      state = HomeViewState.error(error);
     } else {
       state = HomeViewState.getUserProfileSuccess(
           (result as Success<ProfileModel>).value);

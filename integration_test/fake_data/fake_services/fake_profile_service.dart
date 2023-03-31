@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:survey_flutter_ic/api/response/profile_response.dart';
-import 'package:survey_flutter_ic/api/service/auth_service.dart';
+import 'package:survey_flutter_ic/api/service/profile_service.dart';
 
 import '../fake_data.dart';
 
-class FakeAuthService extends Fake implements AuthService {
+class FakeProfileService extends Fake implements ProfileService {
   @override
-  Future<ProfileResponse> getUserProfile() async {
+  Future<ProfileResponse> getProfile() async {
     await Future.delayed(const Duration(seconds: 5));
     final response = FakeData.apiAndResponse[keyUserProfile]!;
     if (response.statusCode != 200) {
