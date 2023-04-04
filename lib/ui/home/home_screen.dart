@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/date_extension.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
+import 'package:survey_flutter_ic/model/survey_model.dart';
+import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
 
 final _loadingStateProvider = StateProvider.autoDispose<bool>((_) => false);
 final _profileAvatarProvider = StateProvider.autoDispose<String>((_) => '');
+final _visibleIndexProvider = StateProvider<int>((_) => 0);
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +21,37 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  // TODO: Remove on integration task
+  final mockSurveys = const [
+    SurveyModel(
+        id: "1",
+        title: "Working from home Check-In",
+        description:
+            "We would like to know how you feel about our work from home",
+        isActive: false,
+        coverImageUrl: "coverImageUrl",
+        createdAt: "createdAt",
+        surveyType: "surveyType"),
+    SurveyModel(
+        id: "2",
+        title: "Career training and development",
+        description:
+            "We would like to know what are your goals and skills you wanted",
+        isActive: false,
+        coverImageUrl: "coverImageUrl",
+        createdAt: "createdAt",
+        surveyType: "surveyType"),
+    SurveyModel(
+        id: "3",
+        title: "Inclusion and belonging",
+        description:
+            "Building a workplace culture that prioritizes belonging and inclusion",
+        isActive: false,
+        coverImageUrl: "coverImageUrl",
+        createdAt: "createdAt",
+        surveyType: "surveyType"),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -30,29 +65,79 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.listen<HomeViewState>(homeViewModelProvider, (_, state) {
       state.maybeWhen(
           getUserProfileSuccess: (profile) => {
-                ref.read(_profileAvatarProvider.notifier).state =
-                    profile.avatarUrl,
-              },
+            ref.read(_profileAvatarProvider.notifier).state =
+                profile.avatarUrl,
+          },
           loading: () {
             ref.read(_loadingStateProvider.notifier).state = true;
           },
           error: (message) => {
-                ref.read(_loadingStateProvider.notifier).state = false,
-                showToastMessage(message)
-              },
+            ref.read(_loadingStateProvider.notifier).state = false,
+            showToastMessage(message)
+          },
           orElse: () => {});
     });
     return Scaffold(
-      body: SafeArea(
-        child: Consumer(
-          builder: (context, widgetRef, _) {
-            return HomeHeader(
-              date: DateTime.now().getFormattedString(),
-              avatar: widgetRef.watch(_profileAvatarProvider),
-            );
-          },
-        ),
+      body: Consumer(
+        builder: (context, widgetRef, _) {
+          return Stack(
+            children: [
+              SurveyView(
+                surveys: mockSurveys,
+                onPageChanged: (visibleIndex) {
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    ref.read(_visibleIndexProvider.notifier).state =
+                        visibleIndex;
+                  });
+                },
+                onSurveySelected: (survey) {
+                  // TODO: Navigate to survey details
+                },
+              ),
+              SafeArea(
+                child: HomeHeader(
+                  date: DateTime.now().getFormattedString(),
+                  avatar: widgetRef.watch(_profileAvatarProvider),
+                ),
+              ),
+              _pagerIndicator(mockSurveys)
+            ],
+          );
+        },
       ),
     );
   }
+
+  Widget _pagerIndicator(List<SurveyModel> surveys) => Consumer(
+        builder: (context, widgetRef, _) {
+          return Positioned(
+            bottom: 206,
+            child: SizedBox(
+              height: 50,
+              child: Padding(
+                padding: const EdgeInsets.all(space20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List.generate(
+                    surveys.length,
+                    (index) {
+                      return Container(
+                        width: pagerIndicatorSize,
+                        height: pagerIndicatorSize,
+                        margin: const EdgeInsets.symmetric(horizontal: space5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: widgetRef.watch(_visibleIndexProvider) == index
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.2),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
 }
