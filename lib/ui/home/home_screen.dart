@@ -8,6 +8,7 @@ import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
+import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
 
 final _loadingStateProvider = StateProvider.autoDispose<bool>((_) => false);
 final _profileAvatarProvider = StateProvider.autoDispose<String>((_) => '');
@@ -65,25 +66,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.listen<HomeViewState>(homeViewModelProvider, (_, state) {
       state.maybeWhen(
           getUserProfileSuccess: (profile) => {
-            ref.read(_profileAvatarProvider.notifier).state =
-                profile.avatarUrl,
-          },
+                ref.read(_profileAvatarProvider.notifier).state =
+                    profile.avatarUrl,
+                ref.read(_loadingStateProvider.notifier).state = false,
+              },
           loading: () {
             ref.read(_loadingStateProvider.notifier).state = true;
           },
           error: (message) => {
-            ref.read(_loadingStateProvider.notifier).state = false,
-            showToastMessage(message)
-          },
+                ref.read(_loadingStateProvider.notifier).state = false,
+                showToastMessage(message)
+              },
           orElse: () => {});
     });
     return Scaffold(
       body: Consumer(
         builder: (context, widgetRef, _) {
+          bool isLoading = widgetRef.watch(_loadingStateProvider);
+          return isLoading
+              ? const SurveyShimmerLoading()
+              : _buildHomeContent(mockSurveys);
+        },
+      ),
+    );
+  }
+
+  Widget _buildHomeContent(List<SurveyModel> surveys) => Consumer(
+        builder: (context, widgetRef, _) {
           return Stack(
             children: [
               SurveyView(
-                surveys: mockSurveys,
+                surveys: surveys,
                 onPageChanged: (visibleIndex) {
                   Future.delayed(const Duration(milliseconds: 100), () {
                     ref.read(_visibleIndexProvider.notifier).state =
@@ -104,9 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ],
           );
         },
-      ),
-    );
-  }
+      );
 
   Widget _pagerIndicator(List<SurveyModel> surveys) => Consumer(
         builder: (context, widgetRef, _) {
