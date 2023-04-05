@@ -31,8 +31,7 @@ void main() {
     });
 
     test(
-        'When calling getProfile success, it returns GetUserProfileSuccess state',
-        () {
+        'When calling getProfile success, it returns Success state', () {
       const profile = ProfileModel(avatarUrl: "avatarUrl");
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
@@ -44,7 +43,7 @@ void main() {
             const HomeViewState.success(),
           ]));
 
-      expect(container.read(profileStream.stream), emits(profile));
+      expect(container.read(profileStream.future).asStream(), emits(profile));
 
       container.read(homeViewModelProvider.notifier).getProfile();
     });
