@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
+import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
@@ -61,6 +62,48 @@ void main() {
           ]));
 
       container.read(homeViewModelProvider.notifier).getProfile();
+    });
+
+    test('When calling getSurveys success, it returns Success state', () {
+      const surveys = [
+        SurveyModel(
+          id: "id",
+          title: "title",
+          description: "description",
+          isActive: true,
+          coverImageUrl: "coverImageUrl",
+          largeCoverImageUrl: "largeCoverImageUrl",
+          createdAt: "createdAt",
+          surveyType: "surveyType",
+        )
+      ];
+      when(mockGetSurveysUseCase.call(any))
+          .thenAnswer((_) async => Success(surveys));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const HomeViewState.loading(),
+            const HomeViewState.success(),
+          ]));
+
+      expect(container.read(surveysStream.future).asStream(), emits(surveys));
+
+      container.read(homeViewModelProvider.notifier).getSurveys();
+    });
+
+    test('When calling getSurveys failed, it returns Error state', () {
+      when(mockGetSurveysUseCase.call(any)).thenAnswer((_) async => Failed(
+          UseCaseException(const NetworkExceptions.defaultError("Error"))));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const HomeViewState.loading(),
+            const HomeViewState.error("Error"),
+          ]));
+
+      container.read(homeViewModelProvider.notifier).getSurveys();
     });
   });
 }
