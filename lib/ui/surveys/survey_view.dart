@@ -2,32 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
-import 'package:survey_flutter_ic/widget/circle_button.dart';
+import 'package:survey_flutter_ic/theme/dimens.dart';
+import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 class SurveyView extends ConsumerStatefulWidget {
   final List<SurveyModel> surveys;
   final Function(int) onPageChanged;
   final Function(SurveyModel) onSurveySelected;
 
-  const SurveyView(
-      {Key? key,
-      required this.surveys,
-      required this.onPageChanged,
-      required this.onSurveySelected})
-      : super(key: key);
+  const SurveyView({
+    super.key,
+    required this.surveys,
+    required this.onPageChanged,
+    required this.onSurveySelected,
+  });
 
   @override
   ConsumerState<SurveyView> createState() => _SurveyViewState();
 }
 
 class _SurveyViewState extends ConsumerState<SurveyView> {
-  final PageController _pageController = PageController(initialPage: 0);
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,54 +37,60 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
           itemBuilder: (BuildContext context, int index) {
             return Container(
               // TODO: Load image from network
+              padding: const EdgeInsets.symmetric(horizontal: space20),
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(Assets.images.bgSplash.path),
                     fit: BoxFit.fill),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.surveys[index].title,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.w800),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.surveys[index].title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSize28,
+                      fontWeight: FontWeight.w800,
                     ),
-                    const SizedBox(height: 2),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            widget.surveys[index].description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w400),
+                  ),
+                  const SizedBox(height: 2),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.surveys[index].description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: fontSize17,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        CircleButton(
-                          onPressed: () => widget.onSurveySelected
-                              .call(widget.surveys[index]),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 54),
-                  ],
-                ),
+                      ),
+                      const SizedBox(width: space20),
+                      WhiteRightArrowButton(
+                        onPressed: () =>
+                            widget.onSurveySelected.call(widget.surveys[index]),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 54),
+                ],
               ),
             );
           },
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

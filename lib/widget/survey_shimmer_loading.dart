@@ -4,7 +4,7 @@ import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/widget/place_holders.dart';
 
 class SurveyShimmerLoading extends StatelessWidget {
-  const SurveyShimmerLoading({Key? key}) : super(key: key);
+  const SurveyShimmerLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class SurveyShimmerLoading extends StatelessWidget {
                   _buildHeaderShimmer(),
                   const Expanded(child: SizedBox.shrink()),
                   _buildPagerIndicatorPlaceholder(),
-                  _buildSurveyContent()
+                  _buildSurveyContent(context),
                 ],
               )),
         ),
@@ -55,18 +55,19 @@ class SurveyShimmerLoading extends StatelessWidget {
     return const TextPlaceholder(width: 50);
   }
 
-  Widget _buildSurveyContent() {
+  Widget _buildSurveyContent(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        SizedBox(height: space20),
-        TextPlaceholder(width: 253),
-        SizedBox(height: space4),
-        TextPlaceholder(width: 143),
-        SizedBox(height: space16),
-        TextPlaceholder(width: 318),
-        SizedBox(height: space4),
-        TextPlaceholder(width: 278)
+      children: [
+        const SizedBox(height: space20),
+        TextPlaceholder(width: screenWidth * 0.7),
+        const SizedBox(height: space4),
+        TextPlaceholder(width: screenWidth * 0.4),
+        const SizedBox(height: space16),
+        TextPlaceholder(width: screenWidth * 0.8),
+        const SizedBox(height: space4),
+        TextPlaceholder(width: screenWidth * 0.6),
       ],
     );
   }

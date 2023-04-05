@@ -5,27 +5,33 @@ import 'package:survey_flutter_ic/ui/home/home_screen.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_screen.dart';
 import 'package:survey_flutter_ic/ui/splash/splash_screen.dart';
 
-const routePathRootScreen = '/';
-const routePathHomeScreen = '/home';
-const routePathSignInScreen = '/sign_in';
+enum RoutePath {
+  root('/'),
+  home('/home'),
+  signIn('/sign_in');
+
+  const RoutePath(this.path);
+
+  final String path;
+}
 
 @Singleton()
 class AppRouter {
   GoRouter router([String? initialLocation]) => GoRouter(
-        initialLocation: initialLocation ?? routePathRootScreen,
+        initialLocation: initialLocation ?? RoutePath.root.path,
         routes: <GoRoute>[
           GoRoute(
-            path: routePathRootScreen,
+            path: RoutePath.root.path,
             builder: (BuildContext context, GoRouterState state) =>
                 const SplashScreen(),
           ),
           GoRoute(
-            path: routePathSignInScreen,
+            path: RoutePath.signIn.path,
             builder: (BuildContext context, GoRouterState state) =>
                 const SignInScreen(),
           ),
           GoRoute(
-            path: routePathHomeScreen,
+            path: RoutePath.home.path,
             builder: (BuildContext context, GoRouterState state) =>
                 const HomeScreen(),
           ),

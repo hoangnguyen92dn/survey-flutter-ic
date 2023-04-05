@@ -22,7 +22,7 @@ class SignInScreen extends ConsumerWidget {
       state.maybeWhen(
           success: () => {
                 ref.read(_loadingStateProvider.notifier).state = false,
-                context.go(routePathHomeScreen)
+                context.go(RoutePath.home.path)
               },
           loading: () {
             ref.read(_loadingStateProvider.notifier).state = true;

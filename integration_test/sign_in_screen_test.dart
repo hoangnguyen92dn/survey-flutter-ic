@@ -31,7 +31,7 @@ void signInTest() {
         "When the sign in screen shown, it displays the Sign In screen correctly",
         (WidgetTester tester) async {
       await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(routePathSignInScreen));
+          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.signIn.path));
 
       expect(emailField, findsOneWidget);
       expect(passwordField, findsOneWidget);
@@ -43,7 +43,7 @@ void signInTest() {
         (WidgetTester tester) async {
       await FakeData.initDefault();
       await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(routePathSignInScreen));
+          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.signIn.path));
       await tester.enterText(emailField, 'valid@example.com');
       await tester.enterText(passwordField, '1111111');
       await tester.tap(signInButton);

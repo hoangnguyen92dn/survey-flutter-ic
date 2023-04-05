@@ -11,6 +11,7 @@ const double borderRadius12 = 12.0;
 const double fontSize13 = 13.0;
 const double fontSize16 = 16.0;
 const double fontSize17 = 17.0;
+const double fontSize28 = 28.0;
 const double fontSize34 = 34.0;
 
 const double circleAvatarProfileSize = 36.0;

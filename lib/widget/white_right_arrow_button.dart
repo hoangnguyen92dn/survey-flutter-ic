@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 
-class CircleButton extends StatelessWidget {
+class WhiteRightArrowButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const CircleButton({super.key, required this.onPressed});
+  const WhiteRightArrowButton({
+    super.key,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -20,9 +20,9 @@ class TextPlaceholder extends StatelessWidget {
   final double width;
 
   const TextPlaceholder({
-    Key? key,
+    super.key,
     required this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,6 @@ class TextPlaceholder extends StatelessWidget {
       ),
       width: width,
       height: 24.0,
-      // color: Colors.white,
     );
   }
 }

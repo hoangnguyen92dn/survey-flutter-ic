@@ -81,7 +81,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
     return Scaffold(
       body: Consumer(
-        builder: (context, widgetRef, _) {
+        builder: (_, widgetRef, __) {
           bool isLoading = widgetRef.watch(_loadingStateProvider);
           return isLoading
               ? const SurveyShimmerLoading()
