@@ -30,8 +30,7 @@ void main() {
       expect(container.read(homeViewModelProvider), const HomeViewState.init());
     });
 
-    test(
-        'When calling getProfile success, it returns Success state', () {
+    test('When calling getProfile success, it returns Success state', () {
       const profile = ProfileModel(avatarUrl: "avatarUrl");
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));

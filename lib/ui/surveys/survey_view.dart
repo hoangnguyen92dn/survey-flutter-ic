@@ -35,47 +35,30 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
           },
           itemCount: widget.surveys.length,
           itemBuilder: (BuildContext context, int index) {
+            final survey = widget.surveys[index];
             return Container(
               // TODO: Load image from network
               padding: const EdgeInsets.symmetric(horizontal: space20),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(Assets.images.bgSplash.path),
-                    fit: BoxFit.fill),
+                  image: AssetImage(Assets.images.bgSplash.path),
+                  fit: BoxFit.fill,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    widget.surveys[index].title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: fontSize28,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
+                  _buildSurveyTitle(survey),
                   const SizedBox(height: 2),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
-                        child: Text(
-                          widget.surveys[index].description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: fontSize17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        child: _buildSurveyDescription(survey),
                       ),
                       const SizedBox(width: space20),
-                      WhiteRightArrowButton(
-                        onPressed: () =>
-                            widget.onSurveySelected.call(widget.surveys[index]),
-                      ),
+                      _buildSurveyButton(survey),
                     ],
                   ),
                   const SizedBox(height: 54),
@@ -85,6 +68,36 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
           },
         ),
       ],
+    );
+  }
+
+  Widget _buildSurveyTitle(SurveyModel survey) {
+    return Text(
+      survey.title,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: fontSize28,
+        fontWeight: FontWeight.w800,
+      ),
+    );
+  }
+
+  Widget _buildSurveyDescription(SurveyModel survey) {
+    return Text(
+      survey.description,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: Colors.white.withOpacity(0.7),
+        fontSize: fontSize17,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+  }
+
+  Widget _buildSurveyButton(SurveyModel survey) {
+    return WhiteRightArrowButton(
+      onPressed: () => widget.onSurveySelected.call(survey),
     );
   }
 

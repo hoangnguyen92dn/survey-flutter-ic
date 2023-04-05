@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:survey_flutter_ic/extension/date_extension.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
-import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
+import 'package:survey_flutter_ic/widget/pager_indicator.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -75,6 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildHomeContent(List<SurveyModel> surveys) {
     final profile = ref.watch(profileStream).value;
+    final today = ref.watch(todayStream).value;
     return Stack(
       children: [
         SurveyView(
@@ -90,43 +90,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
         SafeArea(
           child: HomeHeader(
-            date: DateTime.now().getFormattedString(),
+            date: today ?? '',
             avatar: profile?.avatarUrl ?? '',
           ),
         ),
-        _pagerIndicator(mockSurveys),
+        _pagerIndicator(mockSurveys.length),
       ],
     );
   }
 
-  Widget _pagerIndicator(List<SurveyModel> surveys) {
+  Widget _pagerIndicator(int pagerIndicatorSize) {
     final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
     return Positioned(
       bottom: 206,
-      child: SizedBox(
-        height: 50,
-        child: Padding(
-          padding: const EdgeInsets.all(space20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: List.generate(
-              surveys.length,
-              (index) {
-                return Container(
-                  width: pagerIndicatorSize,
-                  height: pagerIndicatorSize,
-                  margin: const EdgeInsets.symmetric(horizontal: space5),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: visibleIndex == index
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.2),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
+      child: PagerIndicator(
+        pagerIndicatorSize: pagerIndicatorSize,
+        visibleIndex: visibleIndex,
       ),
     );
   }

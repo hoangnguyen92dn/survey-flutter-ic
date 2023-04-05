@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
+import 'package:survey_flutter_ic/extension/date_extension.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
@@ -12,6 +13,9 @@ final homeViewModelProvider =
         (_) => HomeViewModel(
               getIt.get<GetProfileUseCase>(),
             ));
+
+final todayStream = StreamProvider.autoDispose<String>((ref) =>
+    ref.watch(homeViewModelProvider.notifier)._todayStreamController.stream);
 
 final profileStream = StreamProvider.autoDispose<ProfileModel>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._profileStreamController.stream);
@@ -24,6 +28,7 @@ final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
 class HomeViewModel extends StateNotifier<HomeViewState> {
   final GetProfileUseCase _getProfileUseCase;
 
+  final _todayStreamController = StreamController<String>();
   final _profileStreamController = StreamController<ProfileModel>();
   final _visibleIndexStreamController = StreamController<int>();
 
@@ -46,5 +51,8 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
       state = const HomeViewState.success();
       _profileStreamController.add(profile);
     }
+
+    // Bind Today to stream
+    _todayStreamController.add(DateTime.now().getFormattedString());
   }
 }
