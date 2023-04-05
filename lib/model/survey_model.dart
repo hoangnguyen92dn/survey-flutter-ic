@@ -23,8 +23,7 @@ class SurveyModel extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         id,
         title,
         description,
@@ -42,7 +41,7 @@ class SurveyModel extends Equatable {
       description: response.description ?? '',
       isActive: response.isActive ?? false,
       coverImageUrl: response.coverImageUrl ?? '',
-      largeCoverImageUrl: '${response.coverImageUrl}l' ?? '',
+      largeCoverImageUrl: '${response.coverImageUrl ?? ''}l',
       createdAt: response.createdAt ?? '',
       surveyType: response.surveyType ?? '',
     );

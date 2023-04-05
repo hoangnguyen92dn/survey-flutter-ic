@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
+import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 class SurveyView extends ConsumerStatefulWidget {
@@ -47,11 +48,13 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
               padding: const EdgeInsets.symmetric(horizontal: space20),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: FadeInImage.assetNetwork(
-                            placeholder: Assets.images.placeholderAvatar.path,
-                            image: survey.largeCoverImageUrl.toString())
-                        .image,
-                    fit: BoxFit.cover),
+                  image: FadeInImage.assetNetwork(
+                          key: HomeWidgetId.surveyBackgroundImage,
+                          placeholder: Assets.images.placeholderAvatar.path,
+                          image: survey.largeCoverImageUrl.toString())
+                      .image,
+                  fit: BoxFit.cover,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,6 +81,7 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
   Widget _buildSurveyTitle(SurveyModel survey) {
     return Text(
       survey.title,
+      key: HomeWidgetId.surveyTitleText,
       style: const TextStyle(
         color: Colors.white,
         fontSize: fontSize28,
@@ -91,6 +95,7 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
       survey.description,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
+      key: HomeWidgetId.surveyDescriptionText,
       style: TextStyle(
         color: Colors.white.withOpacity(0.7),
         fontSize: fontSize17,
@@ -101,6 +106,7 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
 
   Widget _buildSurveyButton(SurveyModel survey) {
     return WhiteRightArrowButton(
+      key: HomeWidgetId.surveyDetailsButton,
       onPressed: () => widget.onSurveySelected.call(survey),
     );
   }
