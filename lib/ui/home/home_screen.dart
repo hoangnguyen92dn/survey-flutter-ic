@@ -17,42 +17,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // TODO: Remove on integration task
-  final mockSurveys = const [
-    SurveyModel(
-        id: "1",
-        title: "Working from home Check-In",
-        description:
-            "We would like to know how you feel about our work from home",
-        isActive: false,
-        coverImageUrl: "coverImageUrl",
-        createdAt: "createdAt",
-        surveyType: "surveyType"),
-    SurveyModel(
-        id: "2",
-        title: "Career training and development",
-        description:
-            "We would like to know what are your goals and skills you wanted",
-        isActive: false,
-        coverImageUrl: "coverImageUrl",
-        createdAt: "createdAt",
-        surveyType: "surveyType"),
-    SurveyModel(
-        id: "3",
-        title: "Inclusion and belonging",
-        description:
-            "Building a workplace culture that prioritizes belonging and inclusion",
-        isActive: false,
-        coverImageUrl: "coverImageUrl",
-        createdAt: "createdAt",
-        surveyType: "surveyType"),
-  ];
-
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 0), () {
       ref.read(homeViewModelProvider.notifier).getProfile();
+      ref.read(homeViewModelProvider.notifier).getSurveys();
     });
   }
 
@@ -65,11 +35,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           error: (message) => {showToastMessage(message)},
           orElse: () => {});
     });
-    bool isLoading = ref.watch(profileStream).value == null;
+    bool isLoadingProfile = ref.watch(profileStream).value == null;
+    bool isLoadingSurveys = ref.watch(surveysStream).value == null;
     return Scaffold(
-        body: isLoading
+        body: (isLoadingProfile && isLoadingSurveys)
             ? const SurveyShimmerLoading()
-            : _buildHomeContent(mockSurveys));
+            : _buildHomeContent(ref.watch(surveysStream).value ?? []));
   }
 
   Widget _buildHomeContent(List<SurveyModel> surveys) {
@@ -94,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             avatar: profile?.avatarUrl ?? '',
           ),
         ),
-        _pagerIndicator(mockSurveys.length),
+        _pagerIndicator(surveys.length),
       ],
     );
   }

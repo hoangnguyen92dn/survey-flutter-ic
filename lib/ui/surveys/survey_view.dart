@@ -41,9 +41,11 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
               padding: const EdgeInsets.symmetric(horizontal: space20),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(Assets.images.bgSplash.path),
-                  fit: BoxFit.fill,
-                ),
+                    image: FadeInImage.assetNetwork(
+                            placeholder: Assets.images.placeholderAvatar.path,
+                            image: survey.largeCoverImageUrl.toString())
+                        .image,
+                    fit: BoxFit.cover),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

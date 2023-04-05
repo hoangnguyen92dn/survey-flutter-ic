@@ -12,15 +12,17 @@ import '../../mocks/generate_mocks.mocks.dart';
 void main() {
   group('HomeViewModel', () {
     late MockGetProfileUseCase mockGetProfileUseCase;
+    late MockGetSurveysUseCase mockGetSurveysUseCase;
     late HomeViewModel viewModel;
     late ProviderContainer container;
 
     setUp(() {
       mockGetProfileUseCase = MockGetProfileUseCase();
+      mockGetSurveysUseCase = MockGetSurveysUseCase();
 
       container = ProviderContainer(overrides: [
-        homeViewModelProvider
-            .overrideWith((ref) => HomeViewModel(mockGetProfileUseCase))
+        homeViewModelProvider.overrideWith((ref) =>
+            HomeViewModel(mockGetProfileUseCase, mockGetSurveysUseCase))
       ]);
       viewModel = container.read(homeViewModelProvider.notifier);
       addTearDown(() => container.dispose());
