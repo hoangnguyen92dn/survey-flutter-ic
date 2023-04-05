@@ -10,10 +10,6 @@ import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
 
-final _loadingStateProvider = StateProvider.autoDispose<bool>((_) => false);
-final _profileAvatarProvider = StateProvider.autoDispose<String>((_) => '');
-final _visibleIndexProvider = StateProvider<int>((_) => 0);
-
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -65,90 +61,73 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     ref.listen<HomeViewState>(homeViewModelProvider, (_, state) {
       state.maybeWhen(
-          getUserProfileSuccess: (profile) => {
-                ref.read(_profileAvatarProvider.notifier).state =
-                    profile.avatarUrl,
-                ref.read(_loadingStateProvider.notifier).state = false,
-              },
-          loading: () {
-            ref.read(_loadingStateProvider.notifier).state = true;
-          },
-          error: (message) => {
-                ref.read(_loadingStateProvider.notifier).state = false,
-                showToastMessage(message)
-              },
+          success: () => {},
+          loading: () {},
+          error: (message) => {showToastMessage(message)},
           orElse: () => {});
     });
+    bool isLoading = ref.watch(profileStream).value == null;
     return Scaffold(
-      body: Consumer(
-        builder: (_, widgetRef, __) {
-          bool isLoading = widgetRef.watch(_loadingStateProvider);
-          return isLoading
-              ? const SurveyShimmerLoading()
-              : _buildHomeContent(mockSurveys);
-        },
-      ),
+        body: isLoading
+            ? const SurveyShimmerLoading()
+            : _buildHomeContent(mockSurveys));
+  }
+
+  Widget _buildHomeContent(List<SurveyModel> surveys) {
+    final profile = ref.watch(profileStream).value;
+    return Stack(
+      children: [
+        SurveyView(
+          surveys: surveys,
+          onPageChanged: (visibleIndex) {
+            ref
+                .read(homeViewModelProvider.notifier)
+                .setVisibleSurveyIndex(visibleIndex);
+          },
+          onSurveySelected: (survey) {
+            // TODO: Navigate to survey details
+          },
+        ),
+        SafeArea(
+          child: HomeHeader(
+            date: DateTime.now().getFormattedString(),
+            avatar: profile?.avatarUrl ?? '',
+          ),
+        ),
+        _pagerIndicator(mockSurveys),
+      ],
     );
   }
 
-  Widget _buildHomeContent(List<SurveyModel> surveys) => Consumer(
-        builder: (context, widgetRef, _) {
-          return Stack(
-            children: [
-              SurveyView(
-                surveys: surveys,
-                onPageChanged: (visibleIndex) {
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    ref.read(_visibleIndexProvider.notifier).state =
-                        visibleIndex;
-                  });
-                },
-                onSurveySelected: (survey) {
-                  // TODO: Navigate to survey details
-                },
-              ),
-              SafeArea(
-                child: HomeHeader(
-                  date: DateTime.now().getFormattedString(),
-                  avatar: widgetRef.watch(_profileAvatarProvider),
-                ),
-              ),
-              _pagerIndicator(mockSurveys)
-            ],
-          );
-        },
-      );
-
-  Widget _pagerIndicator(List<SurveyModel> surveys) => Consumer(
-        builder: (context, widgetRef, _) {
-          return Positioned(
-            bottom: 206,
-            child: SizedBox(
-              height: 50,
-              child: Padding(
-                padding: const EdgeInsets.all(space20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: List.generate(
-                    surveys.length,
-                    (index) {
-                      return Container(
-                        width: pagerIndicatorSize,
-                        height: pagerIndicatorSize,
-                        margin: const EdgeInsets.symmetric(horizontal: space5),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: widgetRef.watch(_visibleIndexProvider) == index
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.2),
-                        ),
-                      );
-                    },
+  Widget _pagerIndicator(List<SurveyModel> surveys) {
+    final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
+    return Positioned(
+      bottom: 206,
+      child: SizedBox(
+        height: 50,
+        child: Padding(
+          padding: const EdgeInsets.all(space20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: List.generate(
+              surveys.length,
+              (index) {
+                return Container(
+                  width: pagerIndicatorSize,
+                  height: pagerIndicatorSize,
+                  margin: const EdgeInsets.symmetric(horizontal: space5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: visibleIndex == index
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.2),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
-      );
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -41,8 +41,10 @@ void main() {
           viewModel.stream,
           emitsInOrder([
             const HomeViewState.loading(),
-            const HomeViewState.getUserProfileSuccess(profile),
+            const HomeViewState.success(),
           ]));
+
+      expect(container.read(profileStream.stream), emits(profile));
 
       container.read(homeViewModelProvider.notifier).getProfile();
     });

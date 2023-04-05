@@ -9,8 +9,7 @@ class HomeViewState with _$HomeViewState {
 
   const factory HomeViewState.loading() = _Loading;
 
-  const factory HomeViewState.getUserProfileSuccess(ProfileModel profile) =
-      _GetUserProfileSuccess;
+  const factory HomeViewState.success() = _Success;
 
   const factory HomeViewState.error(String message) = _Error;
 }
