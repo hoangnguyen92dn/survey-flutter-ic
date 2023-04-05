@@ -24,7 +24,7 @@ final profileStream = StreamProvider.autoDispose<ProfileModel>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._profileStreamController.stream);
 
 final surveysStream = StreamProvider.autoDispose<List<SurveyModel>>((ref) =>
-ref.watch(homeViewModelProvider.notifier)._surveysStreamController.stream);
+    ref.watch(homeViewModelProvider.notifier)._surveysStreamController.stream);
 
 final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
     .watch(homeViewModelProvider.notifier)
@@ -77,7 +77,8 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
       state = HomeViewState.error(error);
     } else {
       state = const HomeViewState.success();
-      _surveysStreamController.add((result as Success<List<SurveyModel>>).value);
+      _surveysStreamController
+          .add((result as Success<List<SurveyModel>>).value);
     }
   }
 }
