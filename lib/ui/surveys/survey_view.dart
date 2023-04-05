@@ -43,34 +43,35 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
   }
 
   Widget _buildPageItem(SurveyModel survey) {
-    return Container(
-      // TODO: Load image from network
-      padding: const EdgeInsets.symmetric(horizontal: space20),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(Assets.images.bgSplash.path),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _buildSurveyTitle(survey),
-          const SizedBox(height: 2),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: _buildSurveyDescription(survey),
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: space20),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: FadeInImage.assetNetwork(
+                            placeholder: Assets.images.placeholderAvatar.path,
+                            image: survey.largeCoverImageUrl.toString())
+                        .image,
+                    fit: BoxFit.cover),
               ),
-              const SizedBox(width: space20),
-              _buildSurveyButton(survey),
-            ],
-          ),
-          const SizedBox(height: 54),
-        ],
-      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildSurveyTitle(survey),
+                  const SizedBox(height: 2),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: _buildSurveyDescription(survey),
+                      ),
+                      const SizedBox(width: space20),
+                      _buildSurveyButton(survey),
+                    ],
+                  ),
+                  const SizedBox(height: 54),
+                ],
+              ),
     );
   }
 
