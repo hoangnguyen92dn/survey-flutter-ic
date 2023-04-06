@@ -6,6 +6,8 @@ import 'package:survey_flutter_ic/model/profile_model.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
+import 'package:survey_flutter_ic/ui/home/profile_ui_model.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 
 import '../../mocks/generate_mocks.mocks.dart';
@@ -34,7 +36,8 @@ void main() {
     });
 
     test('When calling getProfile success, it returns Success state', () {
-      const profile = ProfileModel(avatarUrl: "avatarUrl");
+      const profile =
+          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
@@ -45,7 +48,9 @@ void main() {
             const HomeViewState.success(),
           ]));
 
-      expect(container.read(profileStream.future).asStream(), emits(profile));
+      final profileUiModel = ProfileUiModel.fromModel(profile);
+      expect(container.read(profileStream.future).asStream(),
+          emits(profileUiModel));
 
       container.read(homeViewModelProvider.notifier).getProfile();
     });
@@ -87,7 +92,10 @@ void main() {
             const HomeViewState.success(),
           ]));
 
-      expect(container.read(surveysStream.future).asStream(), emits(surveys));
+      final surveyUiModels =
+          surveys.map((e) => SurveyUiModel.fromModel(e)).toList();
+      expect(container.read(surveysStream.future).asStream(),
+          emits(surveyUiModels));
 
       container.read(homeViewModelProvider.notifier).getSurveys();
     });

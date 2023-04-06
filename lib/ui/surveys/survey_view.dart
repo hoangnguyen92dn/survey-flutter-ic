@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
-import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 class SurveyView extends ConsumerStatefulWidget {
-  final List<SurveyModel> surveys;
+  final List<SurveyUiModel> surveys;
   final Function(int) onPageChanged;
-  final Function(SurveyModel) onSurveySelected;
+  final Function(SurveyUiModel) onSurveySelected;
 
   const SurveyView({
     super.key,
@@ -43,42 +43,42 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildPageItem(SurveyModel survey) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: space20),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FadeInImage.assetNetwork(
-                          key: HomeWidgetId.surveyBackgroundImage,
-                          placeholder: Assets.images.placeholderAvatar.path,
-                          image: survey.largeCoverImageUrl.toString())
-                      .image,
-                  fit: BoxFit.cover,
-                ),
+  Widget _buildPageItem(SurveyUiModel survey) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: space20),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: FadeInImage.assetNetwork(
+                  key: HomeWidgetId.surveyBackgroundImage,
+                  placeholder: Assets.images.placeholderAvatar.path,
+                  image: survey.largeCoverImageUrl.toString())
+              .image,
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildSurveyTitle(survey),
+          const SizedBox(height: 2),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: _buildSurveyDescription(survey),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildSurveyTitle(survey),
-                  const SizedBox(height: 2),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: _buildSurveyDescription(survey),
-                      ),
-                      const SizedBox(width: space20),
-                      _buildSurveyButton(survey),
-                    ],
-                  ),
-                  const SizedBox(height: 54),
-                ],
-              ),
+              const SizedBox(width: space20),
+              _buildSurveyButton(survey),
+            ],
+          ),
+          const SizedBox(height: 54),
+        ],
+      ),
     );
   }
 
-  Widget _buildSurveyTitle(SurveyModel survey) {
+  Widget _buildSurveyTitle(SurveyUiModel survey) {
     return Text(
       survey.title,
       key: HomeWidgetId.surveyTitleText,
@@ -90,7 +90,7 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildSurveyDescription(SurveyModel survey) {
+  Widget _buildSurveyDescription(SurveyUiModel survey) {
     return Text(
       survey.description,
       maxLines: 2,
@@ -104,7 +104,7 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildSurveyButton(SurveyModel survey) {
+  Widget _buildSurveyButton(SurveyUiModel survey) {
     return WhiteRightArrowButton(
       key: HomeWidgetId.surveyDetailsButton,
       onPressed: () => widget.onSurveySelected.call(survey),

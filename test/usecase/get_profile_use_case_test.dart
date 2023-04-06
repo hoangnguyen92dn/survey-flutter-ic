@@ -20,6 +20,8 @@ void main() {
     test('When calling getProfile successfully, it returns the result Success',
         () async {
       const profileModel = ProfileModel(
+        id: 'id',
+        email: 'email',
         avatarUrl: 'avatarUrl',
       );
 

@@ -6,6 +6,8 @@ import 'package:survey_flutter_ic/extension/date_extension.dart';
 import 'package:survey_flutter_ic/model/profile_model.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
+import 'package:survey_flutter_ic/ui/home/profile_ui_model.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
@@ -20,10 +22,10 @@ final homeViewModelProvider =
 final todayStream = StreamProvider.autoDispose<String>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._todayStreamController.stream);
 
-final profileStream = StreamProvider.autoDispose<ProfileModel>((ref) =>
+final profileStream = StreamProvider.autoDispose<ProfileUiModel>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._profileStreamController.stream);
 
-final surveysStream = StreamProvider.autoDispose<List<SurveyModel>>((ref) =>
+final surveysStream = StreamProvider.autoDispose<List<SurveyUiModel>>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._surveysStreamController.stream);
 
 final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
@@ -36,8 +38,8 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   final GetSurveysUseCase _getSurveyUseCase;
 
   final _todayStreamController = StreamController<String>();
-  final _profileStreamController = StreamController<ProfileModel>();
-  final _surveysStreamController = StreamController<List<SurveyModel>>();
+  final _profileStreamController = StreamController<ProfileUiModel>();
+  final _surveysStreamController = StreamController<List<SurveyUiModel>>();
   final _visibleIndexStreamController = StreamController<int>();
 
   HomeViewModel(this._getProfileUseCase, this._getSurveyUseCase)
@@ -58,7 +60,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     } else {
       final profile = (result as Success<ProfileModel>).value;
       state = const HomeViewState.success();
-      _profileStreamController.add(profile);
+      _profileStreamController.add(ProfileUiModel.fromModel(profile));
     }
 
     // Bind Today to stream
@@ -77,8 +79,9 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
       state = HomeViewState.error(error);
     } else {
       state = const HomeViewState.success();
-      _surveysStreamController
-          .add((result as Success<List<SurveyModel>>).value);
+      final surveys = (result as Success<List<SurveyModel>>).value;
+      final surveyUiModels = surveys.map((e) => SurveyUiModel.fromModel(e));
+      _surveysStreamController.add(surveyUiModels.toList(growable: false));
     }
   }
 
