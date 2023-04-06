@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/colors.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 
@@ -26,7 +25,10 @@ class _FlatButtonTextState extends State<FlatButtonText> {
       onPressed: widget.isEnabled ? widget.onPressed : null,
       style: TextButton.styleFrom(
         backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: space18),
+        padding: const EdgeInsets.symmetric(
+          vertical: space18,
+          horizontal: space20,
+        ),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius10),
@@ -34,7 +36,7 @@ class _FlatButtonTextState extends State<FlatButtonText> {
         ),
       ),
       child: Text(
-        context.localization.sign_in_button,
+        widget.text,
         style: TextStyle(
           color: widget.isEnabled ? textColorGray : textColorGrayDisabled,
           fontSize: fontSize17,
