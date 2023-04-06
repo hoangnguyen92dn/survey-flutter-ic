@@ -34,40 +34,43 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
             widget.onPageChanged.call(index);
           },
           itemCount: widget.surveys.length,
-          itemBuilder: (BuildContext context, int index) {
-            final survey = widget.surveys[index];
-            return Container(
-              // TODO: Load image from network
-              padding: const EdgeInsets.symmetric(horizontal: space20),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Assets.images.bgSplash.path),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _buildSurveyTitle(survey),
-                  const SizedBox(height: 2),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: _buildSurveyDescription(survey),
-                      ),
-                      const SizedBox(width: space20),
-                      _buildSurveyButton(survey),
-                    ],
-                  ),
-                  const SizedBox(height: 54),
-                ],
-              ),
-            );
+          itemBuilder: (_, index) {
+            return _pageItemBuilder(widget.surveys[index]);
           },
         ),
       ],
+    );
+  }
+
+  Widget _pageItemBuilder(SurveyModel survey) {
+    return Container(
+      // TODO: Load image from network
+      padding: const EdgeInsets.symmetric(horizontal: space20),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(Assets.images.bgSplash.path),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildSurveyTitle(survey),
+          const SizedBox(height: 2),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: _buildSurveyDescription(survey),
+              ),
+              const SizedBox(width: space20),
+              _buildSurveyButton(survey),
+            ],
+          ),
+          const SizedBox(height: 54),
+        ],
+      ),
     );
   }
 
