@@ -19,7 +19,8 @@ void main() {
     });
 
     test('When initializing SurveyDetailsViewModel, it emits Init state', () {
-      expect(container.read(surveyDetailsViewModelProvider), const SurveyDetailsViewState.init());
+      expect(container.read(surveyDetailsViewModelProvider),
+          const SurveyDetailsViewState.init());
     });
 
     test('When calling setSurvey, it emits survey on surveyDetailStream', () {

@@ -6,6 +6,7 @@ import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_view_model.dart';
+import 'package:survey_flutter_ic/ui/details/survey_details_widget_id.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/widget/flat_button_text.dart';
 
@@ -37,6 +38,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: FadeInImage.assetNetwork(
+              key: SurveyDetailsWidgetId.surveyBackgroundImage,
               placeholder: Assets.images.placeholderAvatar.path,
               image: survey?.largeCoverImageUrl ?? '',
             ).image,
@@ -48,6 +50,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
           children: [
             const SizedBox(height: space32),
             IconButton(
+              key: SurveyDetailsWidgetId.backButton,
               onPressed: () => {context.pop()},
               icon: SvgPicture.asset(Assets.images.icArrowLeft.path),
               padding: const EdgeInsets.all(space20),
@@ -67,6 +70,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: space20),
       child: Text(
+        key: SurveyDetailsWidgetId.surveyTitleText,
         title,
         style: const TextStyle(
           color: Colors.white,
@@ -81,6 +85,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: space20),
       child: Text(
+        key: SurveyDetailsWidgetId.surveyDescriptionText,
         description,
         style: TextStyle(
           color: Colors.white.withOpacity(0.7),
@@ -100,6 +105,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
             child: SizedBox.shrink(),
           ),
           FlatButtonText(
+            key: SurveyDetailsWidgetId.startSurveyButton,
             text: context.localization.survey_details_start_survey_button,
             isEnabled: true,
             onPressed: () => {}, // TODO Start survey
