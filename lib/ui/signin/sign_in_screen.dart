@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
-import 'package:survey_flutter_ic/navigation/route.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_form.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_view_model.dart';
@@ -22,7 +22,7 @@ class SignInScreen extends ConsumerWidget {
       state.maybeWhen(
           success: () => {
                 ref.read(_loadingStateProvider.notifier).state = false,
-                context.go(routePathHomeScreen)
+                context.go(RoutePath.home.path)
               },
           loading: () {
             ref.read(_loadingStateProvider.notifier).state = true;

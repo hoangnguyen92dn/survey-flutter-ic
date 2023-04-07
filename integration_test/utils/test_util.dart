@@ -6,7 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:survey_flutter_ic/api/service/auth_service.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/main.dart';
-import 'package:survey_flutter_ic/navigation/route.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 
 import '../fake_data/fake_services/fake_auth_service.dart';
 
@@ -32,13 +32,15 @@ class TestUtil {
   static Widget pumpWidgetWithRoutePath(String route) {
     _initDependencies();
 
+    final router = getIt.get<AppRouter>().router(route);
+
     return ProviderScope(
         child: MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      routeInformationProvider: router(route).routeInformationProvider,
-      routeInformationParser: router(route).routeInformationParser,
-      routerDelegate: router(route).routerDelegate,
+      routeInformationProvider: router.routeInformationProvider,
+      routeInformationParser: router.routeInformationParser,
+      routerDelegate: router.routerDelegate,
     ));
   }
 
