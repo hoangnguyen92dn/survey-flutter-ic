@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
@@ -43,6 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           final profile = ref.watch(profileStream).value;
           final today = ref.watch(todayStream).value;
           final surveys = ref.watch(surveysStream).value ?? [];
+          final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
           return Stack(
             children: [
               SurveyView(
@@ -53,7 +56,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       .setVisibleSurveyIndex(visibleIndex);
                 },
                 onSurveySelected: (survey) {
-                  // TODO: Navigate to survey details
+                  context.goNamed(
+                    RouteName.details.name,
+                    extra: surveys[visibleIndex],
+                  );
                 },
               ),
               SafeArea(
