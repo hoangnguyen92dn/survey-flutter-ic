@@ -35,14 +35,14 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
           },
           itemCount: widget.surveys.length,
           itemBuilder: (_, index) {
-            return _pageItemBuilder(widget.surveys[index]);
+            return _buildPageItem(widget.surveys[index]);
           },
         ),
       ],
     );
   }
 
-  Widget _pageItemBuilder(SurveyModel survey) {
+  Widget _buildPageItem(SurveyModel survey) {
     return Container(
       // TODO: Load image from network
       padding: const EdgeInsets.symmetric(horizontal: space20),

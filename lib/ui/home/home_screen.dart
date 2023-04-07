@@ -72,41 +72,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             : _buildHomeContent(mockSurveys));
   }
 
-  Widget _buildHomeContent(List<SurveyModel> surveys) {
-    final profile = ref.watch(profileStream).value;
-    final today = ref.watch(todayStream).value;
-    return Stack(
-      children: [
-        SurveyView(
-          surveys: surveys,
-          onPageChanged: (visibleIndex) {
-            ref
-                .read(homeViewModelProvider.notifier)
-                .setVisibleSurveyIndex(visibleIndex);
-          },
-          onSurveySelected: (survey) {
-            // TODO: Navigate to survey details
-          },
-        ),
-        SafeArea(
-          child: HomeHeader(
-            date: today ?? '',
-            avatar: profile?.avatarUrl ?? '',
-          ),
-        ),
-        _pagerIndicator(mockSurveys.length),
-      ],
-    );
-  }
+  Widget _buildHomeContent(List<SurveyModel> surveys) => Consumer(
+        builder: (context, ref, child) {
+          final profile = ref.watch(profileStream).value;
+          final today = ref.watch(todayStream).value;
+          return Stack(
+            children: [
+              SurveyView(
+                surveys: surveys,
+                onPageChanged: (visibleIndex) {
+                  ref
+                      .read(homeViewModelProvider.notifier)
+                      .setVisibleSurveyIndex(visibleIndex);
+                },
+                onSurveySelected: (survey) {
+                  // TODO: Navigate to survey details
+                },
+              ),
+              SafeArea(
+                child: HomeHeader(
+                  date: today ?? '',
+                  avatar: profile?.avatarUrl ?? '',
+                ),
+              ),
+              _buildPagerIndicator(mockSurveys.length),
+            ],
+          );
+        },
+      );
 
-  Widget _pagerIndicator(int pagerIndicatorSize) {
-    final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
-    return Positioned(
-      bottom: 206,
-      child: PagerIndicator(
-        pagerIndicatorSize: pagerIndicatorSize,
-        visibleIndex: visibleIndex,
-      ),
-    );
-  }
+  Widget _buildPagerIndicator(int pagerIndicatorSize) => Consumer(
+        builder: (context, ref, child) {
+          final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
+          return Positioned(
+            bottom: 206,
+            child: PagerIndicator(
+              pagerIndicatorSize: pagerIndicatorSize,
+              visibleIndex: visibleIndex,
+            ),
+          );
+        },
+      );
 }
