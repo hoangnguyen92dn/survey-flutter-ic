@@ -102,6 +102,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   void dispose() {
     _todayStreamController.close();
     _profileStreamController.close();
+    _surveysStreamController.close();
     _visibleIndexStreamController.close();
     super.dispose();
   }
