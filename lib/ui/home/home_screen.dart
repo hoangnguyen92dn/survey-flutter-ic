@@ -60,10 +60,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     ref.listen<HomeViewState>(homeViewModelProvider, (_, state) {
       state.maybeWhen(
-          success: () => {},
-          loading: () {},
-          error: (message) => {showToastMessage(message)},
-          orElse: () => {});
+        error: (message) => showToastMessage(message),
+        orElse: () => {},
+      );
     });
     bool isLoading = ref.watch(profileStream).value == null;
     return Scaffold(
