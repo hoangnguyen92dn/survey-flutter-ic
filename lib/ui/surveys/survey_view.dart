@@ -49,10 +49,10 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: FadeInImage.assetNetwork(
-                  key: HomeWidgetId.surveyBackgroundImage,
-                  placeholder: Assets.images.placeholderAvatar.path,
-                  image: survey.largeCoverImageUrl.toString())
-              .image,
+            key: HomeWidgetId.surveyBackgroundImage,
+            placeholder: Assets.images.placeholderAvatar.path,
+            image: survey.largeCoverImageUrl,
+          ).image,
           fit: BoxFit.cover,
         ),
       ),
