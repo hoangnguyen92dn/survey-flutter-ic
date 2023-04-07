@@ -11,7 +11,6 @@ class FakeSurveyService extends Fake implements SurveyService {
     @Path('number') int number,
     @Path('size') int size,
   ) async {
-    await Future.delayed(const Duration(seconds: 5));
     final response = FakeData.apiAndResponse[keySurveys]!;
     if (response.statusCode != 200) {
       throw generateDioError(response.statusCode);

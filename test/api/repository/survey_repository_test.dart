@@ -1,10 +1,11 @@
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/api/repository/survey_repository.dart';
 import 'package:survey_flutter_ic/api/response/surveys_response.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
+
 import '../../mocks/generate_mocks.mocks.dart';
 import '../../utils/file_utils.dart';
 
@@ -26,7 +27,8 @@ void main() {
     test(
         'When calling GetSurveys successfully, it emits the corresponding AuthModel',
         () async {
-      final json = await FileUtils.loadFile('mock_response/surveys.json');
+      final json = await FileUtils.loadFile(
+          'test_resource/fake_response/fake_surveys_response.json');
       final expected = SurveysResponse.fromJson(json);
 
       when(mockSurveyService.getSurveys(any, any))

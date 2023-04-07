@@ -7,7 +7,6 @@ import '../fake_data.dart';
 class FakeUserService extends Fake implements UserService {
   @override
   Future<ProfileResponse> getProfile() async {
-    await Future.delayed(const Duration(seconds: 5));
     final response = FakeData.apiAndResponse[keyUserProfile]!;
     if (response.statusCode != 200) {
       throw generateDioError(response.statusCode);

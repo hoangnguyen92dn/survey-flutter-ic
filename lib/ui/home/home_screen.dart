@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
+import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
 import 'package:survey_flutter_ic/widget/pager_indicator.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
@@ -74,6 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           return Positioned(
             bottom: 206,
             child: PagerIndicator(
+              key: HomeWidgetId.surveysPagerIndicator,
               pagerIndicatorSize: surveys.length,
               visibleIndex: visibleIndex,
             ),

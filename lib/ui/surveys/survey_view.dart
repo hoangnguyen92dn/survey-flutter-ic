@@ -45,11 +45,11 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
 
   Widget _buildPageItem(SurveyUiModel survey) {
     return Container(
+      key: HomeWidgetId.surveyBackgroundContainer,
       padding: const EdgeInsets.symmetric(horizontal: space20),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: FadeInImage.assetNetwork(
-            key: HomeWidgetId.surveyBackgroundImage,
             placeholder: Assets.images.placeholderAvatar.path,
             image: survey.largeCoverImageUrl,
           ).image,
