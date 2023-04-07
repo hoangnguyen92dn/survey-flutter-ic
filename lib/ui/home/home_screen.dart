@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
-import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
-import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
 import 'package:survey_flutter_ic/widget/pager_indicator.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
@@ -21,31 +19,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 0), () {
-      ref.read(homeViewModelProvider.notifier).getProfile();
-      ref.read(homeViewModelProvider.notifier).getSurveys();
+      ref.read(homeViewModelProvider.notifier).init();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<HomeViewState>(homeViewModelProvider, (_, state) {
-      state.maybeWhen(
-        error: (message) => showToastMessage(message),
-        orElse: () => {},
-      );
-    });
-    bool isLoadingProfile = ref.watch(profileStream).value == null;
-    bool isLoadingSurveys = ref.watch(surveysStream).value == null;
+    final state = ref.watch(homeViewModelProvider);
+
     return Scaffold(
-        body: (isLoadingProfile && isLoadingSurveys)
-            ? const SurveyShimmerLoading()
-            : _buildHomeContent(ref.watch(surveysStream).value ?? []));
+      body: state.maybeWhen(
+        loading: () => const SurveyShimmerLoading(),
+        success: () => _buildHomeContent(),
+        error: (message) => showToastMessage(message),
+        orElse: () => const SizedBox.shrink(),
+      ),
+    );
   }
 
-  Widget _buildHomeContent(List<SurveyUiModel> surveys) => Consumer(
+  Widget _buildHomeContent() => Consumer(
         builder: (context, ref, child) {
           final profile = ref.watch(profileStream).value;
           final today = ref.watch(todayStream).value;
+          final surveys = ref.watch(surveysStream).value ?? [];
           return Stack(
             children: [
               SurveyView(
@@ -65,19 +61,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   avatar: profile?.avatarUrl ?? '',
                 ),
               ),
-              _buildPagerIndicator(surveys.length),
+              _buildPagerIndicator(),
             ],
           );
         },
       );
 
-  Widget _buildPagerIndicator(int pagerIndicatorSize) => Consumer(
+  Widget _buildPagerIndicator() => Consumer(
         builder: (context, ref, child) {
           final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
+          final surveys = ref.watch(surveysStream).value ?? [];
           return Positioned(
             bottom: 206,
             child: PagerIndicator(
-              pagerIndicatorSize: pagerIndicatorSize,
+              pagerIndicatorSize: surveys.length,
               visibleIndex: visibleIndex,
             ),
           );

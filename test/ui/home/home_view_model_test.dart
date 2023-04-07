@@ -31,55 +31,26 @@ void main() {
       addTearDown(() => container.dispose());
     });
 
-    test('When initializing HomeViewModel, its state is Init', () {
+    test('When initializing HomeViewModel, it emits Init state', () {
       expect(container.read(homeViewModelProvider), const HomeViewState.init());
     });
 
-    test('When calling getProfile success, it returns Success state', () {
+    test('When calling init success, it emits Success state', () {
       const profile =
           ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
-      expect(
-          viewModel.stream,
-          emitsInOrder([
-            const HomeViewState.loading(),
-            const HomeViewState.success(),
-          ]));
-
-      final profileUiModel = ProfileUiModel.fromModel(profile);
-      expect(container.read(profileStream.future).asStream(),
-          emits(profileUiModel));
-
-      container.read(homeViewModelProvider.notifier).getProfile();
-    });
-
-    test('When calling getProfile failed, it returns Error state', () {
-      when(mockGetProfileUseCase.call()).thenAnswer((_) async => Failed(
-          UseCaseException(const NetworkExceptions.defaultError("Error"))));
-
-      expect(
-          viewModel.stream,
-          emitsInOrder([
-            const HomeViewState.loading(),
-            const HomeViewState.error("Error"),
-          ]));
-
-      container.read(homeViewModelProvider.notifier).getProfile();
-    });
-
-    test('When calling getSurveys success, it returns Success state', () {
       const surveys = [
         SurveyModel(
-          id: "id",
-          title: "title",
-          description: "description",
+          id: 'id',
+          title: 'title',
+          description: 'description',
           isActive: true,
-          coverImageUrl: "coverImageUrl",
-          largeCoverImageUrl: "largeCoverImageUrl",
-          createdAt: "createdAt",
-          surveyType: "surveyType",
+          coverImageUrl: 'coverImageUrl',
+          largeCoverImageUrl: 'largeCoverImageUrl',
+          createdAt: 'createdAt',
+          surveyType: 'surveyType',
         )
       ];
       when(mockGetSurveysUseCase.call(any))
@@ -92,26 +63,94 @@ void main() {
             const HomeViewState.success(),
           ]));
 
+      final profileUiModel = ProfileUiModel.fromModel(profile);
+      expect(container.read(profileStream.future).asStream(),
+          emits(profileUiModel));
+
       final surveyUiModels =
           surveys.map((e) => SurveyUiModel.fromModel(e)).toList();
       expect(container.read(surveysStream.future).asStream(),
           emits(surveyUiModels));
 
-      container.read(homeViewModelProvider.notifier).getSurveys();
+      container.read(homeViewModelProvider.notifier).init();
     });
 
-    test('When calling getSurveys failed, it returns Error state', () {
-      when(mockGetSurveysUseCase.call(any)).thenAnswer((_) async => Failed(
-          UseCaseException(const NetworkExceptions.defaultError("Error"))));
+    test('When calling init failed on getProfile, it emits Error state', () {
+      when(mockGetProfileUseCase.call()).thenAnswer((_) async => Failed(
+          UseCaseException(const NetworkExceptions.defaultError('Error'))));
+
+      const surveys = [
+        SurveyModel(
+          id: 'id',
+          title: 'title',
+          description: 'description',
+          isActive: true,
+          coverImageUrl: 'coverImageUrl',
+          largeCoverImageUrl: 'largeCoverImageUrl',
+          createdAt: 'createdAt',
+          surveyType: 'surveyType',
+        )
+      ];
+      when(mockGetSurveysUseCase.call(any))
+          .thenAnswer((_) async => Success(surveys));
 
       expect(
           viewModel.stream,
           emitsInOrder([
             const HomeViewState.loading(),
-            const HomeViewState.error("Error"),
+            const HomeViewState.error('Error'),
+            const HomeViewState.success(),
           ]));
 
-      container.read(homeViewModelProvider.notifier).getSurveys();
+      final surveyUiModels =
+          surveys.map((e) => SurveyUiModel.fromModel(e)).toList();
+      expect(container.read(surveysStream.future).asStream(),
+          emits(surveyUiModels));
+
+      container.read(homeViewModelProvider.notifier).init();
+    });
+
+    test('When calling init failed on getSurveys, it emits Error state', () {
+      const profile =
+          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
+      when(mockGetProfileUseCase.call())
+          .thenAnswer((_) async => Success(profile));
+
+      when(mockGetSurveysUseCase.call(any)).thenAnswer((_) async => Failed(
+          UseCaseException(const NetworkExceptions.defaultError('Error'))));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const HomeViewState.loading(),
+            const HomeViewState.error('Error'),
+            const HomeViewState.success(),
+          ]));
+
+      container.read(homeViewModelProvider.notifier).init();
+    });
+
+    test(
+        'When calling init failed on getProfile and getSurveys, it emits Error state',
+        () {
+      when(mockGetProfileUseCase.call()).thenAnswer((_) async => Failed(
+          UseCaseException(
+              const NetworkExceptions.defaultError('Get Profile Error'))));
+
+      when(mockGetSurveysUseCase.call(any)).thenAnswer((_) async => Failed(
+          UseCaseException(
+              const NetworkExceptions.defaultError('Get Surveys Error'))));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const HomeViewState.loading(),
+            const HomeViewState.error('Get Profile Error'),
+            const HomeViewState.error('Get Surveys Error'),
+            const HomeViewState.success(),
+          ]));
+
+      container.read(homeViewModelProvider.notifier).init();
     });
   });
 }

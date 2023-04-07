@@ -33,6 +33,9 @@ final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
     ._visibleIndexStreamController
     .stream);
 
+const _defaultFirstPageIndex = 1;
+const _defaultPageSize = 10;
+
 class HomeViewModel extends StateNotifier<HomeViewState> {
   final GetProfileUseCase _getProfileUseCase;
   final GetSurveysUseCase _getSurveyUseCase;
@@ -49,9 +52,19 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _visibleIndexStreamController.add(index);
   }
 
-  Future getProfile() async {
+  Future init() async {
     state = const HomeViewState.loading();
 
+    await _getProfile();
+    await _getSurveys();
+
+    // Bind Today to stream
+    _todayStreamController.add(DateTime.now().getFormattedString());
+
+    state = const HomeViewState.success();
+  }
+
+  Future _getProfile() async {
     final result = await _getProfileUseCase.call();
 
     if (result is Failed<ProfileModel>) {
@@ -59,7 +72,6 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
       state = HomeViewState.error(error);
     } else {
       final profile = (result as Success<ProfileModel>).value;
-      state = const HomeViewState.success();
       _profileStreamController.add(ProfileUiModel.fromModel(profile));
     }
 
@@ -67,10 +79,11 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _todayStreamController.add(DateTime.now().getFormattedString());
   }
 
-  Future getSurveys() async {
-    state = const HomeViewState.loading();
-
-    final input = GetSurveysInput(pageNumber: 1, pageSize: 10);
+  Future _getSurveys() async {
+    final input = GetSurveysInput(
+      pageNumber: _defaultFirstPageIndex,
+      pageSize: _defaultPageSize,
+    );
 
     final result = await _getSurveyUseCase.call(input);
 
@@ -78,9 +91,9 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
       final error = result.getErrorMessage();
       state = HomeViewState.error(error);
     } else {
-      state = const HomeViewState.success();
       final surveys = (result as Success<List<SurveyModel>>).value;
-      final surveyUiModels = surveys.map((e) => SurveyUiModel.fromModel(e));
+      final surveyUiModels =
+          surveys.map((survey) => SurveyUiModel.fromModel(survey));
       _surveysStreamController.add(surveyUiModels.toList(growable: false));
     }
   }
