@@ -13,48 +13,39 @@ enum RoutePath {
   details('details'),
   signIn('/sign_in');
 
-  const RoutePath(this.path);
+  const RoutePath(this.routePath);
 
-  final String path;
-}
+  final String routePath;
 
-enum RouteName {
-  root('splash'),
-  home('home'),
-  details('details'),
-  signIn('sign_in');
-
-  const RouteName(this.name);
-
-  final String name;
+  get routeName => routePath.replaceAll('/', '');
 }
 
 @Singleton()
 class AppRouter {
   GoRouter router([String? initialLocation]) => GoRouter(
-        initialLocation: initialLocation ?? RoutePath.root.path,
+        initialLocation: initialLocation ?? RoutePath.root.routePath,
         routes: <GoRoute>[
           GoRoute(
-            name: RouteName.root.name,
-            path: RoutePath.root.path,
+            name: RoutePath.root.routeName,
+            path: RoutePath.root.routePath,
             builder: (BuildContext context, GoRouterState state) =>
                 const SplashScreen(),
           ),
           GoRoute(
-            name: RouteName.signIn.name,
-            path: RoutePath.signIn.path,
+            name: RoutePath.signIn.routeName,
+            path: RoutePath.signIn.routePath,
             builder: (BuildContext context, GoRouterState state) =>
                 const SignInScreen(),
           ),
           GoRoute(
-            name: RouteName.home.name,
-            path: RoutePath.home.path,
+            name: RoutePath.home.routeName,
+            path: RoutePath.home.routePath,
             builder: (BuildContext context, GoRouterState state) =>
                 const HomeScreen(),
             routes: [
               GoRoute(
-                name: RouteName.details.name,
-                path: RoutePath.details.path,
+                name: RoutePath.details.routeName,
+                path: RoutePath.details.routePath,
                 builder: (BuildContext context, GoRouterState state) {
                   return SurveyDetailsScreen(
                     survey: (state.extra as SurveyUiModel),

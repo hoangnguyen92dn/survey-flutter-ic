@@ -35,10 +35,10 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
     final survey = ref.watch(surveyDetailStream).value;
     return Scaffold(
       body: Container(
+        key: SurveyDetailsWidgetId.surveyBackgroundContainer,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: FadeInImage.assetNetwork(
-              key: SurveyDetailsWidgetId.surveyBackgroundImage,
               placeholder: Assets.images.placeholderAvatar.path,
               image: survey?.largeCoverImageUrl ?? '',
             ).image,

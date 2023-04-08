@@ -42,8 +42,8 @@ void homeScreenTest() {
         "When the home screen shown, it displays the Home screen correctly",
         (WidgetTester tester) async {
       await FakeData.initDefault();
-      await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.home.path));
+      await tester.pumpWidget(
+          TestUtil.pumpWidgetWithRoutePath(RoutePath.home.routePath));
       await tester.pumpAndSettle();
 
       expect(profileAvatarImage, findsOneWidget);
@@ -59,8 +59,8 @@ void homeScreenTest() {
     testWidgets("When the home screen shown, it binds the Survey correctly",
         (WidgetTester tester) async {
       await FakeData.initDefault();
-      await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.home.path));
+      await tester.pumpWidget(
+          TestUtil.pumpWidgetWithRoutePath(RoutePath.home.routePath));
       await tester.pumpAndSettle();
 
       const surveyBackground = BoxDecoration(

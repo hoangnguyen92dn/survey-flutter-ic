@@ -22,8 +22,8 @@ void surveyDetailsScreenTest() {
 
     setUp(() {
       // backButton = find.byKey(SurveyDetailsWidgetId.backButton);
-      // surveyBackgroundImage =
-      //     find.byKey(SurveyDetailsWidgetId.surveyBackgroundImage);
+      // surveyBackgroundContainer =
+      //     find.byKey(SurveyDetailsWidgetId.surveyBackgroundContainer);
       // surveyTitleText = find.byKey(SurveyDetailsWidgetId.surveyTitleText);
       // surveyDescriptionText =
       //     find.byKey(SurveyDetailsWidgetId.surveyDescriptionText);
@@ -36,14 +36,14 @@ void surveyDetailsScreenTest() {
     //     (WidgetTester tester) async {
     //   await FakeData.initDefault();
     //   await tester
-    //       .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.details.path));
+    //       .pumpWidget(TestUtil.pumpWidgetWithRoutePath(RoutePath.details.routePath));
     //   await tester.pumpAndSettle();
-    //
-    //   expect(backButton, findsOneWidget);
-    //   expect(surveyBackgroundImage, findsOneWidget);
-    //   expect(surveyTitleText, findsOneWidget);
-    //   expect(surveyDescriptionText, findsOneWidget);
-    //   expect(startSurveyButton, findsOneWidget);
+
+    // expect(backButton, findsOneWidget);
+    // expect(surveyBackgroundContainer, findsOneWidget);
+    // expect(surveyTitleText, findsOneWidget);
+    // expect(surveyDescriptionText, findsOneWidget);
+    // expect(startSurveyButton, findsOneWidget);
     // });
   });
 }
