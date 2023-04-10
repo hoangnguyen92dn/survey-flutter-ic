@@ -17,7 +17,13 @@ enum RoutePath {
 
   final String routePath;
 
-  get routeName => routePath.replaceAll('/', '');
+  String get routeName {
+    if (routePath == '/') {
+      return routePath;
+    } else {
+      return routePath.replaceAll(RegExp('^/|/\$'), '');
+    }
+  }
 }
 
 @Singleton()
