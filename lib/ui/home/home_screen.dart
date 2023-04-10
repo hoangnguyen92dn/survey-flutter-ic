@@ -68,24 +68,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   avatar: profile?.avatarUrl ?? '',
                 ),
               ),
-              _buildPagerIndicator(),
+              _buildPagerIndicator(surveys.length, visibleIndex),
             ],
           );
         },
       );
 
-  Widget _buildPagerIndicator() => Consumer(
-        builder: (context, ref, child) {
-          final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
-          final surveys = ref.watch(surveysStream).value ?? [];
-          return Positioned(
-            bottom: 206,
-            child: PagerIndicator(
-              key: HomeWidgetId.surveysPagerIndicator,
-              pagerIndicatorSize: surveys.length,
-              visibleIndex: visibleIndex,
-            ),
-          );
-        },
-      );
+  Widget _buildPagerIndicator(int pagerIndicatorSize, int visibleIndex) {
+    return Positioned(
+      bottom: 206,
+      child: PagerIndicator(
+        key: HomeWidgetId.surveysPagerIndicator,
+        pagerIndicatorSize: pagerIndicatorSize,
+        visibleIndex: visibleIndex,
+      ),
+    );
+  }
 }
