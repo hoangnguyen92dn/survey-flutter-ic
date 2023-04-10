@@ -51,7 +51,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
             const SizedBox(height: space32),
             IconButton(
               key: SurveyDetailsWidgetId.backButton,
-              onPressed: () => {context.pop()},
+              onPressed: () => context.pop(),
               icon: SvgPicture.asset(Assets.images.icArrowLeft.path),
               padding: const EdgeInsets.all(space20),
             ),
