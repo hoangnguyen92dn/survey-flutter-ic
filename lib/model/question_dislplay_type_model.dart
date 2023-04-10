@@ -1,15 +1,16 @@
 import 'package:survey_flutter_ic/api/response/question_display_type_response.dart';
 
 enum QuestionDisplayType {
-  singleChoice,
-  multipleChoice,
-  text,
-  number,
-  email,
-  dateTime,
-  image,
-  video,
-  audio,
+  intro,
+  star,
+  heart,
+  smiley,
+  choice,
+  nps,
+  textarea,
+  textfield,
+  outro,
+  dropdown,
   unknown;
 
   factory QuestionDisplayType.fromResponse(
