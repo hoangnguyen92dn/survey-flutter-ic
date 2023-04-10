@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(
         const Duration(milliseconds: _splashTransitionDelayInMilliseconds), () {
-      context.go(RoutePath.signIn.path);
+      context.goNamed(RoutePath.signIn.routeName);
     });
 
     Future.delayed(

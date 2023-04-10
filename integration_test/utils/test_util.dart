@@ -33,10 +33,10 @@ class TestUtil {
     );
   }
 
-  static Widget pumpWidgetWithRoutePath(String route) {
+  static Widget pumpWidgetWithRoutePath(String route, {Object? extra}) {
     _initDependencies();
 
-    final router = getIt.get<AppRouter>().router(route);
+    final router = getIt.get<AppRouter>().router(route, extra);
 
     return ProviderScope(
         child: MaterialApp.router(
