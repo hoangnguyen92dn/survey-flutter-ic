@@ -8,11 +8,10 @@ final surveyDetailsViewModelProvider = StateNotifierProvider.autoDispose<
     SurveyDetailsViewModel,
     SurveyDetailsViewState>((_) => SurveyDetailsViewModel());
 
-final surveyDetailStream = StreamProvider.autoDispose<SurveyUiModel>((ref) =>
-    ref
-        .watch(surveyDetailsViewModelProvider.notifier)
-        ._surveyStreamController
-        .stream);
+final surveyStream = StreamProvider.autoDispose<SurveyUiModel>((ref) => ref
+    .watch(surveyDetailsViewModelProvider.notifier)
+    ._surveyStreamController
+    .stream);
 
 class SurveyDetailsViewModel extends StateNotifier<SurveyDetailsViewState> {
   final _surveyStreamController = StreamController<SurveyUiModel>();
@@ -21,6 +20,7 @@ class SurveyDetailsViewModel extends StateNotifier<SurveyDetailsViewState> {
 
   void setSurvey(SurveyUiModel survey) {
     _surveyStreamController.add(survey);
+    state = const SurveyDetailsViewState.success();
   }
 
   @override

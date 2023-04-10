@@ -26,42 +26,58 @@ class SurveyDetailsScreen extends ConsumerStatefulWidget {
 class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
   @override
   void initState() {
-    ref.read(surveyDetailsViewModelProvider.notifier).setSurvey(widget.survey);
     super.initState();
+    Future.delayed(const Duration(milliseconds: 0), () {
+      ref
+          .read(surveyDetailsViewModelProvider.notifier)
+          .setSurvey(widget.survey);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final survey = ref.watch(surveyDetailStream).value;
+    final state = ref.watch(surveyDetailsViewModelProvider);
     return Scaffold(
-      body: Container(
-        key: SurveyDetailsWidgetId.surveyBackgroundContainer,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: FadeInImage.assetNetwork(
-              placeholder: Assets.images.placeholderAvatar.path,
-              image: survey?.largeCoverImageUrl ?? '',
-            ).image,
-            fit: BoxFit.cover,
+      body: state.maybeWhen(
+        success: () {
+          // FIXME: The surveyStream emits null value before the survey is set
+          final survey = ref.read(surveyStream).value ?? widget.survey;
+          return _buildSurveyDetailsContent(survey);
+        },
+        // Read the survey from the stream
+        orElse: () => const SizedBox.shrink(),
+      ),
+    );
+  }
+
+  Widget _buildSurveyDetailsContent(SurveyUiModel survey) {
+    return Container(
+      key: SurveyDetailsWidgetId.surveyBackgroundContainer,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: FadeInImage.assetNetwork(
+            placeholder: Assets.images.placeholderAvatar.path,
+            image: survey.largeCoverImageUrl,
+          ).image,
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: space32),
+          IconButton(
+            key: SurveyDetailsWidgetId.backButton,
+            onPressed: () => context.pop(),
+            icon: SvgPicture.asset(Assets.images.icArrowLeft.path),
+            padding: const EdgeInsets.all(space20),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: space32),
-            IconButton(
-              key: SurveyDetailsWidgetId.backButton,
-              onPressed: () => context.pop(),
-              icon: SvgPicture.asset(Assets.images.icArrowLeft.path),
-              padding: const EdgeInsets.all(space20),
-            ),
-            _buildSurveyTitle(survey?.title ?? ''),
-            const SizedBox(height: space16),
-            _buildSurveyDescription(survey?.description ?? ''),
-            const Expanded(child: SizedBox.shrink()),
-            _buildStartSurveyButton(),
-          ],
-        ),
+          _buildSurveyTitle(survey.title),
+          const SizedBox(height: space16),
+          _buildSurveyDescription(survey.description),
+          const Expanded(child: SizedBox.shrink()),
+          _buildStartSurveyButton(),
+        ],
       ),
     );
   }

@@ -36,7 +36,7 @@ void main() {
       );
 
       expect(
-        container.read(surveyDetailStream.future).asStream(),
+        container.read(surveyStream.future).asStream(),
         emits(survey),
       );
 
