@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:survey_flutter_ic/api/response/survey_response.dart';
+import 'package:survey_flutter_ic/model/survey_model.dart';
 
-class SurveyModel extends Equatable {
+class SurveyUiModel extends Equatable {
   final String id;
   final String title;
   final String description;
@@ -11,7 +11,7 @@ class SurveyModel extends Equatable {
   final String createdAt;
   final String surveyType;
 
-  const SurveyModel({
+  const SurveyUiModel({
     required this.id,
     required this.title,
     required this.description,
@@ -34,16 +34,16 @@ class SurveyModel extends Equatable {
         surveyType,
       ];
 
-  factory SurveyModel.fromResponse(SurveyResponse response) {
-    return SurveyModel(
-      id: response.id,
-      title: response.title ?? '',
-      description: response.description ?? '',
-      isActive: response.isActive ?? false,
-      coverImageUrl: response.coverImageUrl ?? '',
-      largeCoverImageUrl: '${response.coverImageUrl ?? ''}l',
-      createdAt: response.createdAt ?? '',
-      surveyType: response.surveyType ?? '',
+  factory SurveyUiModel.fromModel(SurveyModel model) {
+    return SurveyUiModel(
+      id: model.id,
+      title: model.title,
+      description: model.description,
+      isActive: model.isActive,
+      coverImageUrl: model.coverImageUrl,
+      largeCoverImageUrl: model.largeCoverImageUrl,
+      createdAt: model.createdAt,
+      surveyType: model.surveyType,
     );
   }
 }

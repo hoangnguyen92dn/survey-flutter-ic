@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
-import 'package:survey_flutter_ic/model/survey_model.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
+import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 class SurveyView extends ConsumerStatefulWidget {
-  final List<SurveyModel> surveys;
+  final List<SurveyUiModel> surveys;
   final Function(int) onPageChanged;
-  final Function(SurveyModel) onSurveySelected;
+  final Function(SurveyUiModel) onSurveySelected;
 
   const SurveyView({
     super.key,
@@ -42,14 +43,17 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildPageItem(SurveyModel survey) {
+  Widget _buildPageItem(SurveyUiModel survey) {
     return Container(
-      // TODO: Load image from network
+      key: HomeWidgetId.surveyBackgroundContainer,
       padding: const EdgeInsets.symmetric(horizontal: space20),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(Assets.images.bgSplash.path),
-          fit: BoxFit.fill,
+          image: FadeInImage.assetNetwork(
+            placeholder: Assets.images.placeholderAvatar.path,
+            image: survey.largeCoverImageUrl,
+          ).image,
+          fit: BoxFit.cover,
         ),
       ),
       child: Column(
@@ -74,9 +78,10 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildSurveyTitle(SurveyModel survey) {
+  Widget _buildSurveyTitle(SurveyUiModel survey) {
     return Text(
       survey.title,
+      key: HomeWidgetId.surveyTitleText,
       style: const TextStyle(
         color: Colors.white,
         fontSize: fontSize28,
@@ -85,11 +90,12 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildSurveyDescription(SurveyModel survey) {
+  Widget _buildSurveyDescription(SurveyUiModel survey) {
     return Text(
       survey.description,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
+      key: HomeWidgetId.surveyDescriptionText,
       style: TextStyle(
         color: Colors.white.withOpacity(0.7),
         fontSize: fontSize17,
@@ -98,8 +104,9 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     );
   }
 
-  Widget _buildSurveyButton(SurveyModel survey) {
+  Widget _buildSurveyButton(SurveyUiModel survey) {
     return WhiteRightArrowButton(
+      key: HomeWidgetId.surveyDetailsButton,
       onPressed: () => widget.onSurveySelected.call(survey),
     );
   }

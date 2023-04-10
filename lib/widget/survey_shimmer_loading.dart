@@ -13,19 +13,20 @@ class SurveyShimmerLoading extends StatelessWidget {
         baseColor: Colors.grey.shade500,
         highlightColor: Colors.grey.shade50,
         enabled: true,
-        child: SafeArea(
-          child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: space20, vertical: 62),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeaderShimmer(),
-                  const Expanded(child: SizedBox.shrink()),
-                  _buildPagerIndicatorPlaceholder(),
-                  _buildSurveyContent(context),
-                ],
-              )),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: space20,
+            vertical: 62,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeaderShimmer(),
+              const Expanded(child: SizedBox.shrink()),
+              _buildPagerIndicatorPlaceholder(),
+              _buildSurveyContent(context),
+            ],
+          ),
         ),
       ),
     );

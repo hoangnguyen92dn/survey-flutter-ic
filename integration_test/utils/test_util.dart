@@ -3,12 +3,16 @@ import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:survey_flutter_ic/api/service/auth_service.dart';
+import 'package:survey_flutter_ic/api/repository/auth_repository.dart';
+import 'package:survey_flutter_ic/api/repository/survey_repository.dart';
+import 'package:survey_flutter_ic/api/repository/user_repository.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/main.dart';
 import 'package:survey_flutter_ic/navigation/app_router.dart';
 
 import '../fake_data/fake_services/fake_auth_service.dart';
+import '../fake_data/fake_services/fake_survey_service.dart';
+import '../fake_data/fake_services/fake_user_service.dart';
 
 class TestUtil {
   /// This is useful when we test the whole app with the real configs(styling,
@@ -60,8 +64,19 @@ class TestUtil {
 
   static Future setupTestEnvironment() async {
     _initDependencies();
-    getIt.allowReassignment = true;
-    getIt.registerSingleton<AuthService>(FakeAuthService());
     configureInjection();
+    getIt.allowReassignment = true;
+
+    // FIXME: Can not mock the Service layer
+    // getIt.registerSingleton<AuthService>(FakeAuthService());
+    // getIt.registerSingleton<UserService>(FakeUserService());
+    // getIt.registerSingleton<SurveyService>(FakeSurveyService());
+
+    getIt.registerSingleton<AuthRepository>(
+        AuthRepositoryImpl(FakeAuthService()));
+    getIt.registerSingleton<UserRepository>(
+        UserRepositoryImpl(FakeUserService()));
+    getIt.registerSingleton<SurveyRepository>(
+        SurveyRepositoryImpl(FakeSurveyService()));
   }
 }
