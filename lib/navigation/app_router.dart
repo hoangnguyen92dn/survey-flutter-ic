@@ -10,9 +10,10 @@ import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 
 enum RoutePath {
   root('/'),
-  home('/home'),
-  details('details'),
   signIn('/sign_in'),
+  home('/home'),
+
+  details('details'),
   questions('questions/:$surveyIdKey');
 
   const RoutePath(this.routePath);
