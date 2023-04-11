@@ -43,7 +43,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
       body: state.maybeWhen(
         success: () {
           // FIXME: The surveyStream emits null value before the survey is set
-          final survey = ref.read(surveyStream).value ?? widget.survey;
+          final survey = ref.watch(surveyStream).value ?? widget.survey;
           return _buildSurveyDetailsContent(survey);
         },
         // Read the survey from the stream
@@ -114,25 +114,23 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
     );
   }
 
-  Widget _buildStartSurveyButton(SurveyUiModel survey) => Consumer(
-        builder: (context, _, __) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, space20, space57),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FlatButtonText(
-                  key: SurveyDetailsWidgetId.startSurveyButton,
-                  text: context.localization.survey_details_start_survey_button,
-                  isEnabled: true,
-                  onPressed: () => context.goNamed(
-                    RoutePath.questions.routeName,
-                    params: {surveyIdKey: survey.id},
-                  ),
-                ),
-              ],
+  Widget _buildStartSurveyButton(SurveyUiModel survey) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, space20, space57),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FlatButtonText(
+            key: SurveyDetailsWidgetId.startSurveyButton,
+            text: context.localization.survey_details_start_survey_button,
+            isEnabled: true,
+            onPressed: () => context.goNamed(
+              RoutePath.questions.routeName,
+              params: {surveyIdKey: survey.id},
             ),
-          );
-        },
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }
