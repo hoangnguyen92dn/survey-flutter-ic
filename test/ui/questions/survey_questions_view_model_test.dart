@@ -63,13 +63,10 @@ void main() {
           viewModel.stream,
           emitsInOrder([
             const SurveyQuestionsViewState.loading(),
-            const SurveyQuestionsViewState.success(),
+            SurveyQuestionsViewState.success(
+              SurveyDetailsUiModel.fromModel(surveyDetails),
+            ),
           ]));
-
-      final surveyDetailsUiModel =
-          SurveyDetailsUiModel.fromModel(surveyDetails);
-      expect(container.read(surveyDetailsStream.future).asStream(),
-          emits(surveyDetailsUiModel));
 
       container
           .read(surveyQuestionsViewModelProvider.notifier)

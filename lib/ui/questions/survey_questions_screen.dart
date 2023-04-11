@@ -46,26 +46,22 @@ class _SurveyQuestionsScreenScreenState
     return Scaffold(
       body: state.maybeWhen(
         loading: () => _buildLoadingIndicator(),
-        success: () => _buildSurveyQuestionsContent(),
+        success: (surveyDetails) => _buildSurveyQuestionsContent(surveyDetails),
         orElse: () => const SizedBox.shrink(),
       ),
     );
   }
 
-  Widget _buildSurveyQuestionsContent() => Consumer(
+  Widget _buildSurveyQuestionsContent(SurveyDetailsUiModel surveyDetails) =>
+      Consumer(
         builder: (_, ref, __) {
-          final surveyDetails = ref.watch(surveyDetailsStream).value;
-          final totalQuestions = surveyDetails?.questions.length ?? 0;
+          final totalQuestions = surveyDetails.questions.length;
           final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
-          if (surveyDetails == null) {
-            return const SizedBox.shrink();
-          } else {
-            return _buildQuestionsContent(
-              surveyDetails,
-              visibleIndex,
-              totalQuestions,
-            );
-          }
+          return _buildQuestionsContent(
+            surveyDetails,
+            visibleIndex,
+            totalQuestions,
+          );
         },
       );
 

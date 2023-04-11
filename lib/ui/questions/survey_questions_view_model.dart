@@ -14,12 +14,6 @@ final surveyQuestionsViewModelProvider = StateNotifierProvider.autoDispose<
           getIt.get<GetSurveyDetailsUseCase>(),
         ));
 
-final surveyDetailsStream = StreamProvider.autoDispose<SurveyDetailsUiModel>(
-    (ref) => ref
-        .watch(surveyQuestionsViewModelProvider.notifier)
-        ._surveyDetailsStreamController
-        .stream);
-
 final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
     .watch(surveyQuestionsViewModelProvider.notifier)
     ._visibleIndexStreamController
@@ -33,8 +27,6 @@ final nextQuestionStream = StreamProvider.autoDispose<void>((ref) => ref
 class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
   final GetSurveyDetailsUseCase _getSurveyDetailsUseCase;
 
-  final _surveyDetailsStreamController =
-      StreamController<SurveyDetailsUiModel>();
   final _visibleIndexStreamController = StreamController<int>();
   final _nextQuestionStreamController = StreamController<void>();
 
@@ -58,15 +50,14 @@ class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
       state = SurveyQuestionsViewState.error(error);
     } else {
       final surveyDetails = result as Success<SurveyDetailsModel>;
-      _surveyDetailsStreamController
-          .add(SurveyDetailsUiModel.fromModel(surveyDetails.value));
-      state = const SurveyQuestionsViewState.success();
+      final surveyDetailsUiModel =
+          SurveyDetailsUiModel.fromModel(surveyDetails.value);
+      state = SurveyQuestionsViewState.success(surveyDetailsUiModel);
     }
   }
 
   @override
   void dispose() {
-    _surveyDetailsStreamController.close();
     _visibleIndexStreamController.close();
     _nextQuestionStreamController.close();
     super.dispose();
