@@ -23,11 +23,6 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
   final PageController _pageController = PageController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     ref.listen(nextQuestionStream, (previous, next) {
       nextPage();

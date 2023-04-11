@@ -125,12 +125,10 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
                   key: SurveyDetailsWidgetId.startSurveyButton,
                   text: context.localization.survey_details_start_survey_button,
                   isEnabled: true,
-                  onPressed: () => {
-                    context.goNamed(
-                      RoutePath.questions.routeName,
-                      params: {surveyIdKey: survey.id},
-                    ),
-                  },
+                  onPressed: () => context.goNamed(
+                    RoutePath.questions.routeName,
+                    params: {surveyIdKey: survey.id},
+                  ),
                 ),
               ],
             ),
