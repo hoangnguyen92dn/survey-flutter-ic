@@ -10,6 +10,7 @@ import 'package:survey_flutter_ic/ui/details/survey_details_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_view.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 const surveyIdKey = 'surveyId';
@@ -71,6 +72,7 @@ class _SurveyQuestionsScreenScreenState
   Widget _buildQuestionsContent(SurveyDetailsUiModel surveyDetails,
           int visibleIndex, int totalQuestions) =>
       Container(
+        key: SurveyQuestionsWidgetId.questionBackgroundContainer,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: FadeInImage.assetNetwork(
@@ -114,6 +116,7 @@ class _SurveyQuestionsScreenScreenState
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
+              key: SurveyQuestionsWidgetId.closeSurveyButton,
               icon: SvgPicture.asset(Assets.images.icClose.path),
               onPressed: () => context.pop(), // TODO Add confirmation dialog
             )
@@ -126,6 +129,7 @@ class _SurveyQuestionsScreenScreenState
         padding: const EdgeInsets.symmetric(horizontal: space20),
         child: Text(
           '${visibleIndex + 1}/$totalQuestion',
+          key: SurveyQuestionsWidgetId.questionIndicator,
           style: TextStyle(
               color: Colors.white.withOpacity(0.5),
               fontSize: 15,
@@ -158,6 +162,7 @@ class _SurveyQuestionsScreenScreenState
             Visibility(
               visible: visibleIndex < totalQuestion - 1,
               child: WhiteRightArrowButton(
+                key: SurveyQuestionsWidgetId.nextQuestionButton,
                 onPressed: () {
                   ref
                       .read(surveyQuestionsViewModelProvider.notifier)

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
-import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
 class SurveyQuestionView extends ConsumerStatefulWidget {
   final List<SurveyQuestionUiModel> questions;
@@ -60,7 +60,7 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
   Widget _buildQuestionText(SurveyQuestionUiModel question) {
     return Text(
       question.text.trim(),
-      key: HomeWidgetId.surveyTitleText,
+      key: SurveyQuestionsWidgetId.questionText,
       style: const TextStyle(
         color: Colors.white,
         fontSize: fontSize34,

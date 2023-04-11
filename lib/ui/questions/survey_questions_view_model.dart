@@ -67,6 +67,8 @@ class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
   @override
   void dispose() {
     _surveyDetailsStreamController.close();
+    _visibleIndexStreamController.close();
+    _nextQuestionStreamController.close();
     super.dispose();
   }
 }
