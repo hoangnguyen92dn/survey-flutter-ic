@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
@@ -28,7 +29,7 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       nextPage();
     });
     return PageView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+      // physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       onPageChanged: (index) {
         widget.onPageChanged.call(index);
@@ -47,6 +48,25 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildQuestionText(question),
+          Picker(
+            containerColor: Colors.black26,
+            adapter: PickerDataAdapter<String>(
+                pickerData:
+                    question.answers.map((e) => e.text).toList(growable: false)),
+            textStyle: TextStyle(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: fontSize20,
+              fontWeight: FontWeight.w400,
+            ),
+            selectedTextStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: fontSize20,
+              fontWeight: FontWeight.w800,
+            ),
+            hideHeader: true,
+            // columnPadding: const EdgeInsets.all(8.0),
+            onConfirm: (Picker picker, List value) {},
+          ).makePicker(),
         ],
       ),
     );
