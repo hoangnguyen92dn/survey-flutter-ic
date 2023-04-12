@@ -3,25 +3,33 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_screen.dart';
 import 'package:survey_flutter_ic/ui/home/home_screen.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_screen.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_screen.dart';
 import 'package:survey_flutter_ic/ui/splash/splash_screen.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 
 enum RoutePath {
   root('/'),
+  signIn('/sign_in'),
   home('/home'),
+
   details('details'),
-  signIn('/sign_in');
+  questions('questions/:$surveyIdKey');
 
   const RoutePath(this.routePath);
 
   final String routePath;
 
   String get routeName {
-    if (routePath == '/') {
-      return routePath;
-    } else {
-      return routePath.replaceAll(RegExp('^/|/\$'), '');
+    switch (this) {
+      case RoutePath.root:
+        return '/';
+      case RoutePath.details:
+        return 'details';
+      case RoutePath.questions:
+        return 'questions';
+      default:
+        return routePath.replaceAll(RegExp('^/|/\$'), '');
     }
   }
 }
@@ -56,6 +64,15 @@ class AppRouter {
                 builder: (BuildContext context, GoRouterState state) {
                   return SurveyDetailsScreen(
                     survey: (state.extra as SurveyUiModel),
+                  );
+                },
+              ),
+              GoRoute(
+                name: RoutePath.questions.routeName,
+                path: RoutePath.questions.routePath,
+                builder: (BuildContext context, GoRouterState state) {
+                  return SurveyQuestionsScreen(
+                    surveyId: state.params[surveyIdKey] as String,
                   );
                 },
               ),

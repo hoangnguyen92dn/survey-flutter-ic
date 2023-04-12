@@ -9,21 +9,23 @@ import 'package:survey_flutter_ic/api/service/auth_service.dart';
 import 'package:survey_flutter_ic/api/service/survey_service.dart';
 import 'package:survey_flutter_ic/api/service/user_service.dart';
 import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
+import 'package:survey_flutter_ic/usecase/get_survey_details_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/sign_in_use_case.dart';
 
 @GenerateMocks([
   ApiService,
   AuthService,
-  AuthRepository,
-  AuthPersistence,
-  SignInUseCase,
-  SurveyService,
-  SurveyRepository,
-  GetSurveysUseCase,
   UserService,
+  SurveyService,
+  AuthPersistence,
+  AuthRepository,
   UserRepository,
+  SurveyRepository,
+  SignInUseCase,
+  GetSurveysUseCase,
   GetProfileUseCase,
+  GetSurveyDetailsUseCase,
   DioError,
 ])
 main() {

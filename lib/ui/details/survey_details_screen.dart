@@ -4,9 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_view_model.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_widget_id.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_screen.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/widget/flat_button_text.dart';
 
@@ -41,7 +43,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
       body: state.maybeWhen(
         success: () {
           // FIXME: The surveyStream emits null value before the survey is set
-          final survey = ref.read(surveyStream).value ?? widget.survey;
+          final survey = ref.watch(surveyStream).value ?? widget.survey;
           return _buildSurveyDetailsContent(survey);
         },
         // Read the survey from the stream
@@ -76,7 +78,7 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
           const SizedBox(height: space16),
           _buildSurveyDescription(survey.description),
           const Expanded(child: SizedBox.shrink()),
-          _buildStartSurveyButton(),
+          _buildStartSurveyButton(survey),
         ],
       ),
     );
@@ -112,19 +114,20 @@ class _SurveyDetailsScreenState extends ConsumerState<SurveyDetailsScreen> {
     );
   }
 
-  Widget _buildStartSurveyButton() {
+  Widget _buildStartSurveyButton(SurveyUiModel survey) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, space20, space57),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Expanded(
-            child: SizedBox.shrink(),
-          ),
           FlatButtonText(
             key: SurveyDetailsWidgetId.startSurveyButton,
             text: context.localization.survey_details_start_survey_button,
             isEnabled: true,
-            onPressed: () => {}, // TODO Start survey
+            onPressed: () => context.goNamed(
+              RoutePath.questions.routeName,
+              params: {surveyIdKey: survey.id},
+            ),
           ),
         ],
       ),
