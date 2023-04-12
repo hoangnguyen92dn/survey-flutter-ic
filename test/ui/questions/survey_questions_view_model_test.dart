@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
-import 'package:survey_flutter_ic/model/question_dislplay_type_model.dart';
+import 'package:survey_flutter_ic/model/question_display_type_model.dart';
 import 'package:survey_flutter_ic/model/survey_answer_model.dart';
 import 'package:survey_flutter_ic/model/survey_details_model.dart';
 import 'package:survey_flutter_ic/model/survey_question_model.dart';

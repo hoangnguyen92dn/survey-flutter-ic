@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/model/question_display_type_model.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
+import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 
 class SurveyQuestionView extends ConsumerStatefulWidget {
   final List<SurveyQuestionUiModel> questions;
@@ -48,28 +49,23 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildQuestionText(question),
-          Picker(
-            containerColor: Colors.black26,
-            adapter: PickerDataAdapter<String>(
-                pickerData:
-                    question.answers.map((e) => e.text).toList(growable: false)),
-            textStyle: TextStyle(
-              color: Colors.white.withOpacity(0.5),
-              fontSize: fontSize20,
-              fontWeight: FontWeight.w400,
-            ),
-            selectedTextStyle: const TextStyle(
-              color: Colors.white,
-              fontSize: fontSize20,
-              fontWeight: FontWeight.w800,
-            ),
-            hideHeader: true,
-            // columnPadding: const EdgeInsets.all(8.0),
-            onConfirm: (Picker picker, List value) {},
-          ).makePicker(),
+          const Expanded(child: SizedBox.shrink()),
+          _buildAnswers(question),
+          const Expanded(child: SizedBox.shrink()),
         ],
       ),
     );
+  }
+
+  Widget _buildAnswers(SurveyQuestionUiModel question) {
+    switch (question.displayType) {
+      case QuestionDisplayType.dropdown:
+        return AnswerDropdown(
+          answers: question.answers,
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   Widget _buildQuestionText(SurveyQuestionUiModel question) {
