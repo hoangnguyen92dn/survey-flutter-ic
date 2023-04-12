@@ -30,7 +30,7 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       nextPage();
     });
     return PageView.builder(
-      // physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       onPageChanged: (index) {
         widget.onPageChanged.call(index);
@@ -43,29 +43,26 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
   }
 
   Widget _buildPageItem(SurveyQuestionUiModel question) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: space20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildQuestionText(question),
-          const Expanded(child: SizedBox.shrink()),
-          _buildAnswers(question),
-          const Expanded(child: SizedBox.shrink()),
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: space20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildQuestionText(question),
+                const Expanded(child: SizedBox.shrink()),
+                _buildAnswers(question),
+                const Expanded(child: SizedBox.shrink()),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
-  }
-
-  Widget _buildAnswers(SurveyQuestionUiModel question) {
-    switch (question.displayType) {
-      case QuestionDisplayType.dropdown:
-        return AnswerDropdown(
-          answers: question.answers,
-        );
-      default:
-        return const SizedBox.shrink();
-    }
   }
 
   Widget _buildQuestionText(SurveyQuestionUiModel question) {
@@ -78,6 +75,18 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
         fontWeight: FontWeight.w800,
       ),
     );
+  }
+
+  Widget _buildAnswers(SurveyQuestionUiModel question) {
+    switch (question.displayType) {
+      case QuestionDisplayType.dropdown:
+        return AnswerDropdown(
+          key: SurveyQuestionsWidgetId.answersDropdown,
+          answers: question.answers,
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   void nextPage() {
