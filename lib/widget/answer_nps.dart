@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
 class AnswerNps extends StatefulWidget {
   final List<SurveyAnswerUiModel> answers;
@@ -33,6 +34,7 @@ class _AnswerNpsState extends State<AnswerNps> {
 
   Widget _buildNps(List<SurveyAnswerUiModel> answers) {
     return Center(
+      key: SurveyQuestionsWidgetId.answersNps,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
