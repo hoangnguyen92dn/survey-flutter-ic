@@ -31,7 +31,7 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       nextPage();
     });
     return PageView.builder(
-      // physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       onPageChanged: (index) {
         widget.onPageChanged.call(index);
