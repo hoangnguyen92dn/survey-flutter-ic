@@ -6,6 +6,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
+import 'package:survey_flutter_ic/widget/answer_emoji.dart';
 
 class SurveyQuestionView extends ConsumerStatefulWidget {
   final List<SurveyQuestionUiModel> questions;
@@ -30,7 +31,7 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       nextPage();
     });
     return PageView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+      // physics: const NeverScrollableScrollPhysics(),
       controller: _pageController,
       onPageChanged: (index) {
         widget.onPageChanged.call(index);
@@ -82,6 +83,13 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       case QuestionDisplayType.dropdown:
         return AnswerDropdown(
           key: SurveyQuestionsWidgetId.answersDropdown,
+          answers: question.answers,
+        );
+      case QuestionDisplayType.star:
+      case QuestionDisplayType.heart:
+      case QuestionDisplayType.smiley:
+        return AnswerEmoji(
+          displayType: question.displayType,
           answers: question.answers,
         );
       default:
