@@ -7,6 +7,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart'
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 import 'package:survey_flutter_ic/widget/answer_emoji.dart';
+import 'package:survey_flutter_ic/widget/answer_nps.dart';
 
 class SurveyQuestionView extends ConsumerStatefulWidget {
   final List<SurveyQuestionUiModel> questions;
@@ -92,6 +93,18 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
             return AnswerEmoji(
               key: SurveyQuestionsWidgetId.answersRating,
               displayType: question.displayType,
+              answers: question.answers,
+              onAnswerSelected: (answer) {
+                ref
+                    .read(surveyQuestionsViewModelProvider.notifier)
+                    .selectAnswer(
+                      question.id,
+                      answer.id,
+                    );
+              },
+            );
+          case QuestionDisplayType.nps:
+            return AnswerNps(
               answers: question.answers,
               onAnswerSelected: (answer) {
                 ref
