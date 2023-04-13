@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:survey_flutter_ic/api/response/question_display_type_response.dart';
 import 'package:survey_flutter_ic/api/response/survey_question_response.dart';
-import 'package:survey_flutter_ic/model/question_dislplay_type_model.dart';
+import 'package:survey_flutter_ic/model/question_display_type_model.dart';
 import 'package:survey_flutter_ic/model/survey_answer_model.dart';
 
 class SurveyQuestionModel extends Equatable {

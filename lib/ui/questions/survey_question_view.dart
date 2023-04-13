@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/model/question_display_type_model.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
+import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 
 class SurveyQuestionView extends ConsumerStatefulWidget {
   final List<SurveyQuestionUiModel> questions;
@@ -41,14 +43,25 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
   }
 
   Widget _buildPageItem(SurveyQuestionUiModel question) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: space20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildQuestionText(question),
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: space20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildQuestionText(question),
+                const Expanded(child: SizedBox.shrink()),
+                _buildAnswers(question),
+                const Expanded(child: SizedBox.shrink()),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -62,6 +75,18 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
         fontWeight: FontWeight.w800,
       ),
     );
+  }
+
+  Widget _buildAnswers(SurveyQuestionUiModel question) {
+    switch (question.displayType) {
+      case QuestionDisplayType.dropdown:
+        return AnswerDropdown(
+          key: SurveyQuestionsWidgetId.answersDropdown,
+          answers: question.answers,
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   void nextPage() {

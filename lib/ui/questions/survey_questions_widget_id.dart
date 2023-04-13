@@ -8,4 +8,5 @@ class SurveyQuestionsWidgetId {
   static const questionIndicator = Key('questionIndicator');
   static const questionText = Key('questionText');
   static const nextQuestionButton = Key('nextQuestionButton');
+  static const answersDropdown = Key('answersDropdown');
 }

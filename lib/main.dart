@@ -30,11 +30,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late GoRouter _router;
+  // Avoid redirects to the splash screen after hot reload
+  // https://github.com/flutter/flutter/issues/115267#issuecomment-1313571242
+  final GoRouter _router = getIt.get<AppRouter>().router();
 
   @override
   Widget build(BuildContext context) {
-    _router = getIt.get<AppRouter>().router();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: MaterialApp.router(

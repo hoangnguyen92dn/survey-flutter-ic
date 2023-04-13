@@ -24,14 +24,15 @@ class SurveyDetailsModel extends Equatable {
       ];
 
   factory SurveyDetailsModel.fromResponse(SurveyDetailsResponse response) {
+    final questions = response.questions
+        ?.map((e) => SurveyQuestionModel.fromResponse(e))
+        .toList();
+    questions?.sort((a, b) => a.displayOrder - b.displayOrder);
     return SurveyDetailsModel(
       id: response.id,
       coverImageUrl: response.coverImageUrl ?? '',
       largeCoverImageUrl: '${response.coverImageUrl ?? ''}l',
-      questions: response.questions
-              ?.map((e) => SurveyQuestionModel.fromResponse(e))
-              .toList() ??
-          [],
+      questions: questions ?? [],
     );
   }
 }
