@@ -19,7 +19,7 @@ class AnswerNps extends StatefulWidget {
 }
 
 class _AnswerNpsState extends State<AnswerNps> {
-  var _selectedAnswer = 5; // Default value
+  var _selectedAnswer = 0; // Default value
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class _AnswerNpsState extends State<AnswerNps> {
       flex: 1,
       child: Text(
         text,
-        textAlign: TextAlign.right,
+        textAlign: isHighestNps ? TextAlign.end : TextAlign.start,
         style: TextStyle(
           fontSize: fontSize17,
           color: isHighestNps ? Colors.white : Colors.white.withOpacity(0.5),
