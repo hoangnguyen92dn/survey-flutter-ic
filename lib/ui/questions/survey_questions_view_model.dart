@@ -56,6 +56,10 @@ class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
     }
   }
 
+  void selectAnswer(String questionId, String answerId) {
+    // TODO: Handle answer selection
+  }
+
   @override
   void dispose() {
     _visibleIndexStreamController.close();

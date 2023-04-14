@@ -11,6 +11,9 @@ enum QuestionDisplayType {
   textfield,
   outro,
   dropdown,
+  slider,
+  money,
+  message,
   unknown;
 
   factory QuestionDisplayType.fromResponse(
