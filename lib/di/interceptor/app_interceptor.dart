@@ -24,9 +24,11 @@ class AppInterceptor extends Interceptor {
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final accessToken = await _persistence.accessToken ?? '';
+    final tokenType = await _persistence.tokenType ?? 'Bearer';
 
     if (_requireAuthenticate) {
-      options.headers.putIfAbsent(headerAuthorization, () => accessToken);
+      options.headers
+          .putIfAbsent(headerAuthorization, () => '$tokenType $accessToken');
     }
     return super.onRequest(options, handler);
   }

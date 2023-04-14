@@ -5,5 +5,12 @@
 
   "sign_in_email_label": "Email",
   "sign_in_button": "Log in",
-  "sign_in_password_label": "Password"
+  "sign_in_password_label": "Password",
+
+  "survey_details_start_survey_button": "Start survey",
+
+  "survey_question_nps_lowest_description": "Not at all Likely",
+  "survey_question_nps_highest_description": "Extremely Likely",
+
+  "survey_question_textarea_hint": "Your thoughts"
 }

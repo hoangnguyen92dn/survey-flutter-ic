@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
-import 'package:survey_flutter_ic/navigation/route.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 
 const _splashTransitionDelayInMilliseconds = 2000;
 const _logoVisibilityDelayInMilliseconds = 500;
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(
         const Duration(milliseconds: _splashTransitionDelayInMilliseconds), () {
-      context.go(routePathSignInScreen);
+      context.goNamed(RoutePath.signIn.routeName);
     });
 
     Future.delayed(

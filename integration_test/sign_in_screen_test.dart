@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:survey_flutter_ic/navigation/route.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_widget_id.dart';
 
 import 'fake_data/fake_data.dart';
@@ -30,8 +30,8 @@ void signInTest() {
     testWidgets(
         "When the sign in screen shown, it displays the Sign In screen correctly",
         (WidgetTester tester) async {
-      await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(routePathSignInScreen));
+      await tester.pumpWidget(
+          TestUtil.pumpWidgetWithRoutePath(RoutePath.signIn.routePath));
 
       expect(emailField, findsOneWidget);
       expect(passwordField, findsOneWidget);
@@ -42,8 +42,8 @@ void signInTest() {
         "When sign in with valid email and password, it navigate to Home screen",
         (WidgetTester tester) async {
       await FakeData.initDefault();
-      await tester
-          .pumpWidget(TestUtil.pumpWidgetWithRoutePath(routePathSignInScreen));
+      await tester.pumpWidget(
+          TestUtil.pumpWidgetWithRoutePath(RoutePath.signIn.routePath));
       await tester.enterText(emailField, 'valid@example.com');
       await tester.enterText(passwordField, '1111111');
       await tester.tap(signInButton);

@@ -3,32 +3,48 @@ import 'package:flutter/services.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:survey_flutter_ic/di/provider/di.dart';
-import 'package:survey_flutter_ic/navigation/route.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/theme/app_color_scheme.dart';
 import 'package:survey_flutter_ic/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterConfig.loadEnvVariables();
+  FlutterError.demangleStackTrace = (StackTrace stack) {
+    if (stack is stack_trace.Trace) return stack.vmTrace;
+    if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
+    return stack;
+  };
   configureInjection();
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // Avoid redirects to the splash screen after hot reload
+  // https://github.com/flutter/flutter/issues/115267#issuecomment-1313571242
+  final GoRouter _router = getIt.get<AppRouter>().router();
+
+  @override
+  Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: MaterialApp.router(
         theme: AppTheme.theme(AppColorScheme.light()),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        routeInformationProvider: router().routeInformationProvider,
-        routeInformationParser: router().routeInformationParser,
-        routerDelegate: router().routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
       ),
     );
   }
