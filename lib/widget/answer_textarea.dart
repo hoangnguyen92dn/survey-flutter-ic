@@ -24,7 +24,7 @@ class _AnswerTextareaState extends State<AnswerTextarea> {
           borderRadius: BorderRadius.circular(borderRadius10),
         ),
         child: TextField(
-          maxLines: null,
+          maxLines: 5,
           keyboardType: TextInputType.multiline,
           textAlign: TextAlign.start,
           cursorColor: Colors.white,

@@ -45,6 +45,7 @@ class _SurveyQuestionsScreenScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(surveyQuestionsViewModelProvider);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: state.maybeWhen(
         loading: () => _buildLoadingIndicator(),
         success: (surveyDetails) => _buildSurveyQuestionsContent(surveyDetails),
