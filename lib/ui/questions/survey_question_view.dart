@@ -54,13 +54,29 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
               children: [
                 _buildQuestionText(question),
                 const Expanded(child: SizedBox.shrink()),
-                SurveyAnswerView(question: question),
+                _buildSurveyAnswerView(question),
                 const Expanded(child: SizedBox.shrink()),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSurveyAnswerView(SurveyQuestionUiModel question) {
+    return Consumer(
+      builder: (_, ref, ___) {
+        return SurveyAnswerView(
+          question: question,
+          onAnswerSelected: (answer) => {
+            ref.read(surveyQuestionsViewModelProvider.notifier).selectAnswer(
+                  question.id,
+                  answer.id,
+                ),
+          },
+        );
+      },
     );
   }
 

@@ -27,7 +27,7 @@ class _AnswerNpsState extends State<AnswerNps> {
       children: [
         _buildNps(widget.answers),
         SizedBox.fromSize(size: const Size.fromHeight(space16)),
-        _buildNpsDescription()
+        _buildNpsDescription(),
       ],
     );
   }
