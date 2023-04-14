@@ -7,6 +7,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 import 'package:survey_flutter_ic/widget/answer_emoji.dart';
 import 'package:survey_flutter_ic/widget/answer_nps.dart';
+import 'package:survey_flutter_ic/widget/answer_textarea.dart';
 
 class SurveyAnswerView extends ConsumerStatefulWidget {
   final SurveyQuestionUiModel question;
@@ -49,6 +50,11 @@ class _SurveyAnswerViewState extends ConsumerState<SurveyAnswerView> {
           onAnswerSelected: (answer) {
             widget.onAnswerSelected.call(answer);
           },
+        );
+      case QuestionDisplayType.textarea:
+        // TODO: Handle filled text area
+        return AnswerTextarea(
+          answers: question.answers,
         );
       default:
         return const SizedBox.shrink();
