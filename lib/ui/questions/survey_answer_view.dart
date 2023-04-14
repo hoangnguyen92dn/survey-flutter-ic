@@ -6,6 +6,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 import 'package:survey_flutter_ic/widget/answer_emoji.dart';
+import 'package:survey_flutter_ic/widget/answer_form.dart';
 import 'package:survey_flutter_ic/widget/answer_nps.dart';
 import 'package:survey_flutter_ic/widget/answer_textarea.dart';
 
@@ -54,6 +55,11 @@ class _SurveyAnswerViewState extends ConsumerState<SurveyAnswerView> {
       case QuestionDisplayType.textarea:
         // TODO: Handle filled text area
         return AnswerTextarea(
+          answers: question.answers,
+        );
+      case QuestionDisplayType.textfield:
+        // TODO: Handle filled input
+        return AnswerForm(
           answers: question.answers,
         );
       default:
