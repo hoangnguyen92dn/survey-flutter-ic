@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
 class AnswerTextarea extends StatefulWidget {
   final List<SurveyAnswerUiModel> answers;
@@ -16,6 +17,7 @@ class _AnswerTextareaState extends State<AnswerTextarea> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      key: SurveyQuestionsWidgetId.answersTextArea,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.2),
