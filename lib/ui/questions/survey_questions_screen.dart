@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_ui_model.dart';
@@ -88,17 +89,20 @@ class _SurveyQuestionsScreenScreenState
                 colors: [Colors.black12, Colors.black26],
               ),
             ),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildCloseSurveyButton(),
-                  _buildQuestionIndicator(visibleIndex, totalQuestions),
-                  const SizedBox(height: space8),
-                  _buildQuestionsView(surveyDetails.questions),
-                  _buildNextQuestionButton(visibleIndex, totalQuestions),
-                  const SizedBox(height: space57)
-                ],
+            child: GestureDetector(
+              onTap: () => context.hideKeyboard(),
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildCloseSurveyButton(),
+                    _buildQuestionIndicator(visibleIndex, totalQuestions),
+                    const SizedBox(height: space8),
+                    _buildQuestionsView(surveyDetails.questions),
+                    _buildNextQuestionButton(visibleIndex, totalQuestions),
+                    const SizedBox(height: space57)
+                  ],
+                ),
               ),
             ),
           ),
