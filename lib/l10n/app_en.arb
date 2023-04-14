@@ -10,5 +10,7 @@
   "survey_details_start_survey_button": "Start survey",
 
   "survey_question_nps_lowest_description": "Not at all Likely",
-  "survey_question_nps_highest_description": "Extremely Likely"
+  "survey_question_nps_highest_description": "Extremely Likely",
+
+  "survey_question_textarea_hint": "Your thoughts"
 }
