@@ -24,6 +24,7 @@ void surveyQuestionsScreenTest() {
     late Finder answerSmiley;
     late Finder answerNps;
     late Finder answerTextArea;
+    late Finder answerForm;
 
     setUpAll(() async {
       await TestUtil.setupTestEnvironment();
@@ -43,6 +44,7 @@ void surveyQuestionsScreenTest() {
       answerSmiley = find.byKey(SurveyQuestionsWidgetId.answersSmiley);
       answerNps = find.byKey(SurveyQuestionsWidgetId.answersNps);
       answerTextArea = find.byKey(SurveyQuestionsWidgetId.answersTextArea);
+      answerForm = find.byKey(SurveyQuestionsWidgetId.answersForm);
     });
 
     Future nextQuestionTest(
@@ -83,6 +85,7 @@ void surveyQuestionsScreenTest() {
       expect(answerSmiley, findsNothing);
       expect(answerNps, findsNothing);
       expect(answerTextArea, findsNothing);
+      expect(answerForm, findsNothing);
     });
 
     testWidgets(
@@ -129,54 +132,70 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerEmoji, findsNothing);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '3/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '4/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
       await answerTest(answerNps, findsOneWidget);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '5/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '6/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '7/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '8/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '9/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsOneWidget);
+      await answerTest(answerForm, findsNothing);
 
       await nextQuestionTest(tester, '10/12');
       await answerTest(answerDropdown, findsOneWidget);
       await answerTest(answerEmoji, findsNothing);
       await answerTest(answerNps, findsNothing);
       await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
+
+      await nextQuestionTest(tester, '11/12');
+      await answerTest(answerDropdown, findsNothing);
+      await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
+      await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsOneWidget);
     });
   });
 }

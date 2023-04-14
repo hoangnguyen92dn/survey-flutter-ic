@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
 class AnswerForm extends StatefulWidget {
   final List<SurveyAnswerUiModel> answers;
@@ -15,6 +16,7 @@ class _AnswerFormState extends State<AnswerForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
+      key: SurveyQuestionsWidgetId.answersForm,
       child: _buildForm(widget.answers),
     );
   }
