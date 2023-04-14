@@ -22,6 +22,7 @@ void surveyQuestionsScreenTest() {
     late Finder answerRating;
     late Finder answerEmoji;
     late Finder answerSmiley;
+    late Finder answerNps;
 
     setUpAll(() async {
       await TestUtil.setupTestEnvironment();
@@ -39,6 +40,7 @@ void surveyQuestionsScreenTest() {
       answerRating = find.byKey(SurveyQuestionsWidgetId.answersRating);
       answerEmoji = find.byKey(SurveyQuestionsWidgetId.answersEmoji);
       answerSmiley = find.byKey(SurveyQuestionsWidgetId.answersSmiley);
+      answerNps = find.byKey(SurveyQuestionsWidgetId.answersNps);
     });
 
     Future nextQuestionTest(
@@ -77,6 +79,7 @@ void surveyQuestionsScreenTest() {
       expect(answerRating, findsNothing);
       expect(answerEmoji, findsNothing);
       expect(answerSmiley, findsNothing);
+      expect(answerNps, findsNothing);
     });
 
     testWidgets(
@@ -111,7 +114,7 @@ void surveyQuestionsScreenTest() {
     });
 
     testWidgets(
-        "When the survey questions screen shown, it displays the dropdown answers correctly",
+        "When browse the questions list, it displays the answers correctly",
         (WidgetTester tester) async {
       await FakeData.initDefault();
       await tester
@@ -121,38 +124,47 @@ void surveyQuestionsScreenTest() {
       await nextQuestionTest(tester, '2/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '3/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '4/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsOneWidget);
 
       await nextQuestionTest(tester, '5/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '6/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '7/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '8/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsOneWidget);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '9/12');
       await answerTest(answerDropdown, findsNothing);
       await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
 
       await nextQuestionTest(tester, '10/12');
       await answerTest(answerDropdown, findsOneWidget);
       await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
     });
   });
 }
