@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_screen.dart';
@@ -14,7 +13,6 @@ enum RoutePath {
   root('/'),
   signIn('/sign_in'),
   home('/home'),
-
   details('details'),
   questions('questions/:$surveyIdKey');
 
@@ -49,15 +47,13 @@ class AppRouter {
           GoRoute(
             name: RoutePath.root.routeName,
             path: RoutePath.root.routePath,
-            builder: (BuildContext context, GoRouterState state) =>
-                const SplashScreen(),
+            builder: (_, __) => const SplashScreen(),
           ),
           GoRoute(
             name: RoutePath.signIn.routeName,
             path: RoutePath.signIn.routePath,
-            builder: (BuildContext context, GoRouterState state) =>
-                const SignInScreen(),
-            redirect: (BuildContext context, GoRouterState state) async {
+            builder: (_, __) => const SignInScreen(),
+            redirect: (_, __) {
               return _isAuthorizedUseCase.call().then(
                     (isAuthorized) => isAuthorized is Success &&
                             (isAuthorized as Success<bool>).value
@@ -69,13 +65,12 @@ class AppRouter {
           GoRoute(
             name: RoutePath.home.routeName,
             path: RoutePath.home.routePath,
-            builder: (BuildContext context, GoRouterState state) =>
-                const HomeScreen(),
+            builder: (_, __) => const HomeScreen(),
             routes: [
               GoRoute(
                 name: RoutePath.details.routeName,
                 path: RoutePath.details.routePath,
-                builder: (BuildContext context, GoRouterState state) {
+                builder: (_, state) {
                   return SurveyDetailsScreen(
                     survey: (state.extra as SurveyUiModel),
                   );
@@ -84,7 +79,7 @@ class AppRouter {
               GoRoute(
                 name: RoutePath.questions.routeName,
                 path: RoutePath.questions.routePath,
-                builder: (BuildContext context, GoRouterState state) {
+                builder: (_, state) {
                   return SurveyQuestionsScreen(
                     surveyId: state.params[surveyIdKey] as String,
                   );
