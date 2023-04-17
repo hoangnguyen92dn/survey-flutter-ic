@@ -60,10 +60,10 @@ class AppRouter {
             redirect: (BuildContext context, GoRouterState state) async {
               return _isAuthorizedUseCase.call().then(
                     (isAuthorized) => isAuthorized is Success &&
-                    (isAuthorized as Success<bool>).value
-                    ? RoutePath.home.routePath
-                    : RoutePath.signIn.routePath,
-              );
+                            (isAuthorized as Success<bool>).value
+                        ? RoutePath.home.routePath
+                        : RoutePath.signIn.routePath,
+                  );
             },
           ),
           GoRoute(
