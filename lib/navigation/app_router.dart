@@ -7,6 +7,8 @@ import 'package:survey_flutter_ic/ui/questions/survey_questions_screen.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_screen.dart';
 import 'package:survey_flutter_ic/ui/splash/splash_screen.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
+import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
+import 'package:survey_flutter_ic/usecase/is_authorized_use_case.dart';
 
 enum RoutePath {
   root('/'),
@@ -36,6 +38,10 @@ enum RoutePath {
 
 @Singleton()
 class AppRouter {
+  final IsAuthorizedUseCase _isAuthorizedUseCase;
+
+  AppRouter(this._isAuthorizedUseCase);
+
   GoRouter router([String? initialLocation, Object? extra]) => GoRouter(
         initialLocation: initialLocation ?? RoutePath.root.routePath,
         initialExtra: extra,
@@ -51,6 +57,14 @@ class AppRouter {
             path: RoutePath.signIn.routePath,
             builder: (BuildContext context, GoRouterState state) =>
                 const SignInScreen(),
+            redirect: (BuildContext context, GoRouterState state) async {
+              return _isAuthorizedUseCase.call().then(
+                    (isAuthorized) => isAuthorized is Success &&
+                    (isAuthorized as Success<bool>).value
+                    ? RoutePath.home.routePath
+                    : RoutePath.signIn.routePath,
+              );
+            },
           ),
           GoRoute(
             name: RoutePath.home.routeName,
