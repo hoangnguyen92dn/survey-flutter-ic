@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:survey_flutter_ic/model/question_display_type_model.dart';
+import 'package:survey_flutter_ic/model/selection_answer_type_model.dart';
 import 'package:survey_flutter_ic/model/survey_question_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
 
@@ -8,6 +9,7 @@ class SurveyQuestionUiModel extends Equatable {
   final String text;
   final int displayOrder;
   final QuestionDisplayType displayType;
+  final SelectionAnswerType answerType;
   final List<SurveyAnswerUiModel> answers;
 
   const SurveyQuestionUiModel({
@@ -15,6 +17,7 @@ class SurveyQuestionUiModel extends Equatable {
     required this.text,
     required this.displayOrder,
     required this.displayType,
+    required this.answerType,
     required this.answers,
   });
 
@@ -23,6 +26,7 @@ class SurveyQuestionUiModel extends Equatable {
         id,
         text,
         answers,
+        answerType,
       ];
 
   factory SurveyQuestionUiModel.fromModel(SurveyQuestionModel model) {
@@ -31,6 +35,7 @@ class SurveyQuestionUiModel extends Equatable {
       text: model.text,
       displayOrder: model.displayOrder,
       displayType: model.displayType,
+      answerType: model.answerType,
       answers:
           model.answers.map((e) => SurveyAnswerUiModel.fromModel(e)).toList(),
     );
