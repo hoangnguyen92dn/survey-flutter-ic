@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/model/question_display_type_model.dart';
+import 'package:survey_flutter_ic/model/selection_answer_type_model.dart';
 import 'package:survey_flutter_ic/model/survey_answer_model.dart';
 import 'package:survey_flutter_ic/model/survey_details_model.dart';
 import 'package:survey_flutter_ic/model/survey_question_model.dart';
@@ -46,6 +47,7 @@ void main() {
             text: 'text',
             displayOrder: 1,
             displayType: QuestionDisplayType.choice,
+            answerType: SelectionAnswerType.single,
             coverImageUrl: 'coverImageUrl',
             answers: [
               SurveyAnswerModel(
