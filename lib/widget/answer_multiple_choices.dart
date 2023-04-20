@@ -19,71 +19,60 @@ class AnswerMultipleChoices extends StatefulWidget {
 }
 
 class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
-  final List<String> _selectedAnswers = [];
-
-  final _scrollController = ScrollController();
-  int _visibleIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      final index =
-          (_scrollController.offset / multipleChoiceItemHeight).floor();
-      setState(() {
-        _visibleIndex = index;
-      });
-    });
-  }
+  final List<String> _selectedAnswerIds = [];
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: multipleChoiceItemHeight * 3, // Show 3 items
-      child: ListView.separated(
-        controller: _scrollController,
-        itemCount: widget.answers.length + 2,
-        itemBuilder: (_, index) {
-          if (index == 0 || index == widget.answers.length + 1) {
-            return const SizedBox(height: multipleChoiceItemHeight);
-          } else {
-            return _buildItem(index - 1, _visibleIndex + 1 == index);
-          }
-        },
-        separatorBuilder: (_, __) {
-          return _buildItemDivider();
-        },
-      ),
-    );
-  }
-
-  Widget _buildItem(int index, bool isVisible) {
-    return Container(
-      height: multipleChoiceItemHeight,
-      alignment: Alignment.center,
-      child: Row(
-        children: [
-          _buildItemText(isVisible, index),
-          _buildItemCheckBox(isVisible, index),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        for (int index = 0; index < widget.answers.length; index++) ...[
+          _buildItem(
+            widget.answers[index],
+            _selectedAnswerIds.contains(widget.answers[index].id),
+          ),
+          if (index < widget.answers.length - 1) _buildItemDivider(),
         ],
-      ),
+      ],
     );
   }
 
-  Widget _buildItemText(bool isVisible, int index) {
-    return Expanded(
-      child: Text(
-        widget.answers[index].text,
-        style: TextStyle(
-          color: isVisible ? Colors.white : Colors.white.withOpacity(0.5),
-          fontSize: fontSize20,
-          fontWeight: isVisible ? FontWeight.w800 : FontWeight.w400,
+  Widget _buildItem(SurveyAnswerUiModel answer, bool isSelectedAnswer) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _buildAnswerSelection(answer.id, !isSelectedAnswer);
+        });
+      },
+      child: Container(
+        height: multipleChoiceItemHeight,
+        alignment: Alignment.center,
+        child: Row(
+          children: [
+            _buildItemText(answer, isSelectedAnswer),
+            _buildItemCheckBox(answer, isSelectedAnswer),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildItemCheckBox(bool isVisible, int index) {
+  Widget _buildItemText(SurveyAnswerUiModel answer, bool isSelectedAnswer) {
+    return Expanded(
+      child: Text(
+        answer.text,
+        style: TextStyle(
+          color:
+              isSelectedAnswer ? Colors.white : Colors.white.withOpacity(0.5),
+          fontSize: fontSize20,
+          fontWeight: isSelectedAnswer ? FontWeight.w800 : FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildItemCheckBox(SurveyAnswerUiModel answer, bool isSelectedAnswer) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -93,37 +82,34 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
       if (states.any(interactiveStates.contains)) {
         return Colors.white.withOpacity(0.5);
       }
-      return isVisible ? Colors.white : Colors.white.withOpacity(0.5);
+      return isSelectedAnswer ? Colors.white : Colors.white.withOpacity(0.5);
     }
 
-    return IgnorePointer(
-      ignoring: !isVisible,
-      child: Checkbox(
-        checkColor: ColorName.gray,
-        fillColor: MaterialStateProperty.resolveWith(getColor),
-        value: _selectedAnswers.contains(widget.answers[index].id),
-        shape: const CircleBorder(),
-        side: BorderSide(
-          color: isVisible ? Colors.white : Colors.white.withOpacity(0.5),
-        ),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        onChanged: (bool? value) {
-          setState(() {
-            _buildAnswerSelection(value ?? false, index);
-          });
-        },
+    return Checkbox(
+      checkColor: ColorName.gray,
+      fillColor: MaterialStateProperty.resolveWith(getColor),
+      value: _selectedAnswerIds.contains(answer.id),
+      shape: const CircleBorder(),
+      side: BorderSide(
+        color: isSelectedAnswer ? Colors.white : Colors.white.withOpacity(0.5),
       ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      onChanged: (bool? value) {
+        setState(() {
+          _buildAnswerSelection(answer.id, value ?? false);
+        });
+      },
     );
   }
 
-  void _buildAnswerSelection(bool value, int index) {
+  void _buildAnswerSelection(String answerId, bool value) {
     if (widget.answerType == SelectionAnswerType.single) {
-      _selectedAnswers.clear();
+      _selectedAnswerIds.clear();
     }
     if (value == true) {
-      _selectedAnswers.add(widget.answers[index].id);
+      _selectedAnswerIds.add(answerId);
     } else {
-      _selectedAnswers.remove(widget.answers[index].id);
+      _selectedAnswerIds.remove(answerId);
     }
   }
 
@@ -132,11 +118,5 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
       color: Colors.white,
       height: dropdownItemDividerHeight,
     );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 }
