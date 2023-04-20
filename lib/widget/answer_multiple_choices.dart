@@ -27,12 +27,12 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (int index = 0; index < widget.answers.length; index++) ...[
+        for (final answer in widget.answers) ...[
           _buildItem(
-            widget.answers[index],
-            _selectedAnswerIds.contains(widget.answers[index].id),
+            answer,
+            _selectedAnswerIds.contains(answer.id),
           ),
-          if (index < widget.answers.length - 1) _buildItemDivider(),
+          if (answer.id != widget.answers.last.id) _buildItemDivider(),
         ],
       ],
     );
@@ -42,7 +42,7 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _buildAnswerSelection(answer.id, !isSelectedAnswer);
+          _onAnswerClicked(answer.id, !isSelectedAnswer);
         });
       },
       child: Container(
@@ -96,17 +96,17 @@ class _AnswerMultipleChoicesState extends State<AnswerMultipleChoices> {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       onChanged: (bool? value) {
         setState(() {
-          _buildAnswerSelection(answer.id, value ?? false);
+          _onAnswerClicked(answer.id, value ?? false);
         });
       },
     );
   }
 
-  void _buildAnswerSelection(String answerId, bool value) {
+  void _onAnswerClicked(String answerId, bool isSelected) {
     if (widget.answerType == SelectionAnswerType.single) {
       _selectedAnswerIds.clear();
     }
-    if (value == true) {
+    if (isSelected == true) {
       _selectedAnswerIds.add(answerId);
     } else {
       _selectedAnswerIds.remove(answerId);
