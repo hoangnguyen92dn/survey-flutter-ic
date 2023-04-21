@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/api/repository/survey_repository.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/api/request/submit_survey_request.dart';
 import 'package:survey_flutter_ic/api/response/survey_details_response.dart';
 import 'package:survey_flutter_ic/api/response/surveys_response.dart';
@@ -93,7 +95,7 @@ void main() {
       when(mockSurveyService.submitSurvey(any))
           .thenAnswer((_) async => json_convert.json.encode(json));
 
-      final request = SubmitSurveyRequest(
+      const request = SubmitSurveyRequest(
         surveyId: 'survey_id',
         questions: [
           SubmitSurveyQuestionsRequest(
@@ -114,7 +116,7 @@ void main() {
         () async {
       when(mockSurveyService.submitSurvey(any)).thenThrow(MockDioError());
 
-      final request = SubmitSurveyRequest(
+      const request = SubmitSurveyRequest(
         surveyId: 'survey_id',
         questions: [
           SubmitSurveyQuestionsRequest(

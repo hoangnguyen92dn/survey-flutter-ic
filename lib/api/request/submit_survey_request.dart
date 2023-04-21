@@ -1,4 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 
 part 'submit_survey_request.g.dart';
 
@@ -7,7 +8,7 @@ class SubmitSurveyRequest {
   final String surveyId;
   final List<SubmitSurveyQuestionsRequest> questions;
 
-  SubmitSurveyRequest({
+  const SubmitSurveyRequest({
     required this.surveyId,
     required this.questions,
   });
@@ -15,37 +16,8 @@ class SubmitSurveyRequest {
   factory SubmitSurveyRequest.fromJson(Map<String, dynamic> json) =>
       _$SubmitSurveyRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SubmitSurveyRequestToJson(this);
-}
-
-@JsonSerializable()
-class SubmitSurveyQuestionsRequest {
-  final String questionId;
-  final List<SubmitSurveyAnswersRequest> answers;
-
-  SubmitSurveyQuestionsRequest({
-    required this.questionId,
-    required this.answers,
-  });
-
-  factory SubmitSurveyQuestionsRequest.fromJson(Map<String, dynamic> json) =>
-      _$SubmitSurveyQuestionsRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SubmitSurveyQuestionsRequestToJson(this);
-}
-
-@JsonSerializable()
-class SubmitSurveyAnswersRequest {
-  final String answerId;
-  final String? answer;
-
-  SubmitSurveyAnswersRequest({
-    required this.answerId,
-    this.answer,
-  });
-
-  factory SubmitSurveyAnswersRequest.fromJson(Map<String, dynamic> json) =>
-      _$SubmitSurveyAnswersRequestFromJson(json);
-
-  Map<String, dynamic> toJson() => _$SubmitSurveyAnswersRequestToJson(this);
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'survey_id': surveyId,
+        'questions': questions.map((e) => e.toJson()).toList(),
+      };
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/api/request/submit_survey_request.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 import 'package:survey_flutter_ic/usecase/submit_survey_use_case.dart';
@@ -23,7 +24,7 @@ void main() {
       when(mockRepository.submitSurvey(request: anyNamed('request')))
           .thenAnswer((_) async => (null));
 
-      final result = await useCase.call(SubmitSurveyRequest(
+      final result = await useCase.call(const SubmitSurveyRequest(
         surveyId: 'survey_id',
         questions: <SubmitSurveyQuestionsRequest>[],
       ));
@@ -40,7 +41,7 @@ void main() {
       when(mockRepository.submitSurvey(request: anyNamed('request')))
           .thenAnswer((_) async => Future.error(expected));
 
-      final result = await useCase.call(SubmitSurveyRequest(
+      final result = await useCase.call(const SubmitSurveyRequest(
         surveyId: 'survey_id',
         questions: <SubmitSurveyQuestionsRequest>[],
       ));
