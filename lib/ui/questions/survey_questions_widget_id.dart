@@ -15,4 +15,5 @@ class SurveyQuestionsWidgetId {
   static const answersNps = Key('answersNps');
   static const answersTextArea = Key('answersTextArea');
   static const answersForm = Key('answersForm');
+  static const answersMultipleChoices = Key('answersMultipleChoices');
 }

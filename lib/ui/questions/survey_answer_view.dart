@@ -7,6 +7,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/answer_dropdown.dart';
 import 'package:survey_flutter_ic/widget/answer_emoji.dart';
 import 'package:survey_flutter_ic/widget/answer_form.dart';
+import 'package:survey_flutter_ic/widget/answer_multiple_choices.dart';
 import 'package:survey_flutter_ic/widget/answer_nps.dart';
 import 'package:survey_flutter_ic/widget/answer_textarea.dart';
 
@@ -61,6 +62,12 @@ class _SurveyAnswerViewState extends ConsumerState<SurveyAnswerView> {
         // TODO: Handle filled input
         return AnswerForm(
           answers: question.answers,
+        );
+      case QuestionDisplayType.choice:
+        return AnswerMultipleChoices(
+          key: SurveyQuestionsWidgetId.answersMultipleChoices,
+          answers: question.answers,
+          answerType: question.answerType,
         );
       default:
         return const SizedBox.shrink();
