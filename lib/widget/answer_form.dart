@@ -26,12 +26,10 @@ class _AnswerFormState extends ConsumerState<AnswerForm> {
 
   @override
   void initState() {
-    _controllers.addAll(
-        List<TextEditingController>.generate(
-          widget.answers.length,
-              (index) => TextEditingController(),
-        )
-    );
+    _controllers.addAll(List<TextEditingController>.generate(
+      widget.answers.length,
+      (index) => TextEditingController(),
+    ));
     super.initState();
   }
 

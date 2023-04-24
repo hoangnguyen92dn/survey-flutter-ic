@@ -127,9 +127,8 @@ void main() {
     });
 
     test('When calling submitSurvey failed, it emits Error state', () {
-      when(mockSubmitSurveyUseCase.call(any)).thenAnswer((_) async =>
-          Failed(
-              UseCaseException(const NetworkExceptions.defaultError('Error'))));
+      when(mockSubmitSurveyUseCase.call(any)).thenAnswer((_) async => Failed(
+          UseCaseException(const NetworkExceptions.defaultError('Error'))));
 
       expect(
           viewModel.stream,

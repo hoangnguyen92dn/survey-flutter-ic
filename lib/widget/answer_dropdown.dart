@@ -57,9 +57,7 @@ class _AnswerDropdownState extends ConsumerState<AnswerDropdown> {
         ),
       ),
       onSelect: (Picker picker, int index, List value) {
-        print("Huey AnswerDropdown:onSelect($index)");
         selectedAnswerIndex = index;
-        // widget.onAnswerSelected(widget.answers[index]);
       },
       onBuilderItem: (
         BuildContext context,
