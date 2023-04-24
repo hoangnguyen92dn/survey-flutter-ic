@@ -23,6 +23,7 @@ const String keySignIn = 'signIn';
 const String keyUserProfile = 'userProfile';
 const String keySurveys = 'surveys';
 const String keySurveyDetails = 'surveyDetails';
+const String keySubmitSurvey = 'submitSurvey';
 
 class FakeData {
   FakeData._();
@@ -52,6 +53,11 @@ class FakeData {
         200,
         await FileUtil.loadFile(
             'test_resource/fake_response/fake_survey_details_response.json'),
+      ),
+      keySubmitSurvey: FakeResponseModel(
+        200,
+        await FileUtil.loadFile(
+            'test_resource/fake_response/fake_submit_survey_response.json'),
       ),
     });
   }
