@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
-class AnswerTextarea extends StatefulWidget {
+class AnswerTextarea extends ConsumerStatefulWidget {
+  final String questionId;
   final List<SurveyAnswerUiModel> answers;
 
-  const AnswerTextarea({Key? key, required this.answers}) : super(key: key);
+  const AnswerTextarea({
+    super.key,
+    required this.questionId,
+    required this.answers,
+  });
 
   @override
-  State<AnswerTextarea> createState() => _AnswerTextareaState();
+  ConsumerState<AnswerTextarea> createState() => _AnswerTextareaState();
 }
 
-class _AnswerTextareaState extends State<AnswerTextarea> {
+class _AnswerTextareaState extends ConsumerState<AnswerTextarea> {
+  final _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(nextQuestionStream, (previous, next) {
+      ref.watch(surveyQuestionsViewModelProvider.notifier).cacheAnswers(
+            SubmitSurveyQuestionsRequest(
+              questionId: widget.questionId,
+              answers: [
+                SubmitSurveyAnswersRequest(
+                  answerId: widget.answers.first.id,
+                  answer: _controller.text,
+                )
+              ],
+            ),
+          );
+    });
     return Expanded(
       key: SurveyQuestionsWidgetId.answersTextArea,
       child: Container(
@@ -24,6 +48,7 @@ class _AnswerTextareaState extends State<AnswerTextarea> {
           borderRadius: BorderRadius.circular(borderRadius10),
         ),
         child: TextField(
+          controller: _controller,
           maxLines: 5,
           keyboardType: TextInputType.multiline,
           textAlign: TextAlign.start,

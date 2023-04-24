@@ -8,6 +8,7 @@
   "sign_in_password_label": "Password",
 
   "survey_details_start_survey_button": "Start survey",
+  "survey_details_submit_survey_button": "Submit",
 
   "survey_question_nps_lowest_description": "Not at all Likely",
   "survey_question_nps_highest_description": "Extremely Likely",

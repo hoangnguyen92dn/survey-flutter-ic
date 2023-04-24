@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
-class AnswerNps extends StatefulWidget {
+class AnswerNps extends ConsumerStatefulWidget {
+  final String questionId;
   final List<SurveyAnswerUiModel> answers;
-  final Function(SurveyAnswerUiModel) onAnswerSelected;
 
   const AnswerNps({
-    Key? key,
+    super.key,
+    required this.questionId,
     required this.answers,
-    required this.onAnswerSelected,
-  }) : super(key: key);
+  });
 
   @override
-  State<AnswerNps> createState() => _AnswerNpsState();
+  ConsumerState<AnswerNps> createState() => _AnswerNpsState();
 }
 
-class _AnswerNpsState extends State<AnswerNps> {
+class _AnswerNpsState extends ConsumerState<AnswerNps> {
   var _selectedAnswer = 0; // Default value
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(nextQuestionStream, (previous, next) {
+      ref.watch(surveyQuestionsViewModelProvider.notifier).cacheAnswers(
+            SubmitSurveyQuestionsRequest(
+              questionId: widget.questionId,
+              answers: [
+                SubmitSurveyAnswersRequest(
+                    answerId: widget.answers[_selectedAnswer].id)
+              ],
+            ),
+          );
+    });
     return Column(
       children: [
         _buildNps(widget.answers),
@@ -55,7 +70,6 @@ class _AnswerNpsState extends State<AnswerNps> {
                   onTap: () => {
                     setState(() {
                       _selectedAnswer = i;
-                      widget.onAnswerSelected.call(answers[i]);
                     })
                   },
                   child: Container(

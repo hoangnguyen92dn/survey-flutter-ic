@@ -1,20 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 
-class AnswerDropdown extends StatefulWidget {
+class AnswerDropdown extends ConsumerStatefulWidget {
   final List<SurveyAnswerUiModel> answers;
+  final String questionId;
 
-  const AnswerDropdown({Key? key, required this.answers}) : super(key: key);
+  const AnswerDropdown({
+    super.key,
+    required this.answers,
+    required this.questionId,
+  });
 
   @override
-  State<AnswerDropdown> createState() => _AnswerDropdownState();
+  ConsumerState<AnswerDropdown> createState() => _AnswerDropdownState();
 }
 
-class _AnswerDropdownState extends State<AnswerDropdown> {
+class _AnswerDropdownState extends ConsumerState<AnswerDropdown> {
+  late var selectedAnswerIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(nextQuestionStream, (previous, next) {
+      ref
+          .watch(surveyQuestionsViewModelProvider.notifier)
+          .cacheAnswers(SubmitSurveyQuestionsRequest(
+            questionId: widget.questionId,
+            answers: [
+              SubmitSurveyAnswersRequest(
+                  answerId: widget.answers[selectedAnswerIndex + 1].id)
+            ],
+          ));
+    });
     return Picker(
       height: 215,
       itemExtent: dropdownItemHeight,
@@ -34,8 +56,11 @@ class _AnswerDropdownState extends State<AnswerDropdown> {
           ],
         ),
       ),
-      // TODO: Handle submit answer
-      onConfirm: (Picker picker, List value) {},
+      onSelect: (Picker picker, int index, List value) {
+        print("Huey AnswerDropdown:onSelect($index)");
+        selectedAnswerIndex = index;
+        // widget.onAnswerSelected(widget.answers[index]);
+      },
       onBuilderItem: (
         BuildContext context,
         String? text,
