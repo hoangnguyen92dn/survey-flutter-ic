@@ -3,7 +3,7 @@ import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.da
 
 part 'submit_survey_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SubmitSurveyRequest {
   final String surveyId;
   final List<SubmitSurveyQuestionsRequest> questions;
@@ -16,8 +16,5 @@ class SubmitSurveyRequest {
   factory SubmitSurveyRequest.fromJson(Map<String, dynamic> json) =>
       _$SubmitSurveyRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'survey_id': surveyId,
-        'questions': questions.map((e) => e.toJson()).toList(),
-      };
+  Map<String, dynamic> toJson() => _$SubmitSurveyRequestToJson(this);
 }

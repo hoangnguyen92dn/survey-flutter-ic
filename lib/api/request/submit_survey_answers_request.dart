@@ -4,6 +4,7 @@ part 'submit_survey_answers_request.g.dart';
 
 @JsonSerializable()
 class SubmitSurveyAnswersRequest {
+  @JsonKey(name: 'id')
   final String answerId;
   final String? answer;
 
@@ -15,8 +16,5 @@ class SubmitSurveyAnswersRequest {
   factory SubmitSurveyAnswersRequest.fromJson(Map<String, dynamic> json) =>
       _$SubmitSurveyAnswersRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': answerId,
-        'answer': answer,
-      };
+  Map<String, dynamic> toJson() => _$SubmitSurveyAnswersRequestToJson(this);
 }
