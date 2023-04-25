@@ -74,4 +74,10 @@ class _AnswerTextareaState extends ConsumerState<AnswerTextarea> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
