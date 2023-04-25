@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_request.dart';
 import 'package:survey_flutter_ic/api/service/survey_service.dart';
 import 'package:survey_flutter_ic/model/survey_details_model.dart';
 import 'package:survey_flutter_ic/model/survey_model.dart';
@@ -12,6 +13,10 @@ abstract class SurveyRepository {
 
   Future<SurveyDetailsModel> getSurveyDetails({
     required String id,
+  });
+
+  Future<void> submitSurvey({
+    required SubmitSurveyRequest request,
   });
 }
 
@@ -47,6 +52,16 @@ class SurveyRepositoryImpl extends SurveyRepository {
       final surveyDetailsModel = SurveyDetailsModel.fromResponse(response);
 
       return surveyDetailsModel;
+    } catch (exception) {
+      throw NetworkExceptions.fromDioException(exception);
+    }
+  }
+
+  @override
+  Future<void> submitSurvey({required SubmitSurveyRequest request}) async {
+    try {
+      final response = await _surveyService.submitSurvey(request);
+      return response;
     } catch (exception) {
       throw NetworkExceptions.fromDioException(exception);
     }

@@ -1,8 +1,13 @@
+import 'dart:convert' as json_convert;
+
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/api/repository/survey_repository.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_request.dart';
 import 'package:survey_flutter_ic/api/response/survey_details_response.dart';
 import 'package:survey_flutter_ic/api/response/surveys_response.dart';
 import 'package:survey_flutter_ic/model/survey_details_model.dart';
@@ -77,6 +82,53 @@ void main() {
       when(mockSurveyService.getSurveyDetails(any)).thenThrow(MockDioError());
 
       result() => repository.getSurveyDetails(id: 'survey_id');
+
+      expect(result, throwsA(isA<NetworkExceptions>()));
+    });
+
+    test(
+        'When calling SubmitSurvey successfully, it emits the corresponding SurveyDetailModel',
+        () async {
+      final json = await FileUtils.loadFile(
+          'test_resource/fake_response/fake_submit_survey_response.json');
+
+      when(mockSurveyService.submitSurvey(any))
+          .thenAnswer((_) async => json_convert.json.encode(json));
+
+      const request = SubmitSurveyRequest(
+        surveyId: 'survey_id',
+        questions: [
+          SubmitSurveyQuestionsRequest(
+            questionId: 'question_id',
+            answers: [
+              SubmitSurveyAnswersRequest(answerId: 'answer_id'),
+            ],
+          ),
+        ],
+      );
+
+      final result = await repository.submitSurvey(request: request);
+      expect(() async => result, isA<void>());
+    });
+
+    test(
+        'When calling GetSurveyDetails failed, it returns NetworkExceptions error',
+        () async {
+      when(mockSurveyService.submitSurvey(any)).thenThrow(MockDioError());
+
+      const request = SubmitSurveyRequest(
+        surveyId: 'survey_id',
+        questions: [
+          SubmitSurveyQuestionsRequest(
+            questionId: 'question_id',
+            answers: [
+              SubmitSurveyAnswersRequest(answerId: 'answer_id'),
+            ],
+          ),
+        ],
+      );
+
+      result() => repository.submitSurvey(request: request);
 
       expect(result, throwsA(isA<NetworkExceptions>()));
     });
