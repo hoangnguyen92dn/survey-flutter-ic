@@ -38,7 +38,7 @@ class AnswerEmoji extends ConsumerStatefulWidget {
 }
 
 class _AnswerEmojiState extends ConsumerState<AnswerEmoji> {
-  var _selectedAnswer = 2; // Default value
+  var _selectedAnswerIndex = 2; // Default value
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _AnswerEmojiState extends ConsumerState<AnswerEmoji> {
             questionId: widget.questionId,
             answers: [
               SubmitSurveyAnswersRequest(
-                  answerId: widget.answers[_selectedAnswer].id)
+                  answerId: widget.answers[_selectedAnswerIndex].id)
             ],
           ));
     });
@@ -90,12 +90,16 @@ class _AnswerEmojiState extends ConsumerState<AnswerEmoji> {
               GestureDetector(
                 onTap: () => {
                   setState(() {
-                    _selectedAnswer = i;
+                    _selectedAnswerIndex = i;
                   })
                 },
                 child: SizedBox(
                   child: Opacity(
-                    opacity: getOpacity(answerEmojiType, i, _selectedAnswer),
+                    opacity: getOpacity(
+                      answerEmojiType,
+                      i,
+                      _selectedAnswerIndex,
+                    ),
                     child: Text(
                       getEmoji(displayType, answerEmojiType, i),
                       style: const TextStyle(

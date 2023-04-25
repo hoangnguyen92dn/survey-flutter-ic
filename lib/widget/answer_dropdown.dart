@@ -22,7 +22,7 @@ class AnswerDropdown extends ConsumerStatefulWidget {
 }
 
 class _AnswerDropdownState extends ConsumerState<AnswerDropdown> {
-  late var selectedAnswerIndex = 0;
+  var _selectedAnswerIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _AnswerDropdownState extends ConsumerState<AnswerDropdown> {
             questionId: widget.questionId,
             answers: [
               SubmitSurveyAnswersRequest(
-                  answerId: widget.answers[selectedAnswerIndex + 1].id)
+                  answerId: widget.answers[_selectedAnswerIndex + 1].id)
             ],
           ));
     });
@@ -57,7 +57,7 @@ class _AnswerDropdownState extends ConsumerState<AnswerDropdown> {
         ),
       ),
       onSelect: (Picker picker, int index, List value) {
-        selectedAnswerIndex = index;
+        _selectedAnswerIndex = index;
       },
       onBuilderItem: (
         BuildContext context,
