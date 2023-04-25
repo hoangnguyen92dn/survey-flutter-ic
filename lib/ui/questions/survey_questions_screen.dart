@@ -176,10 +176,10 @@ class _SurveyQuestionsScreenScreenState
                   text:
                       context.localization.survey_details_submit_survey_button,
                   isEnabled: true,
-                  onPressed: () => {
+                  onPressed: () {
                     ref
                         .read(surveyQuestionsViewModelProvider.notifier)
-                        .submit(widget.surveyId)
+                        .submit(widget.surveyId);
                   },
                 ),
             ],
