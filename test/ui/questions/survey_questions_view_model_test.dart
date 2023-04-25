@@ -121,6 +121,11 @@ void main() {
             const SurveyQuestionsViewState.loading(),
           ]));
 
+      expect(
+        container.read(surveySubmittedStream.future).asStream(),
+        emits(null),
+      );
+
       container
           .read(surveyQuestionsViewModelProvider.notifier)
           .submit('surveyId');
