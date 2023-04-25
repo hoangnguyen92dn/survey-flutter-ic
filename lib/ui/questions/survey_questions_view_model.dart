@@ -28,12 +28,18 @@ final nextQuestionStream = StreamProvider.autoDispose<void>((ref) => ref
     ._nextQuestionStreamController
     .stream);
 
+final surveySubmittedStream = StreamProvider.autoDispose<void>((ref) => ref
+    .watch(surveyQuestionsViewModelProvider.notifier)
+    ._surveySubmittedController
+    .stream);
+
 class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
   final GetSurveyDetailsUseCase _getSurveyDetailsUseCase;
   final SubmitSurveyUseCase _submitSurveyUseCase;
 
   final _visibleIndexStreamController = StreamController<int>();
   final _nextQuestionStreamController = StreamController<void>();
+  final _surveySubmittedController = StreamController<void>();
   final List<SubmitSurveyQuestionsRequest> _selectedAnswers = [];
 
   SurveyQuestionsViewModel(
@@ -81,7 +87,7 @@ class SurveyQuestionsViewModel extends StateNotifier<SurveyQuestionsViewState> {
       final error = result.getErrorMessage();
       state = SurveyQuestionsViewState.error(error);
     } else {
-      // TODO Navigate to success screen
+      _surveySubmittedController.add(null);
     }
   }
 
