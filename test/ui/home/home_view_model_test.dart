@@ -16,16 +16,18 @@ void main() {
   group('HomeViewModel', () {
     late MockGetProfileUseCase mockGetProfileUseCase;
     late MockGetSurveysUseCase mockGetSurveysUseCase;
+    late MockSignOutUseCase mockSignOutUseCase;
     late HomeViewModel viewModel;
     late ProviderContainer container;
 
     setUp(() {
       mockGetProfileUseCase = MockGetProfileUseCase();
       mockGetSurveysUseCase = MockGetSurveysUseCase();
+      mockSignOutUseCase = MockSignOutUseCase();
 
       container = ProviderContainer(overrides: [
-        homeViewModelProvider.overrideWith((ref) =>
-            HomeViewModel(mockGetProfileUseCase, mockGetSurveysUseCase))
+        homeViewModelProvider.overrideWith((ref) => HomeViewModel(
+            mockGetProfileUseCase, mockGetSurveysUseCase, mockSignOutUseCase))
       ]);
       viewModel = container.read(homeViewModelProvider.notifier);
       addTearDown(() => container.dispose());
@@ -36,8 +38,8 @@ void main() {
     });
 
     test('When calling init success, it emits Success state', () {
-      const profile =
-          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
+      const profile = ProfileModel(
+          id: 'id', email: 'email', name: 'name', avatarUrl: 'avatarUrl');
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
@@ -111,8 +113,8 @@ void main() {
     });
 
     test('When calling init failed on getSurveys, it emits Error state', () {
-      const profile =
-          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
+      const profile = ProfileModel(
+          id: 'id', email: 'email', name: 'name', avatarUrl: 'avatarUrl');
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
