@@ -8,6 +8,7 @@ class SurveyQuestionsWidgetId {
   static const questionIndicator = Key('questionIndicator');
   static const questionText = Key('questionText');
   static const nextQuestionButton = Key('nextQuestionButton');
+  static const submitButton = Key('submitButton');
   static const answersDropdown = Key('answersDropdown');
   static const answersRating = Key('answersRating');
   static const answersEmoji = Key('answersEmoji');

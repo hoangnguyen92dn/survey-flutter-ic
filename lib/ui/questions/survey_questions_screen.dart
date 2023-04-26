@@ -12,6 +12,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_view.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
+import 'package:survey_flutter_ic/widget/flat_button_text.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 const surveyIdKey = 'surveyId';
@@ -154,26 +155,37 @@ class _SurveyQuestionsScreenScreenState
       );
 
   Widget _buildNextQuestionButton(int visibleIndex, int totalQuestion) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: space20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // TODO Show the Submit survey button when the last question is shown
-            Visibility(
-              visible: visibleIndex < totalQuestion - 1,
-              child: WhiteRightArrowButton(
-                key: SurveyQuestionsWidgetId.nextQuestionButton,
-                onPressed: () {
-                  ref
-                      .read(surveyQuestionsViewModelProvider.notifier)
-                      .nextQuestion();
-                },
-              ),
-            ),
-          ],
-        ),
-      );
+      Consumer(builder: (_, ref, __) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: space20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (visibleIndex < totalQuestion - 1)
+                WhiteRightArrowButton(
+                  key: SurveyQuestionsWidgetId.nextQuestionButton,
+                  onPressed: () {
+                    ref
+                        .read(surveyQuestionsViewModelProvider.notifier)
+                        .nextQuestion();
+                  },
+                )
+              else
+                FlatButtonText(
+                  key: SurveyQuestionsWidgetId.submitButton,
+                  text:
+                      context.localization.survey_details_submit_survey_button,
+                  isEnabled: true,
+                  onPressed: () {
+                    ref
+                        .read(surveyQuestionsViewModelProvider.notifier)
+                        .submit(widget.surveyId);
+                  },
+                ),
+            ],
+          ),
+        );
+      });
 
   // TODO: Extract to common widget for reuse
   Widget _buildLoadingIndicator() {

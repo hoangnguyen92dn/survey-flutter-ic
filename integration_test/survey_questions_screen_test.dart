@@ -18,6 +18,7 @@ void surveyQuestionsScreenTest() {
     late Finder questionIndicator;
     late Finder questionText;
     late Finder nextQuestionButton;
+    late Finder submitButton;
     late Finder answerDropdown;
     late Finder answerRating;
     late Finder answerEmoji;
@@ -39,6 +40,7 @@ void surveyQuestionsScreenTest() {
       questionText = find.byKey(SurveyQuestionsWidgetId.questionText);
       nextQuestionButton =
           find.byKey(SurveyQuestionsWidgetId.nextQuestionButton);
+      submitButton = find.byKey(SurveyQuestionsWidgetId.submitButton);
       answerDropdown = find.byKey(SurveyQuestionsWidgetId.answersDropdown);
       answerRating = find.byKey(SurveyQuestionsWidgetId.answersRating);
       answerEmoji = find.byKey(SurveyQuestionsWidgetId.answersEmoji);
@@ -138,6 +140,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsOneWidget);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '3/12');
       await answerTest(answerDropdown, findsNothing);
@@ -146,6 +150,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsOneWidget);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '4/12');
       await answerTest(answerDropdown, findsNothing);
@@ -154,6 +160,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '5/12');
       await answerTest(answerDropdown, findsNothing);
@@ -162,6 +170,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '6/12');
       await answerTest(answerDropdown, findsNothing);
@@ -170,6 +180,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '7/12');
       await answerTest(answerDropdown, findsNothing);
@@ -178,6 +190,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '8/12');
       await answerTest(answerDropdown, findsNothing);
@@ -186,6 +200,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '9/12');
       await answerTest(answerDropdown, findsNothing);
@@ -194,6 +210,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsOneWidget);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '10/12');
       await answerTest(answerDropdown, findsOneWidget);
@@ -202,6 +220,8 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsNothing);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
 
       await nextQuestionTest(tester, '11/12');
       await answerTest(answerDropdown, findsNothing);
@@ -210,6 +230,18 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerTextArea, findsNothing);
       await answerTest(answerForm, findsOneWidget);
       await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsOneWidget);
+      await answerTest(submitButton, findsNothing);
+
+      await nextQuestionTest(tester, '12/12');
+      await answerTest(answerDropdown, findsNothing);
+      await answerTest(answerEmoji, findsNothing);
+      await answerTest(answerNps, findsNothing);
+      await answerTest(answerTextArea, findsNothing);
+      await answerTest(answerForm, findsNothing);
+      await answerTest(answerMultipleChoices, findsNothing);
+      await answerTest(nextQuestionButton, findsNothing);
+      await answerTest(submitButton, findsOneWidget);
     });
   });
 }
