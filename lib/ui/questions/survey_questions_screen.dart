@@ -15,6 +15,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart'
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
 import 'package:survey_flutter_ic/widget/flat_button_text.dart';
+import 'package:survey_flutter_ic/widget/loading_indicator.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 const surveyIdKey = 'surveyId';
@@ -54,7 +55,7 @@ class _SurveyQuestionsScreenScreenState
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: state.maybeWhen(
-        loading: () => _buildLoadingIndicator(),
+        loading: () => const LoadingIndicator(),
         success: (surveyDetails) => _buildSurveyQuestionsContent(surveyDetails),
         orElse: () => const SizedBox.shrink(),
       ),
@@ -192,22 +193,6 @@ class _SurveyQuestionsScreenScreenState
           ),
         );
       });
-
-  // TODO: Extract to common widget for reuse
-  Widget _buildLoadingIndicator() {
-    return Center(
-      child: Visibility(
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        visible: true,
-        child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-            child: const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white))),
-      ),
-    );
-  }
 
   _showConfirmationDialog(BuildContext context) {
     showDialog(

@@ -10,6 +10,7 @@ import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_form.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_view_model.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_view_state.dart';
+import 'package:survey_flutter_ic/widget/loading_indicator.dart';
 
 final _loadingStateProvider = StateProvider.autoDispose<bool>((_) => false);
 
@@ -49,60 +50,45 @@ class SignInScreen extends ConsumerWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [Colors.black26, Colors.black])),
-            child: _buildSignInForm(context, ref),
+            child: _buildSignInForm(),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSignInForm(BuildContext context, WidgetRef ref) {
-    return CustomScrollView(
-      slivers: [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: space16, vertical: space10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Assets.images.icLogo
-                      .svg(width: 168, height: 40, fit: BoxFit.none),
-                ),
-                Stack(
+  Widget _buildSignInForm() =>
+      Consumer(builder: (_, ref, __) {
+        bool isLoading = ref.watch(_loadingStateProvider);
+        return CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: space16, vertical: space10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SignInForm(),
-                    _buildLoadingIndicator(),
+                    Expanded(
+                      child: Assets.images.icLogo
+                          .svg(width: 168, height: 40, fit: BoxFit.none),
+                    ),
+                    Stack(
+                      children: [
+                        const SignInForm(),
+                        LoadingIndicator(isVisible: isLoading),
+                      ],
+                    ),
+                    const Expanded(
+                      child: SizedBox.shrink(),
+                    ),
                   ],
                 ),
-                const Expanded(
-                  child: SizedBox.shrink(),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLoadingIndicator() {
-    return Consumer(builder: (context, widgetRef, _) {
-      bool isLoading = widgetRef.watch(_loadingStateProvider);
-      return Center(
-        child: Visibility(
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
-          visible: isLoading,
-          child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-              child: const CircularProgressIndicator()),
-        ),
-      );
-    });
-  }
+          ],
+        );
+      });
 }
