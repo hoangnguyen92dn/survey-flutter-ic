@@ -35,8 +35,10 @@ final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
     ._visibleIndexStreamController
     .stream);
 
-final loadingStream = StreamProvider.autoDispose<bool>((ref) =>
-    ref.watch(homeViewModelProvider.notifier)._loadingStreamController.stream);
+final loadingIndicatorStream = StreamProvider.autoDispose<bool>((ref) => ref
+    .watch(homeViewModelProvider.notifier)
+    ._loadingIndicatorStreamController
+    .stream);
 
 final signOutStream = StreamProvider.autoDispose<void>((ref) =>
     ref.watch(homeViewModelProvider.notifier)._signOutStreamController.stream);
@@ -53,7 +55,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   final _profileStreamController = StreamController<ProfileUiModel>();
   final _surveysStreamController = StreamController<List<SurveyUiModel>>();
   final _visibleIndexStreamController = StreamController<int>();
-  final _loadingStreamController = StreamController<bool>();
+  final _loadingIndicatorStreamController = StreamController<bool>();
   final _signOutStreamController = StreamController<void>();
 
   HomeViewModel(
@@ -109,17 +111,16 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   }
 
   Future signOut() async {
-    _loadingStreamController.add(true);
+    _loadingIndicatorStreamController.add(true);
 
     final result = await _signOutUseCase.call();
     if (result is Failed<void>) {
-      _loadingStreamController.add(false);
       final error = result.getErrorMessage();
       state = HomeViewState.error(error);
     } else {
-      _loadingStreamController.add(false);
       _signOutStreamController.add(null);
     }
+    _loadingIndicatorStreamController.add(false);
   }
 
   @override
@@ -128,6 +129,8 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _profileStreamController.close();
     _surveysStreamController.close();
     _visibleIndexStreamController.close();
+    _loadingIndicatorStreamController.close();
+    _signOutStreamController.close();
     super.dispose();
   }
 }

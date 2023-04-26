@@ -37,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.listen(signOutStream, (_, __) {
       context.goNamed(RoutePath.signIn.routeName);
     });
-    ref.listen<AsyncValue<bool>>(loadingStream, (_, next) {
+    ref.listen<AsyncValue<bool>>(loadingIndicatorStream, (_, next) {
       setState(() {
         _showLoadingIndicator = next.value ?? false;
       });
