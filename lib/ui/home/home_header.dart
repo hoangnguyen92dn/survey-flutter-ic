@@ -7,8 +7,14 @@ import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 class HomeHeader extends StatefulWidget {
   final String date;
   final String avatar;
+  final VoidCallback onProfilePressed;
 
-  const HomeHeader({super.key, required this.date, required this.avatar});
+  const HomeHeader({
+    super.key,
+    required this.date,
+    required this.avatar,
+    required this.onProfilePressed,
+  });
 
   @override
   State<HomeHeader> createState() => _HomeHeaderState();
@@ -50,17 +56,20 @@ class _HomeHeaderState extends State<HomeHeader> {
                   ],
                 ),
               ),
-              CircleAvatar(
-                key: HomeWidgetId.profileAvatarImage,
-                backgroundColor: Colors.white,
-                radius: circleAvatarProfileSize / 2,
-                backgroundImage: widget.avatar.isEmpty
-                    ? Assets.images.placeholderAvatar.image().image
-                    : FadeInImage.assetNetwork(
-                            placeholder: Assets.images.placeholderAvatar.path,
-                            image: widget.avatar)
-                        .image,
-              ),
+              GestureDetector(
+                onTap: () => widget.onProfilePressed.call(),
+                child: CircleAvatar(
+                  key: HomeWidgetId.profileAvatarImage,
+                  backgroundColor: Colors.white,
+                  radius: circleAvatarProfileSize / 2,
+                  backgroundImage: widget.avatar.isEmpty
+                      ? Assets.images.placeholderAvatar.image().image
+                      : FadeInImage.assetNetwork(
+                              placeholder: Assets.images.placeholderAvatar.path,
+                              image: widget.avatar)
+                          .image,
+                ),
+              )
             ],
           ),
         ),

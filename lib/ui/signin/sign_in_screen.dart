@@ -57,8 +57,7 @@ class SignInScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSignInForm() =>
-      Consumer(builder: (_, ref, __) {
+  Widget _buildSignInForm() => Consumer(builder: (_, ref, __) {
         bool isLoading = ref.watch(_loadingStateProvider);
         return CustomScrollView(
           slivers: [
