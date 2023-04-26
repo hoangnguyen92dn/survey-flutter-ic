@@ -12,6 +12,7 @@ import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_details_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/sign_in_use_case.dart';
+import 'package:survey_flutter_ic/usecase/sign_out_use_case.dart';
 import 'package:survey_flutter_ic/usecase/submit_survey_use_case.dart';
 
 @GenerateMocks([
@@ -28,6 +29,7 @@ import 'package:survey_flutter_ic/usecase/submit_survey_use_case.dart';
   GetProfileUseCase,
   GetSurveyDetailsUseCase,
   SubmitSurveyUseCase,
+  SignOutUseCase,
   DioError,
 ])
 main() {
