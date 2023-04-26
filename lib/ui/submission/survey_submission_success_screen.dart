@@ -25,12 +25,6 @@ class _SurveySubmissionSuccessScreenState
       vsync: this,
       duration: const Duration(milliseconds: _animationDurationInMilliseconds),
     );
-    Future.delayed(
-        const Duration(milliseconds: _animationDurationInMilliseconds), () {
-      setState(() {
-        _messageVisible = true;
-      });
-    });
 
     super.initState();
   }
@@ -48,17 +42,9 @@ class _SurveySubmissionSuccessScreenState
               'https://assets2.lottiefiles.com/packages/lf20_pmYw5P.json',
               controller: _controller,
               onLoaded: (composition) {
-                _controller.duration = composition.duration;
-                _controller.forward().then(
-                      (_) => {
-                        Future.delayed(
-                          const Duration(
-                            milliseconds: _animationDurationInMilliseconds,
-                          ),
-                          () => context.pop(),
-                        ),
-                      },
-                    );
+                _controller.forward().then((_) => setState(() {
+                      _messageVisible = true;
+                    }));
               },
             ),
             const SizedBox(height: space20),
@@ -67,6 +53,7 @@ class _SurveySubmissionSuccessScreenState
                 milliseconds: _animationDurationInMilliseconds,
               ),
               opacity: _messageVisible ? 1.0 : 0.0,
+              onEnd: () => context.pop(),
               child: Text(
                 context.localization.survey_submission_success,
                 style: const TextStyle(

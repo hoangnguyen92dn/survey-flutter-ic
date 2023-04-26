@@ -46,7 +46,7 @@ class _SurveyQuestionsScreenScreenState
   @override
   Widget build(BuildContext context) {
     ref.listen(surveySubmittedStream, (previous, next) {
-      context.goNamed(RoutePath.submission.routePath);
+      context.goNamed(RoutePath.submission.routeName);
     });
 
     final state = ref.watch(surveyQuestionsViewModelProvider);
