@@ -9,6 +9,7 @@ import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
+import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
 import 'package:survey_flutter_ic/widget/loading_indicator.dart';
 import 'package:survey_flutter_ic/widget/pager_indicator.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
@@ -112,33 +113,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: HomeDrawer(
           onSignOutPressed: () => showDialog(
             context: context,
-            builder: (_) => _buildSignOutConfirmationDialog(),
+            builder: (_) => ConfirmationDialog(
+                title: context.localization.home_sign_out_confirmation_title,
+                description:
+                    context.localization.home_sign_out_confirmation_description,
+                positiveActionText:
+                    context.localization.home_sign_out_confirmation_logout,
+                negativeActionText:
+                    context.localization.home_sign_out_confirmation_cancel,
+                onConfirmed: () {
+                  _scaffoldKey.currentState?.closeEndDrawer();
+                  ref.read(homeViewModelProvider.notifier).signOut();
+                }),
           ),
         ),
-      );
-
-  Widget _buildSignOutConfirmationDialog() => AlertDialog(
-        title: Text(context.localization.home_sign_out_confirmation_title),
-        content: Text(
-          context.localization.home_sign_out_confirmation_description,
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              context.pop();
-              _scaffoldKey.currentState?.closeEndDrawer();
-              ref.read(homeViewModelProvider.notifier).signOut();
-            },
-            child: Text(
-              context.localization.home_sign_out_confirmation_logout,
-            ),
-          ),
-          TextButton(
-            onPressed: () => context.pop(),
-            child: Text(
-              context.localization.home_sign_out_confirmation_cancel,
-            ),
-          ),
-        ],
       );
 }
