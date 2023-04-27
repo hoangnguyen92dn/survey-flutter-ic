@@ -111,8 +111,7 @@ void main() {
       expect(() async => result, isA<void>());
     });
 
-    test(
-        'When calling GetSurveyDetails failed, it returns NetworkExceptions error',
+    test('When calling SubmitSurvey failed, it returns NetworkExceptions error',
         () async {
       when(mockSurveyService.submitSurvey(any)).thenThrow(MockDioError());
 
