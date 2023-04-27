@@ -17,4 +17,6 @@ class SurveyQuestionsWidgetId {
   static const answersTextArea = Key('answersTextArea');
   static const answersForm = Key('answersForm');
   static const answersMultipleChoices = Key('answersMultipleChoices');
+  static const quitSurveyConfirmationDialog =
+      Key('quitSurveyConfirmationDialog');
 }

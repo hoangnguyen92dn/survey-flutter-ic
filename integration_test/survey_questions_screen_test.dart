@@ -27,6 +27,7 @@ void surveyQuestionsScreenTest() {
     late Finder answerTextArea;
     late Finder answerForm;
     late Finder answerMultipleChoices;
+    late Finder quitSurveyConfirmationDialog;
 
     setUpAll(() async {
       await TestUtil.setupTestEnvironment();
@@ -50,6 +51,8 @@ void surveyQuestionsScreenTest() {
       answerForm = find.byKey(SurveyQuestionsWidgetId.answersForm);
       answerMultipleChoices =
           find.byKey(SurveyQuestionsWidgetId.answersMultipleChoices);
+      quitSurveyConfirmationDialog =
+          find.byKey(SurveyQuestionsWidgetId.quitSurveyConfirmationDialog);
     });
 
     Future nextQuestionTest(
@@ -92,6 +95,7 @@ void surveyQuestionsScreenTest() {
       expect(answerTextArea, findsNothing);
       expect(answerForm, findsNothing);
       expect(answerMultipleChoices, findsNothing);
+      expect(quitSurveyConfirmationDialog, findsNothing);
     });
 
     testWidgets(
@@ -242,6 +246,20 @@ void surveyQuestionsScreenTest() {
       await answerTest(answerMultipleChoices, findsNothing);
       await answerTest(nextQuestionButton, findsNothing);
       await answerTest(submitButton, findsOneWidget);
+    });
+
+    testWidgets(
+        "When click on the close button, it displays the confirmation dialog correctly",
+        (WidgetTester tester) async {
+      await FakeData.initDefault();
+      await tester
+          .pumpWidget(TestUtil.pumpWidgetWithRoutePath('/home/questions/1'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(closeSurveyButton);
+      await tester.pumpAndSettle();
+
+      expect(quitSurveyConfirmationDialog, findsOneWidget);
     });
   });
 }
