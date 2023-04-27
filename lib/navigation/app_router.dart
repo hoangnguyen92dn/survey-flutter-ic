@@ -5,6 +5,7 @@ import 'package:survey_flutter_ic/ui/home/home_screen.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_screen.dart';
 import 'package:survey_flutter_ic/ui/signin/sign_in_screen.dart';
 import 'package:survey_flutter_ic/ui/splash/splash_screen.dart';
+import 'package:survey_flutter_ic/ui/submission/survey_submission_success_screen.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
 import 'package:survey_flutter_ic/usecase/is_authorized_use_case.dart';
@@ -13,8 +14,10 @@ enum RoutePath {
   root('/'),
   signIn('/sign_in'),
   home('/home'),
+
   details('details'),
-  questions('questions/:$surveyIdKey');
+  questions('questions/:$surveyIdKey'),
+  submission('submission');
 
   const RoutePath(this.routePath);
 
@@ -84,6 +87,11 @@ class AppRouter {
                     surveyId: state.params[surveyIdKey] as String,
                   );
                 },
+              ),
+              GoRoute(
+                name: RoutePath.submission.routeName,
+                path: RoutePath.submission.routePath,
+                builder: (_, __) => const SurveySubmissionSuccessScreen(),
               ),
             ],
           ),

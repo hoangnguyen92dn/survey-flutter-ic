@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'submit_survey_answers_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class SubmitSurveyAnswersRequest {
   @JsonKey(name: 'id')
   final String answerId;

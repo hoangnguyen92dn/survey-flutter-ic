@@ -13,5 +13,7 @@
   "survey_question_nps_lowest_description": "Not at all Likely",
   "survey_question_nps_highest_description": "Extremely Likely",
 
-  "survey_question_textarea_hint": "Your thoughts"
+  "survey_question_textarea_hint": "Your thoughts",
+
+  "survey_submission_success": "Thanks for taking the survey."
 }
