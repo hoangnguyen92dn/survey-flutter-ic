@@ -8,6 +8,8 @@ class HomeViewState with _$HomeViewState {
 
   const factory HomeViewState.loading() = _Loading;
 
+  const factory HomeViewState.loadCachedSurveysSuccess() = _LoadCachedSurveysSuccess;
+
   const factory HomeViewState.success() = _Success;
 
   const factory HomeViewState.error(String message) = _Error;

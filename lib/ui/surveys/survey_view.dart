@@ -27,9 +27,9 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        PageView.builder(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: PageView.builder(
           controller: _pageController,
           onPageChanged: (index) {
             widget.onPageChanged.call(index);
@@ -39,7 +39,6 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
             return _buildPageItem(widget.surveys[index]);
           },
         ),
-      ],
     );
   }
 

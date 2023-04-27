@@ -46,17 +46,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final state = ref.watch(homeViewModelProvider);
 
+    return state.maybeWhen(
+      init: () => const SurveyShimmerLoading(),
+      loading: () => const SurveyShimmerLoading(),
+      success: () => _buildHome(),
+      loadCachedSurveysSuccess: () => _buildHome(),
+      error: (message) => showToastMessage(message),
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+
+  Widget _buildHome() => Consumer(builder: (context, ref, child) {
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: _buildHomeDrawer(),
-      body: state.maybeWhen(
-        init: () => const SurveyShimmerLoading(),
-        success: () => _buildHomeContent(),
-        error: (message) => showToastMessage(message),
-        orElse: () => const SizedBox.shrink(),
+      body: RefreshIndicator(
+        color: Colors.white,
+        backgroundColor: Colors.white30,
+        onRefresh: () =>  ref
+            .read(homeViewModelProvider.notifier)
+            .getSurveys(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: _buildHomeContent(),
+        ),
       ),
     );
-  }
+  });
 
   Widget _buildHomeContent() => Consumer(
         builder: (context, ref, child) {
