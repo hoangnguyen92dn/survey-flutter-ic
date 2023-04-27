@@ -21,7 +21,7 @@ void main() {
         () async {
       final expected = <SurveyModel>[];
       when(mockRepository.getSurveys(
-        number: 1,
+        pageNumber: 1,
         size: 10,
       )).thenAnswer((_) async => expected);
 
@@ -41,7 +41,7 @@ void main() {
       const expected = NetworkExceptions.unexpectedError();
 
       when(mockRepository.getSurveys(
-        number: 1,
+        pageNumber: 1,
         size: 10,
       )).thenAnswer((_) async => Future.error(expected));
 

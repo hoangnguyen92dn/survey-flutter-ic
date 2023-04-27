@@ -42,7 +42,7 @@ void main() {
           .thenAnswer((_) async => expected);
 
       final result = await repository.getSurveys(
-        number: 1,
+        pageNumber: 1,
         size: 10,
       );
 
@@ -54,7 +54,7 @@ void main() {
         () async {
       when(mockSurveyService.getSurveys(any, any)).thenThrow(MockDioError());
 
-      result() => repository.getSurveys(number: 1, size: 10);
+      result() => repository.getSurveys(pageNumber: 1, size: 10);
 
       expect(result, throwsA(isA<NetworkExceptions>()));
     });
