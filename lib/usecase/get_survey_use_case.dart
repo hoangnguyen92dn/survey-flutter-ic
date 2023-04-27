@@ -26,7 +26,7 @@ class GetSurveysUseCase extends UseCase<List<SurveyModel>, GetSurveysInput> {
   Future<Result<List<SurveyModel>>> call(GetSurveysInput params) {
     return _repository
         .getSurveys(
-          number: params.pageNumber,
+          pageNumber: params.pageNumber,
           size: params.pageSize,
         )
         // ignore: unnecessary_cast
