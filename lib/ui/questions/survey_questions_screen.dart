@@ -208,6 +208,7 @@ class _SurveyQuestionsScreenScreenState
     showDialog(
       context: context,
       builder: (_) => ConfirmationDialog(
+        key: SurveyQuestionsWidgetId.quitSurveyConfirmationDialog,
         title: context.localization.survey_question_quit_confirmation_title,
         description:
             context.localization.survey_question_quit_confirmation_description,
