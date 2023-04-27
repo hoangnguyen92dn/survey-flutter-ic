@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/theme/colors.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 
-class ConfirmationDialog extends ConsumerStatefulWidget {
+class ConfirmationDialog extends StatelessWidget {
   final String title;
   final String description;
   final String positiveActionText;
@@ -21,16 +20,11 @@ class ConfirmationDialog extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConfirmationDialog> createState() => _ConfirmationDialogState();
-}
-
-class _ConfirmationDialogState extends ConsumerState<ConfirmationDialog> {
-  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: dialogBackground.withOpacity(0.9),
       title: Text(
-        widget.title,
+        title,
         style: const TextStyle(
           color: Colors.white,
           fontSize: fontSize17,
@@ -38,7 +32,7 @@ class _ConfirmationDialogState extends ConsumerState<ConfirmationDialog> {
         ),
       ),
       content: Text(
-        widget.description,
+        description,
         style: const TextStyle(
           color: Colors.white,
           fontSize: fontSize17,
@@ -49,10 +43,10 @@ class _ConfirmationDialogState extends ConsumerState<ConfirmationDialog> {
         TextButton(
           onPressed: () {
             context.pop(true);
-            widget.onConfirmed.call();
+            onConfirmed.call();
           },
           child: Text(
-            widget.positiveActionText,
+            positiveActionText,
             style: const TextStyle(
               color: dialogButtonColor,
               fontSize: fontSize17,
@@ -63,7 +57,7 @@ class _ConfirmationDialogState extends ConsumerState<ConfirmationDialog> {
         TextButton(
           onPressed: () => context.pop(false),
           child: Text(
-            widget.negativeActionText,
+            negativeActionText,
             style: const TextStyle(
               color: dialogButtonColor,
               fontSize: fontSize17,
