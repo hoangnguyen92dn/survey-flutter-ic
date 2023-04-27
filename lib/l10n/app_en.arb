@@ -10,6 +10,11 @@
   "survey_details_start_survey_button": "Start survey",
   "survey_details_submit_survey_button": "Submit",
 
+  "survey_question_quit_confirmation_title": "Warning!",
+  "survey_question_quit_confirmation_description": "Are you sure you want to quit the survey?",
+  "survey_question_quit_confirmation_yes": "Yes",
+  "survey_question_quit_confirmation_cancel": "Cancel",
+
   "survey_question_nps_lowest_description": "Not at all Likely",
   "survey_question_nps_highest_description": "Extremely Likely",
 

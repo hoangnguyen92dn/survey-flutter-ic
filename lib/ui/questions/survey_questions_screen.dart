@@ -12,6 +12,7 @@ import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_view.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
+import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
 import 'package:survey_flutter_ic/widget/flat_button_text.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
@@ -120,7 +121,7 @@ class _SurveyQuestionsScreenScreenState
             IconButton(
               key: SurveyQuestionsWidgetId.closeSurveyButton,
               icon: SvgPicture.asset(Assets.images.icClose.path),
-              onPressed: () => context.pop(), // TODO Add confirmation dialog
+              onPressed: () => _showConfirmationDialog(context),
             )
           ],
         ),
@@ -199,6 +200,24 @@ class _SurveyQuestionsScreenScreenState
             margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
             child: const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white))),
+      ),
+    );
+  }
+
+  _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => ConfirmationDialog(
+        title: context.localization.survey_question_quit_confirmation_title,
+        description:
+            context.localization.survey_question_quit_confirmation_description,
+        positiveActionText:
+            context.localization.survey_question_quit_confirmation_yes,
+        negativeActionText:
+            context.localization.survey_question_quit_confirmation_cancel,
+        onConfirmed: () {
+          context.pop();
+        },
       ),
     );
   }
