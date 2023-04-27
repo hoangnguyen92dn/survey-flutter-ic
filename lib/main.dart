@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:survey_flutter_ic/database/hive_persistence.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/theme/app_color_scheme.dart';
@@ -18,7 +19,8 @@ void main() async {
     if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
     return stack;
   };
-  configureInjection();
+  await initHivePersistence();
+  await configureInjection();
   runApp(const ProviderScope(child: MyApp()));
 }
 
