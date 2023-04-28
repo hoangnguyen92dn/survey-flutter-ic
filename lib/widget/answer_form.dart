@@ -1,20 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_answers_request.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_questions_request.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_answer_ui_model.dart';
+import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
 
-class AnswerForm extends StatefulWidget {
+class AnswerForm extends ConsumerStatefulWidget {
+  final String questionId;
   final List<SurveyAnswerUiModel> answers;
 
-  const AnswerForm({Key? key, required this.answers}) : super(key: key);
+  const AnswerForm({
+    super.key,
+    required this.questionId,
+    required this.answers,
+  });
 
   @override
-  State<AnswerForm> createState() => _AnswerFormState();
+  ConsumerState<AnswerForm> createState() => _AnswerFormState();
 }
 
-class _AnswerFormState extends State<AnswerForm> {
+class _AnswerFormState extends ConsumerState<AnswerForm> {
+  final List<TextEditingController> _controllers = [];
+
+  @override
+  void initState() {
+    _controllers.addAll(List<TextEditingController>.generate(
+      widget.answers.length,
+      (index) => TextEditingController(),
+    ));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(nextQuestionStream, (previous, next) {
+      ref.watch(surveyQuestionsViewModelProvider.notifier).cacheAnswers(
+            SubmitSurveyQuestionsRequest(
+              questionId: widget.questionId,
+              answers: _controllers
+                  .map((e) => SubmitSurveyAnswersRequest(
+                        answerId: widget.answers[_controllers.indexOf(e)].id,
+                        answer: e.text,
+                      ))
+                  .toList(),
+            ),
+          );
+    });
     return Center(
       key: SurveyQuestionsWidgetId.answersForm,
       child: _buildForm(widget.answers),
@@ -24,21 +57,22 @@ class _AnswerFormState extends State<AnswerForm> {
   Widget _buildForm(List<SurveyAnswerUiModel> answers) {
     return Column(
       children: [
-        for (final answer in answers) ...[
-          _buildTextInputField(answer),
+        for (int i = 0; i < answers.length; i++) ...[
+          _buildTextInputField(i, answers[i]),
           SizedBox.fromSize(size: const Size.fromHeight(space16)),
         ],
       ],
     );
   }
 
-  Widget _buildTextInputField(SurveyAnswerUiModel answer) {
+  Widget _buildTextInputField(int index, SurveyAnswerUiModel answer) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.2),
         borderRadius: BorderRadius.circular(borderRadius10),
       ),
       child: TextField(
+        controller: _controllers[index],
         keyboardType: _getTextInputType(answer),
         textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.center,
@@ -75,5 +109,13 @@ class _AnswerFormState extends State<AnswerForm> {
     } else {
       return TextInputType.text;
     }
+  }
+
+  @override
+  void dispose() {
+    for (var element in _controllers) {
+      element.dispose();
+    }
+    super.dispose();
   }
 }

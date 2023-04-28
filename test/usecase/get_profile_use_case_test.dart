@@ -22,6 +22,7 @@ void main() {
       const profileModel = ProfileModel(
         id: 'id',
         email: 'email',
+        name: 'name',
         avatarUrl: 'avatarUrl',
       );
 

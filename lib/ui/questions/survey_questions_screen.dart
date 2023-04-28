@@ -6,12 +6,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/gen/assets.gen.dart';
+import 'package:survey_flutter_ic/navigation/app_router.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/details/survey_details_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_ui_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_question_view.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_view_model.dart';
 import 'package:survey_flutter_ic/ui/questions/survey_questions_widget_id.dart';
+import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
+import 'package:survey_flutter_ic/widget/flat_button_text.dart';
+import 'package:survey_flutter_ic/widget/loading_indicator.dart';
 import 'package:survey_flutter_ic/widget/white_right_arrow_button.dart';
 
 const surveyIdKey = 'surveyId';
@@ -43,11 +47,15 @@ class _SurveyQuestionsScreenScreenState
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(surveySubmittedStream, (previous, next) {
+      context.goNamed(RoutePath.submission.routeName);
+    });
+
     final state = ref.watch(surveyQuestionsViewModelProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: state.maybeWhen(
-        loading: () => _buildLoadingIndicator(),
+        loading: () => const LoadingIndicator(),
         success: (surveyDetails) => _buildSurveyQuestionsContent(surveyDetails),
         orElse: () => const SizedBox.shrink(),
       ),
@@ -119,7 +127,7 @@ class _SurveyQuestionsScreenScreenState
             IconButton(
               key: SurveyQuestionsWidgetId.closeSurveyButton,
               icon: SvgPicture.asset(Assets.images.icClose.path),
-              onPressed: () => context.pop(), // TODO Add confirmation dialog
+              onPressed: () => _showConfirmationDialog(context),
             )
           ],
         ),
@@ -154,39 +162,53 @@ class _SurveyQuestionsScreenScreenState
       );
 
   Widget _buildNextQuestionButton(int visibleIndex, int totalQuestion) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: space20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // TODO Show the Submit survey button when the last question is shown
-            Visibility(
-              visible: visibleIndex < totalQuestion - 1,
-              child: WhiteRightArrowButton(
-                key: SurveyQuestionsWidgetId.nextQuestionButton,
-                onPressed: () {
-                  ref
-                      .read(surveyQuestionsViewModelProvider.notifier)
-                      .nextQuestion();
-                },
-              ),
-            ),
-          ],
-        ),
-      );
+      Consumer(builder: (_, ref, __) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: space20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (visibleIndex < totalQuestion - 1)
+                WhiteRightArrowButton(
+                  key: SurveyQuestionsWidgetId.nextQuestionButton,
+                  onPressed: () {
+                    ref
+                        .read(surveyQuestionsViewModelProvider.notifier)
+                        .nextQuestion();
+                  },
+                )
+              else
+                FlatButtonText(
+                  key: SurveyQuestionsWidgetId.submitButton,
+                  text:
+                      context.localization.survey_details_submit_survey_button,
+                  isEnabled: true,
+                  onPressed: () {
+                    ref
+                        .read(surveyQuestionsViewModelProvider.notifier)
+                        .submit(widget.surveyId);
+                  },
+                ),
+            ],
+          ),
+        );
+      });
 
-  // TODO: Extract to common widget for reuse
-  Widget _buildLoadingIndicator() {
-    return Center(
-      child: Visibility(
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        visible: true,
-        child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-            child: const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white))),
+  _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => ConfirmationDialog(
+        key: SurveyQuestionsWidgetId.quitSurveyConfirmationDialog,
+        title: context.localization.survey_question_quit_confirmation_title,
+        description:
+            context.localization.survey_question_quit_confirmation_description,
+        positiveActionText:
+            context.localization.survey_question_quit_confirmation_yes,
+        negativeActionText:
+            context.localization.survey_question_quit_confirmation_cancel,
+        onConfirmed: () {
+          context.pop();
+        },
       ),
     );
   }

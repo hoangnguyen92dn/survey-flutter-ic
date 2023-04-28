@@ -69,12 +69,6 @@ class _SurveyQuestionViewState extends ConsumerState<SurveyQuestionView> {
       builder: (_, ref, ___) {
         return SurveyAnswerView(
           question: question,
-          onAnswerSelected: (answer) => {
-            ref.read(surveyQuestionsViewModelProvider.notifier).selectAnswer(
-                  question.id,
-                  answer.id,
-                ),
-          },
         );
       },
     );

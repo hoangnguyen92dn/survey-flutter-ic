@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:survey_flutter_ic/api/request/sign_out_request.dart';
+
 import '../request/refresh_token_request.dart';
 import '../request/sign_in_request.dart';
 import '../response/auth_response.dart';
@@ -13,6 +15,10 @@ abstract class AuthService {
 
   Future<AuthResponse> refreshToken(
     @Body() RefreshTokenRequest body,
+  );
+
+  Future<void> signOut(
+    @Body() SignOutRequest body,
   );
 }
 
@@ -30,5 +36,11 @@ abstract class AuthServiceImpl extends AuthService {
   @POST('/api/v1/oauth/token')
   Future<AuthResponse> refreshToken(
     @Body() RefreshTokenRequest body,
+  );
+
+  @override
+  @POST('/api/v1/oauth/revoke')
+  Future<void> signOut(
+    @Body() SignOutRequest body,
   );
 }

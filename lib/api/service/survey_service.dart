@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:survey_flutter_ic/api/request/submit_survey_request.dart';
 import 'package:survey_flutter_ic/api/response/survey_details_response.dart';
 import 'package:survey_flutter_ic/api/response/surveys_response.dart';
 
@@ -13,6 +14,10 @@ abstract class SurveyService {
 
   Future<SurveyDetailsResponse> getSurveyDetails(
     @Path('id') String id,
+  );
+
+  Future<void> submitSurvey(
+    @Body() SubmitSurveyRequest body,
   );
 }
 
@@ -31,5 +36,11 @@ abstract class SurveyServiceImpl extends SurveyService {
   @GET('/api/v1/surveys/{id}')
   Future<SurveyDetailsResponse> getSurveyDetails(
     @Path('id') String id,
+  );
+
+  @override
+  @POST('/api/v1/responses')
+  Future<void> submitSurvey(
+    @Body() SubmitSurveyRequest body,
   );
 }

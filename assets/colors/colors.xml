@@ -2,4 +2,6 @@
 <resource>
     <color name="gray">#FF15151A</color>
     <color name="black20">#33000000</color>
+    <color name="eerie_black">#FF1E1E1E</color>
+    <color name="blue">#FF007AFF</color>
 </resource>

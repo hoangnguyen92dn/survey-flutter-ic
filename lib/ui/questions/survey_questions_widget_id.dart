@@ -8,6 +8,7 @@ class SurveyQuestionsWidgetId {
   static const questionIndicator = Key('questionIndicator');
   static const questionText = Key('questionText');
   static const nextQuestionButton = Key('nextQuestionButton');
+  static const submitButton = Key('submitButton');
   static const answersDropdown = Key('answersDropdown');
   static const answersRating = Key('answersRating');
   static const answersEmoji = Key('answersEmoji');
@@ -15,4 +16,7 @@ class SurveyQuestionsWidgetId {
   static const answersNps = Key('answersNps');
   static const answersTextArea = Key('answersTextArea');
   static const answersForm = Key('answersForm');
+  static const answersMultipleChoices = Key('answersMultipleChoices');
+  static const quitSurveyConfirmationDialog =
+      Key('quitSurveyConfirmationDialog');
 }

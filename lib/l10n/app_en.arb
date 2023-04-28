@@ -2,15 +2,28 @@
   "hello": "Hello!",
 
   "home_today": "Today",
+  "home_sign_out": "Logout",
+  "home_sign_out_confirmation_title": "Confirmation",
+  "home_sign_out_confirmation_description": "Are you sure you want to log out?",
+  "home_sign_out_confirmation_logout": "Logout",
+  "home_sign_out_confirmation_cancel": "Cancel",
 
   "sign_in_email_label": "Email",
   "sign_in_button": "Log in",
   "sign_in_password_label": "Password",
 
   "survey_details_start_survey_button": "Start survey",
+  "survey_details_submit_survey_button": "Submit",
+
+  "survey_question_quit_confirmation_title": "Warning!",
+  "survey_question_quit_confirmation_description": "Are you sure you want to quit the survey?",
+  "survey_question_quit_confirmation_yes": "Yes",
+  "survey_question_quit_confirmation_cancel": "Cancel",
 
   "survey_question_nps_lowest_description": "Not at all Likely",
   "survey_question_nps_highest_description": "Extremely Likely",
 
-  "survey_question_textarea_hint": "Your thoughts"
+  "survey_question_textarea_hint": "Your thoughts",
+
+  "survey_submission_success": "Thanks for taking the survey."
 }

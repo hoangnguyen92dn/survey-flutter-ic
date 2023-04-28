@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:survey_flutter_ic/api/exception/network_exceptions.dart';
 import 'package:survey_flutter_ic/model/question_display_type_model.dart';
+import 'package:survey_flutter_ic/model/selection_answer_type_model.dart';
 import 'package:survey_flutter_ic/model/survey_answer_model.dart';
 import 'package:survey_flutter_ic/model/survey_details_model.dart';
 import 'package:survey_flutter_ic/model/survey_question_model.dart';
@@ -16,15 +17,20 @@ import '../../mocks/generate_mocks.mocks.dart';
 void main() {
   group('SurveyQuestionsViewModel', () {
     late MockGetSurveyDetailsUseCase mockGetSurveyDetailsUseCase;
+    late MockSubmitSurveyUseCase mockSubmitSurveyUseCase;
     late SurveyQuestionsViewModel viewModel;
     late ProviderContainer container;
 
     setUp(() {
       mockGetSurveyDetailsUseCase = MockGetSurveyDetailsUseCase();
+      mockSubmitSurveyUseCase = MockSubmitSurveyUseCase();
 
       container = ProviderContainer(overrides: [
-        surveyQuestionsViewModelProvider.overrideWith(
-            (ref) => SurveyQuestionsViewModel(mockGetSurveyDetailsUseCase))
+        surveyQuestionsViewModelProvider
+            .overrideWith((ref) => SurveyQuestionsViewModel(
+                  mockGetSurveyDetailsUseCase,
+                  mockSubmitSurveyUseCase,
+                ))
       ]);
       viewModel = container.read(surveyQuestionsViewModelProvider.notifier);
       addTearDown(() => container.dispose());
@@ -46,6 +52,7 @@ void main() {
             text: 'text',
             displayOrder: 1,
             displayType: QuestionDisplayType.choice,
+            answerType: SelectionAnswerType.single,
             coverImageUrl: 'coverImageUrl',
             answers: [
               SurveyAnswerModel(
@@ -102,6 +109,42 @@ void main() {
       expect(container.read(nextQuestionStream.future).asStream(), emits(null));
 
       container.read(surveyQuestionsViewModelProvider.notifier).nextQuestion();
+    });
+
+    test('When calling submitSurvey success, it emits Success state', () {
+      when(mockSubmitSurveyUseCase.call(any))
+          .thenAnswer((_) async => Success(null));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const SurveyQuestionsViewState.loading(),
+          ]));
+
+      expect(
+        container.read(surveySubmittedStream.future).asStream(),
+        emits(null),
+      );
+
+      container
+          .read(surveyQuestionsViewModelProvider.notifier)
+          .submit('surveyId');
+    });
+
+    test('When calling submitSurvey failed, it emits Error state', () {
+      when(mockSubmitSurveyUseCase.call(any)).thenAnswer((_) async => Failed(
+          UseCaseException(const NetworkExceptions.defaultError('Error'))));
+
+      expect(
+          viewModel.stream,
+          emitsInOrder([
+            const SurveyQuestionsViewState.loading(),
+            const SurveyQuestionsViewState.error('Error'),
+          ]));
+
+      container
+          .read(surveyQuestionsViewModelProvider.notifier)
+          .submit('surveyId');
     });
   });
 }

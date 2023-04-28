@@ -8,12 +8,14 @@ class ProfileResponse {
   final String id;
   final String type;
   final String email;
+  final String name;
   final String avatarUrl;
 
   ProfileResponse({
     required this.id,
     required this.type,
     required this.email,
+    required this.name,
     required this.avatarUrl,
   });
 

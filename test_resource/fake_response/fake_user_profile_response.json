@@ -5,7 +5,7 @@
     "attributes": {
       "email": "fake_user_email@example.com",
       "name": "Fake User Name",
-      "avatar_url": "https://example.com/fake-avatar.png"
+      "avatar_url": "https://secure.gravatar.com/avatar/8fae17b9d0c4cca18a9661bcdf650f23"
     }
   }
 }

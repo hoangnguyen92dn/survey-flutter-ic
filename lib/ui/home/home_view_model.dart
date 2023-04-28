@@ -9,14 +9,18 @@ import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/ui/home/profile_ui_model.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
+import 'package:survey_flutter_ic/usecase/get_cached_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
+import 'package:survey_flutter_ic/usecase/sign_out_use_case.dart';
 
 final homeViewModelProvider =
     StateNotifierProvider.autoDispose<HomeViewModel, HomeViewState>(
         (_) => HomeViewModel(
               getIt.get<GetProfileUseCase>(),
               getIt.get<GetSurveysUseCase>(),
+              getIt.get<SignOutUseCase>(),
+              getIt.get<GetCachedSurveysUseCase>(),
             ));
 
 final todayStream = StreamProvider.autoDispose<String>((ref) =>
@@ -33,30 +37,46 @@ final visibleIndexStream = StreamProvider.autoDispose<int>((ref) => ref
     ._visibleIndexStreamController
     .stream);
 
+final loadingIndicatorStream = StreamProvider.autoDispose<bool>((ref) => ref
+    .watch(homeViewModelProvider.notifier)
+    ._loadingIndicatorStreamController
+    .stream);
+
+final signOutStream = StreamProvider.autoDispose<void>((ref) =>
+    ref.watch(homeViewModelProvider.notifier)._signOutStreamController.stream);
+
 const _defaultFirstPageIndex = 1;
 const _defaultPageSize = 10;
 
 class HomeViewModel extends StateNotifier<HomeViewState> {
   final GetProfileUseCase _getProfileUseCase;
   final GetSurveysUseCase _getSurveyUseCase;
+  final SignOutUseCase _signOutUseCase;
+  final GetCachedSurveysUseCase _getCachedSurveysUseCase;
 
   final _todayStreamController = StreamController<String>();
   final _profileStreamController = StreamController<ProfileUiModel>();
   final _surveysStreamController = StreamController<List<SurveyUiModel>>();
   final _visibleIndexStreamController = StreamController<int>();
+  final _loadingIndicatorStreamController = StreamController<bool>();
+  final _signOutStreamController = StreamController<void>();
 
-  HomeViewModel(this._getProfileUseCase, this._getSurveyUseCase)
-      : super(const HomeViewState.init());
+  HomeViewModel(
+    this._getProfileUseCase,
+    this._getSurveyUseCase,
+    this._signOutUseCase,
+    this._getCachedSurveysUseCase,
+  ) : super(const HomeViewState.init()) {
+    getSurveys(isPreload: true);
+  }
 
   void setVisibleSurveyIndex(int index) {
     _visibleIndexStreamController.add(index);
   }
 
   Future init() async {
-    state = const HomeViewState.loading();
-
     await _getProfile();
-    await _getSurveys();
+    await getSurveys();
 
     // Bind Today to stream
     _todayStreamController.add(DateTime.now().getFormattedString());
@@ -79,13 +99,17 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _todayStreamController.add(DateTime.now().getFormattedString());
   }
 
-  Future _getSurveys() async {
-    final input = GetSurveysInput(
-      pageNumber: _defaultFirstPageIndex,
-      pageSize: _defaultPageSize,
-    );
-
-    final result = await _getSurveyUseCase.call(input);
+  Future getSurveys({bool isPreload = false}) async {
+    late Result<List<SurveyModel>> result;
+    if (isPreload) {
+      result = await _getCachedSurveysUseCase.call();
+    } else {
+      final input = GetSurveysInput(
+        pageNumber: _defaultFirstPageIndex,
+        pageSize: _defaultPageSize,
+      );
+      result = await _getSurveyUseCase.call(input);
+    }
 
     if (result is Failed<List<SurveyModel>>) {
       final error = result.getErrorMessage();
@@ -98,12 +122,27 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     }
   }
 
+  Future signOut() async {
+    _loadingIndicatorStreamController.add(true);
+
+    final result = await _signOutUseCase.call();
+    if (result is Failed<void>) {
+      final error = result.getErrorMessage();
+      state = HomeViewState.error(error);
+    } else {
+      _signOutStreamController.add(null);
+    }
+    _loadingIndicatorStreamController.add(false);
+  }
+
   @override
   void dispose() {
     _todayStreamController.close();
     _profileStreamController.close();
     _surveysStreamController.close();
     _visibleIndexStreamController.close();
+    _loadingIndicatorStreamController.close();
+    _signOutStreamController.close();
     super.dispose();
   }
 }
