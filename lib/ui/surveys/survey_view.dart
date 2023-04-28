@@ -30,15 +30,15 @@ class _SurveyViewState extends ConsumerState<SurveyView> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: PageView.builder(
-          controller: _pageController,
-          onPageChanged: (index) {
-            widget.onPageChanged.call(index);
-          },
-          itemCount: widget.surveys.length,
-          itemBuilder: (_, index) {
-            return _buildPageItem(widget.surveys[index]);
-          },
-        ),
+        controller: _pageController,
+        onPageChanged: (index) {
+          widget.onPageChanged.call(index);
+        },
+        itemCount: widget.surveys.length,
+        itemBuilder: (_, index) {
+          return _buildPageItem(widget.surveys[index]);
+        },
+      ),
     );
   }
 

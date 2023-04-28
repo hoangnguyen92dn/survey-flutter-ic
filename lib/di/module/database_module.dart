@@ -4,7 +4,6 @@ import 'package:survey_flutter_ic/database/hive_persistence.dart';
 
 @module
 abstract class DatabaseModule {
-
   @Named(surveyBoxName)
   @singleton
   @preResolve

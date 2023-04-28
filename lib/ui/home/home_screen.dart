@@ -8,6 +8,7 @@ import 'package:survey_flutter_ic/ui/home/home_drawer.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
+import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
 import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
 import 'package:survey_flutter_ic/widget/loading_indicator.dart';
@@ -44,41 +45,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       });
     });
 
-    final state = ref.watch(homeViewModelProvider);
+    final surveys = ref.watch(surveysStream).value ?? [];
 
+    final state = ref.watch(homeViewModelProvider);
     return state.maybeWhen(
       init: () => const SurveyShimmerLoading(),
       loading: () => const SurveyShimmerLoading(),
-      success: () => _buildHome(),
-      loadCachedSurveysSuccess: () => _buildHome(),
-      error: (message) => showToastMessage(message),
+      success: () => _buildHomeContent(surveys),
+      error: (message) {
+        showToastMessage(message);
+        return _buildHomeContent(surveys);
+      },
       orElse: () => const SizedBox.shrink(),
     );
   }
 
-  Widget _buildHome() => Consumer(builder: (context, ref, child) {
-    return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: _buildHomeDrawer(),
-      body: RefreshIndicator(
-        color: Colors.white,
-        backgroundColor: Colors.white30,
-        onRefresh: () =>  ref
-            .read(homeViewModelProvider.notifier)
-            .getSurveys(),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: _buildHomeContent(),
-        ),
-      ),
-    );
-  });
+  Widget _buildHomeContent(List<SurveyUiModel> surveys) =>
+      Consumer(builder: (context, ref, child) {
+        return Scaffold(
+          key: _scaffoldKey,
+          endDrawer: _buildHomeDrawer(),
+          body: RefreshIndicator(
+            color: Colors.white,
+            backgroundColor: Colors.white30,
+            onRefresh: () =>
+                ref.read(homeViewModelProvider.notifier).getSurveys(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: _buildSurveyContent(surveys),
+            ),
+          ),
+        );
+      });
 
-  Widget _buildHomeContent() => Consumer(
+  Widget _buildSurveyContent(List<SurveyUiModel> surveys) => Consumer(
         builder: (context, ref, child) {
           final profile = ref.watch(profileStream).value;
           final today = ref.watch(todayStream).value;
-          final surveys = ref.watch(surveysStream).value ?? [];
           final visibleIndex = ref.watch(visibleIndexStream).value ?? 0;
           return Stack(
             children: [

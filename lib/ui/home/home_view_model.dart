@@ -130,8 +130,6 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
           surveys.map((survey) => SurveyUiModel.fromModel(survey));
       _surveysStreamController.add(surveyUiModels.toList(growable: false));
     }
-
-    state = const HomeViewState.loadCachedSurveysSuccess();
   }
 
   Future signOut() async {
