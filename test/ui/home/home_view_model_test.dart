@@ -16,16 +16,21 @@ void main() {
   group('HomeViewModel', () {
     late MockGetProfileUseCase mockGetProfileUseCase;
     late MockGetSurveysUseCase mockGetSurveysUseCase;
+    late MockSignOutUseCase mockSignOutUseCase;
     late HomeViewModel viewModel;
     late ProviderContainer container;
 
     setUp(() {
       mockGetProfileUseCase = MockGetProfileUseCase();
       mockGetSurveysUseCase = MockGetSurveysUseCase();
+      mockSignOutUseCase = MockSignOutUseCase();
 
       container = ProviderContainer(overrides: [
-        homeViewModelProvider.overrideWith((ref) =>
-            HomeViewModel(mockGetProfileUseCase, mockGetSurveysUseCase))
+        homeViewModelProvider.overrideWith((ref) => HomeViewModel(
+              mockGetProfileUseCase,
+              mockGetSurveysUseCase,
+              mockSignOutUseCase,
+            )),
       ]);
       viewModel = container.read(homeViewModelProvider.notifier);
       addTearDown(() => container.dispose());
@@ -36,8 +41,12 @@ void main() {
     });
 
     test('When calling init success, it emits Success state', () {
-      const profile =
-          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
+      const profile = ProfileModel(
+        id: 'id',
+        email: 'email',
+        name: 'name',
+        avatarUrl: 'avatarUrl',
+      );
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
@@ -59,7 +68,6 @@ void main() {
       expect(
           viewModel.stream,
           emitsInOrder([
-            const HomeViewState.loading(),
             const HomeViewState.success(),
           ]));
 
@@ -97,7 +105,6 @@ void main() {
       expect(
           viewModel.stream,
           emitsInOrder([
-            const HomeViewState.loading(),
             const HomeViewState.error('Error'),
             const HomeViewState.success(),
           ]));
@@ -111,8 +118,12 @@ void main() {
     });
 
     test('When calling init failed on getSurveys, it emits Error state', () {
-      const profile =
-          ProfileModel(id: 'id', email: 'email', avatarUrl: 'avatarUrl');
+      const profile = ProfileModel(
+        id: 'id',
+        email: 'email',
+        name: 'name',
+        avatarUrl: 'avatarUrl',
+      );
       when(mockGetProfileUseCase.call())
           .thenAnswer((_) async => Success(profile));
 
@@ -122,7 +133,6 @@ void main() {
       expect(
           viewModel.stream,
           emitsInOrder([
-            const HomeViewState.loading(),
             const HomeViewState.error('Error'),
             const HomeViewState.success(),
           ]));
@@ -144,13 +154,62 @@ void main() {
       expect(
           viewModel.stream,
           emitsInOrder([
-            const HomeViewState.loading(),
             const HomeViewState.error('Get Profile Error'),
             const HomeViewState.error('Get Surveys Error'),
             const HomeViewState.success(),
           ]));
 
       container.read(homeViewModelProvider.notifier).init();
+    });
+
+    test('When calling signOut success, it emits Success state', () {
+      when(mockSignOutUseCase.call()).thenAnswer((_) async => Success(null));
+
+      expect(
+        container.read(signOutStream.future).asStream(),
+        emits(null),
+      );
+
+      // FIXME: This test is not working due to stream closed after first emitted value
+      // expect(
+      //   container.read(loadingIndicatorStream.future).asStream(),
+      //   emitsInOrder(
+      //     [
+      //       true,
+      //       false
+      //     ],
+      //   ),
+      // );
+
+      container.read(homeViewModelProvider.notifier).signOut();
+    });
+
+    test('When calling signOut failed, it emits Error state', () {
+      when(mockSignOutUseCase.call()).thenAnswer((_) async => Failed(
+          UseCaseException(
+              const NetworkExceptions.defaultError('SignOut Error'))));
+      expect(
+        viewModel.stream,
+        emits(
+          const HomeViewState.error('SignOut Error'),
+        ),
+      );
+
+      // FIXME: This test is not working due to stream closed after first emitted value
+      // expect(
+      //   container.read(loadingIndicatorStream.future).asStream(),
+      //   emitsInOrder([
+      //     true,
+      //     false,
+      //   ]),
+      // );
+
+      // expectLater(
+      //   container.read(signOutStream.future).asStream(),
+      //   neverEmits(null),
+      // );
+
+      container.read(homeViewModelProvider.notifier).signOut();
     });
   });
 }

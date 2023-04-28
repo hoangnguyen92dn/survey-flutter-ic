@@ -30,6 +30,7 @@ void main() {
         id: 'id',
         type: 'type',
         email: 'email',
+        name: 'name',
         avatarUrl: 'avatarUrl',
       );
 

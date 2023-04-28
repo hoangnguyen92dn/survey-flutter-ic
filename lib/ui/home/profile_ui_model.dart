@@ -4,11 +4,13 @@ import 'package:survey_flutter_ic/model/profile_model.dart';
 class ProfileUiModel extends Equatable {
   final String id;
   final String email;
+  final String name;
   final String avatarUrl;
 
   const ProfileUiModel({
     required this.id,
     required this.email,
+    required this.name,
     required this.avatarUrl,
   });
 
@@ -16,6 +18,7 @@ class ProfileUiModel extends Equatable {
   List<Object?> get props => [
         id,
         email,
+        name,
         avatarUrl,
       ];
 
@@ -23,6 +26,7 @@ class ProfileUiModel extends Equatable {
     return ProfileUiModel(
       id: model.id,
       email: model.email,
+      name: model.name,
       avatarUrl: model.avatarUrl,
     );
   }

@@ -20,8 +20,17 @@ class SignOutUseCase extends NoParamsUseCase<void> {
     return _repository
         .signOut(token: token)
         // ignore: unnecessary_cast
-        .then((token) => Success(null) as Result<void>)
+        .then((_) => clearTokens())
         .onError<NetworkExceptions>(
             (exception, stackTrace) => Failed(UseCaseException(exception)));
+  }
+
+  Future<Result<void>> clearTokens() async {
+    try {
+      await _persistence.clearAllStorage();
+      return Success(null);
+    } catch (exception) {
+      return Failed(UseCaseException(exception));
+    }
   }
 }

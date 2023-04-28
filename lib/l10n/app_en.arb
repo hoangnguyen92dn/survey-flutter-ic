@@ -2,6 +2,11 @@
   "hello": "Hello!",
 
   "home_today": "Today",
+  "home_sign_out": "Logout",
+  "home_sign_out_confirmation_title": "Confirmation",
+  "home_sign_out_confirmation_description": "Are you sure you want to log out?",
+  "home_sign_out_confirmation_logout": "Logout",
+  "home_sign_out_confirmation_cancel": "Cancel",
 
   "sign_in_email_label": "Email",
   "sign_in_button": "Log in",

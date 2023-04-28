@@ -28,6 +28,7 @@ void main() {
 
       final result = await useCase.call();
 
+      verify(mockPersistence.clearAllStorage()).called(1);
       expect(result, isA<Success>());
     });
 
@@ -42,6 +43,7 @@ void main() {
 
       final result = await useCase.call();
 
+      verifyNever(mockPersistence.clearAllStorage());
       expect(result, isA<Failed>());
       expect((result as Failed).exception.actualException, exception);
     });

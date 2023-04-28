@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:survey_flutter_ic/extension/context_extension.dart';
 import 'package:survey_flutter_ic/extension/toast_extension.dart';
 import 'package:survey_flutter_ic/navigation/app_router.dart';
+import 'package:survey_flutter_ic/ui/home/home_drawer.dart';
 import 'package:survey_flutter_ic/ui/home/home_header.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 import 'package:survey_flutter_ic/ui/home/home_widget_id.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_view.dart';
+import 'package:survey_flutter_ic/widget/confirmation_dialog.dart';
+import 'package:survey_flutter_ic/widget/loading_indicator.dart';
 import 'package:survey_flutter_ic/widget/pager_indicator.dart';
 import 'package:survey_flutter_ic/widget/survey_shimmer_loading.dart';
 
@@ -18,6 +22,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var _showLoadingIndicator = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,11 +35,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(signOutStream, (_, __) {
+      context.goNamed(RoutePath.signIn.routeName);
+    });
+    ref.listen<AsyncValue<bool>>(loadingIndicatorStream, (_, next) {
+      setState(() {
+        _showLoadingIndicator = next.value ?? false;
+      });
+    });
+
     final state = ref.watch(homeViewModelProvider);
 
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: _buildHomeDrawer(),
       body: state.maybeWhen(
-        loading: () => const SurveyShimmerLoading(),
+        init: () => const SurveyShimmerLoading(),
         success: () => _buildHomeContent(),
         error: (message) => showToastMessage(message),
         orElse: () => const SizedBox.shrink(),
@@ -66,9 +84,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: HomeHeader(
                   date: today ?? '',
                   avatar: profile?.avatarUrl ?? '',
+                  onProfilePressed: () {
+                    _scaffoldKey.currentState?.openEndDrawer();
+                  },
                 ),
               ),
               _buildPagerIndicator(surveys.length, visibleIndex),
+              LoadingIndicator(isVisible: _showLoadingIndicator),
             ],
           );
         },
@@ -84,4 +106,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
     );
   }
+
+  Widget _buildHomeDrawer() => Drawer(
+        width: MediaQuery.of(context).size.width * 0.75,
+        backgroundColor: Colors.black.withOpacity(0.5),
+        child: HomeDrawer(
+          onSignOutPressed: () => showDialog(
+            context: context,
+            builder: (_) => ConfirmationDialog(
+                title: context.localization.home_sign_out_confirmation_title,
+                description:
+                    context.localization.home_sign_out_confirmation_description,
+                positiveActionText:
+                    context.localization.home_sign_out_confirmation_logout,
+                negativeActionText:
+                    context.localization.home_sign_out_confirmation_cancel,
+                onConfirmed: () {
+                  _scaffoldKey.currentState?.closeEndDrawer();
+                  ref.read(homeViewModelProvider.notifier).signOut();
+                }),
+          ),
+        ),
+      );
 }
