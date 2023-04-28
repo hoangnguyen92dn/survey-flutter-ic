@@ -67,7 +67,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     this._signOutUseCase,
     this._getCachedSurveysUseCase,
   ) : super(const HomeViewState.init()) {
-    _getCachedSurveys();
+    getSurveys(isPreload: true);
   }
 
   void setVisibleSurveyIndex(int index) {
@@ -99,27 +99,17 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _todayStreamController.add(DateTime.now().getFormattedString());
   }
 
-  Future getSurveys() async {
-    final input = GetSurveysInput(
-      pageNumber: _defaultFirstPageIndex,
-      pageSize: _defaultPageSize,
-    );
-
-    final result = await _getSurveyUseCase.call(input);
-
-    if (result is Failed<List<SurveyModel>>) {
-      final error = result.getErrorMessage();
-      state = HomeViewState.error(error);
+  Future getSurveys({bool isPreload = false}) async {
+    late Result<List<SurveyModel>> result;
+    if (isPreload) {
+      result = await _getCachedSurveysUseCase.call();
     } else {
-      final surveys = (result as Success<List<SurveyModel>>).value;
-      final surveyUiModels =
-          surveys.map((survey) => SurveyUiModel.fromModel(survey));
-      _surveysStreamController.add(surveyUiModels.toList(growable: false));
+      final input = GetSurveysInput(
+        pageNumber: _defaultFirstPageIndex,
+        pageSize: _defaultPageSize,
+      );
+      result = await _getSurveyUseCase.call(input);
     }
-  }
-
-  Future _getCachedSurveys() async {
-    final result = await _getCachedSurveysUseCase.call();
 
     if (result is Failed<List<SurveyModel>>) {
       final error = result.getErrorMessage();
