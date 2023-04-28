@@ -5,7 +5,7 @@ import 'package:survey_flutter_ic/gen/assets.gen.dart';
 import 'package:survey_flutter_ic/theme/dimens.dart';
 import 'package:survey_flutter_ic/ui/home/home_view_model.dart';
 
-class HomeDrawer extends ConsumerStatefulWidget {
+class HomeDrawer extends ConsumerWidget {
   final VoidCallback onSignOutPressed;
 
   const HomeDrawer({
@@ -14,12 +14,7 @@ class HomeDrawer extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<HomeDrawer> createState() => _HomeDrawerState();
-}
-
-class _HomeDrawerState extends ConsumerState<HomeDrawer> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileStream).value;
     final profileAvatar = profile?.avatarUrl ?? '';
     return Container(
@@ -60,7 +55,7 @@ class _HomeDrawerState extends ConsumerState<HomeDrawer> {
           Divider(color: Colors.white.withOpacity(0.2)),
           const SizedBox(height: space32),
           GestureDetector(
-            onTap: () => widget.onSignOutPressed.call(),
+            onTap: () => onSignOutPressed.call(),
             child: Text(
               context.localization.home_sign_out,
               style: TextStyle(
