@@ -8,6 +8,8 @@ import 'package:survey_flutter_ic/api/repository/user_repository.dart';
 import 'package:survey_flutter_ic/api/service/auth_service.dart';
 import 'package:survey_flutter_ic/api/service/survey_service.dart';
 import 'package:survey_flutter_ic/api/service/user_service.dart';
+import 'package:survey_flutter_ic/database/persistence/survey_persistence.dart';
+import 'package:survey_flutter_ic/usecase/get_cached_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_details_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
@@ -30,6 +32,8 @@ import 'package:survey_flutter_ic/usecase/submit_survey_use_case.dart';
   GetSurveyDetailsUseCase,
   SubmitSurveyUseCase,
   SignOutUseCase,
+  SurveyPersistence,
+  GetCachedSurveysUseCase,
   DioError,
 ])
 main() {

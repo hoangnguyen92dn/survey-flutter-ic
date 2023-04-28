@@ -24,11 +24,16 @@ void main() {
 
   group('SurveyRepository', () {
     late MockSurveyService mockSurveyService;
+    late MockSurveyPersistence mockSurveyPersistence;
     late SurveyRepository repository;
 
     setUp(() {
       mockSurveyService = MockSurveyService();
-      repository = SurveyRepositoryImpl(mockSurveyService);
+      mockSurveyPersistence = MockSurveyPersistence();
+      repository = SurveyRepositoryImpl(
+        mockSurveyService,
+        mockSurveyPersistence,
+      );
     });
 
     test(
@@ -42,19 +47,22 @@ void main() {
           .thenAnswer((_) async => expected);
 
       final result = await repository.getSurveys(
-        number: 1,
+        pageNumber: 1,
         size: 10,
       );
 
       expect(result.first, SurveyModel.fromResponse(expected.surveys.first));
       expect(result.last, SurveyModel.fromResponse(expected.surveys.last));
+
+      verify(mockSurveyPersistence.clear()).called(1);
+      verify(mockSurveyPersistence.add(any)).called(1);
     });
 
     test('When calling GetSurveys failed, it returns NetworkExceptions error',
         () async {
       when(mockSurveyService.getSurveys(any, any)).thenThrow(MockDioError());
 
-      result() => repository.getSurveys(number: 1, size: 10);
+      result() => repository.getSurveys(pageNumber: 1, size: 10);
 
       expect(result, throwsA(isA<NetworkExceptions>()));
     });

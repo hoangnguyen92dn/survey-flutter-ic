@@ -9,6 +9,7 @@ import 'package:survey_flutter_ic/ui/home/home_view_state.dart';
 import 'package:survey_flutter_ic/ui/home/profile_ui_model.dart';
 import 'package:survey_flutter_ic/ui/surveys/survey_ui_model.dart';
 import 'package:survey_flutter_ic/usecase/base/base_use_case.dart';
+import 'package:survey_flutter_ic/usecase/get_cached_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_profile_use_case.dart';
 import 'package:survey_flutter_ic/usecase/get_survey_use_case.dart';
 import 'package:survey_flutter_ic/usecase/sign_out_use_case.dart';
@@ -19,6 +20,7 @@ final homeViewModelProvider =
               getIt.get<GetProfileUseCase>(),
               getIt.get<GetSurveysUseCase>(),
               getIt.get<SignOutUseCase>(),
+              getIt.get<GetCachedSurveysUseCase>(),
             ));
 
 final todayStream = StreamProvider.autoDispose<String>((ref) =>
@@ -50,6 +52,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   final GetProfileUseCase _getProfileUseCase;
   final GetSurveysUseCase _getSurveyUseCase;
   final SignOutUseCase _signOutUseCase;
+  final GetCachedSurveysUseCase _getCachedSurveysUseCase;
 
   final _todayStreamController = StreamController<String>();
   final _profileStreamController = StreamController<ProfileUiModel>();
@@ -59,8 +62,13 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
   final _signOutStreamController = StreamController<void>();
 
   HomeViewModel(
-      this._getProfileUseCase, this._getSurveyUseCase, this._signOutUseCase)
-      : super(const HomeViewState.init());
+    this._getProfileUseCase,
+    this._getSurveyUseCase,
+    this._signOutUseCase,
+    this._getCachedSurveysUseCase,
+  ) : super(const HomeViewState.init()) {
+    getSurveys(isPreload: true);
+  }
 
   void setVisibleSurveyIndex(int index) {
     _visibleIndexStreamController.add(index);
@@ -68,7 +76,7 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
 
   Future init() async {
     await _getProfile();
-    await _getSurveys();
+    await getSurveys();
 
     // Bind Today to stream
     _todayStreamController.add(DateTime.now().getFormattedString());
@@ -91,13 +99,17 @@ class HomeViewModel extends StateNotifier<HomeViewState> {
     _todayStreamController.add(DateTime.now().getFormattedString());
   }
 
-  Future _getSurveys() async {
-    final input = GetSurveysInput(
-      pageNumber: _defaultFirstPageIndex,
-      pageSize: _defaultPageSize,
-    );
-
-    final result = await _getSurveyUseCase.call(input);
+  Future getSurveys({bool isPreload = false}) async {
+    late Result<List<SurveyModel>> result;
+    if (isPreload) {
+      result = await _getCachedSurveysUseCase.call();
+    } else {
+      final input = GetSurveysInput(
+        pageNumber: _defaultFirstPageIndex,
+        pageSize: _defaultPageSize,
+      );
+      result = await _getSurveyUseCase.call(input);
+    }
 
     if (result is Failed<List<SurveyModel>>) {
       final error = result.getErrorMessage();

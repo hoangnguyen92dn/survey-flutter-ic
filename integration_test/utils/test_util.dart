@@ -6,10 +6,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:survey_flutter_ic/api/repository/auth_repository.dart';
 import 'package:survey_flutter_ic/api/repository/survey_repository.dart';
 import 'package:survey_flutter_ic/api/repository/user_repository.dart';
+import 'package:survey_flutter_ic/database/hive_persistence.dart';
 import 'package:survey_flutter_ic/di/provider/di.dart';
 import 'package:survey_flutter_ic/main.dart';
 import 'package:survey_flutter_ic/navigation/app_router.dart';
 
+import '../fake_data/fake_persistence/fake_survey_persistence.dart';
 import '../fake_data/fake_services/fake_auth_service.dart';
 import '../fake_data/fake_services/fake_survey_service.dart';
 import '../fake_data/fake_services/fake_user_service.dart';
@@ -64,7 +66,9 @@ class TestUtil {
 
   static Future setupTestEnvironment() async {
     _initDependencies();
-    configureInjection();
+    await initHivePersistence();
+
+    await configureInjection();
     getIt.allowReassignment = true;
 
     // FIXME: Can not mock the Service layer
@@ -76,7 +80,9 @@ class TestUtil {
         AuthRepositoryImpl(FakeAuthService()));
     getIt.registerSingleton<UserRepository>(
         UserRepositoryImpl(FakeUserService()));
-    getIt.registerSingleton<SurveyRepository>(
-        SurveyRepositoryImpl(FakeSurveyService()));
+    getIt.registerSingleton<SurveyRepository>(SurveyRepositoryImpl(
+      FakeSurveyService(),
+      FakeSurveyPersistence(),
+    ));
   }
 }

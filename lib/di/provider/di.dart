@@ -10,4 +10,4 @@ final getIt = GetIt.instance;
   preferRelativeImports: true,
   asExtension: false,
 )
-void configureInjection() => $initGetIt(getIt);
+Future<void> configureInjection() => $initGetIt(getIt);
