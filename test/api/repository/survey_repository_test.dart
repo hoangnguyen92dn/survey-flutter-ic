@@ -24,11 +24,16 @@ void main() {
 
   group('SurveyRepository', () {
     late MockSurveyService mockSurveyService;
+    late MockSurveyPersistence mockSurveyPersistence;
     late SurveyRepository repository;
 
     setUp(() {
       mockSurveyService = MockSurveyService();
-      repository = SurveyRepositoryImpl(mockSurveyService);
+      mockSurveyPersistence = MockSurveyPersistence();
+      repository = SurveyRepositoryImpl(
+        mockSurveyService,
+        mockSurveyPersistence,
+      );
     });
 
     test(
@@ -48,6 +53,9 @@ void main() {
 
       expect(result.first, SurveyModel.fromResponse(expected.surveys.first));
       expect(result.last, SurveyModel.fromResponse(expected.surveys.last));
+
+      verify(mockSurveyPersistence.clear()).called(1);
+      verify(mockSurveyPersistence.add(any)).called(1);
     });
 
     test('When calling GetSurveys failed, it returns NetworkExceptions error',

@@ -9,13 +9,20 @@ import '../mocks/generate_mocks.mocks.dart';
 void main() {
   group('SignOutUseCase', () {
     late MockAuthRepository mockRepository;
-    late MockAuthPersistence mockPersistence;
+    late MockAuthPersistence mockAuthPersistence;
+    late MockSurveyPersistence mockSurveyPersistence;
     late SignOutUseCase useCase;
 
     setUp(() {
       mockRepository = MockAuthRepository();
-      mockPersistence = MockAuthPersistence();
-      useCase = SignOutUseCase(mockRepository, mockPersistence);
+      mockAuthPersistence = MockAuthPersistence();
+      mockSurveyPersistence = MockSurveyPersistence();
+
+      useCase = SignOutUseCase(
+        mockRepository,
+        mockAuthPersistence,
+        mockSurveyPersistence,
+      );
     });
 
     test('When calling signOut successfully, it returns the result Success',
@@ -24,11 +31,13 @@ void main() {
         token: 'accessToken',
       )).thenAnswer((_) async => Future(() => null));
 
-      when(mockPersistence.accessToken).thenAnswer((_) async => 'accessToken');
+      when(mockAuthPersistence.accessToken)
+          .thenAnswer((_) async => 'accessToken');
 
       final result = await useCase.call();
 
-      verify(mockPersistence.clearAllStorage()).called(1);
+      verify(mockAuthPersistence.clearAllStorage()).called(1);
+      verify(mockSurveyPersistence.clear()).called(1);
       expect(result, isA<Success>());
     });
 
@@ -39,11 +48,13 @@ void main() {
         token: 'accessToken',
       )).thenAnswer((_) => Future.error(exception));
 
-      when(mockPersistence.accessToken).thenAnswer((_) async => 'accessToken');
+      when(mockAuthPersistence.accessToken)
+          .thenAnswer((_) async => 'accessToken');
 
       final result = await useCase.call();
 
-      verifyNever(mockPersistence.clearAllStorage());
+      verifyNever(mockAuthPersistence.clearAllStorage());
+      verifyNever(mockSurveyPersistence.clear());
       expect(result, isA<Failed>());
       expect((result as Failed).exception.actualException, exception);
     });

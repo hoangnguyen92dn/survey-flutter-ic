@@ -17,6 +17,7 @@ void main() {
     late MockGetProfileUseCase mockGetProfileUseCase;
     late MockGetSurveysUseCase mockGetSurveysUseCase;
     late MockSignOutUseCase mockSignOutUseCase;
+    late MockGetCachedSurveysUseCase mockGetCachedSurveysUseCase;
     late HomeViewModel viewModel;
     late ProviderContainer container;
 
@@ -24,20 +25,33 @@ void main() {
       mockGetProfileUseCase = MockGetProfileUseCase();
       mockGetSurveysUseCase = MockGetSurveysUseCase();
       mockSignOutUseCase = MockSignOutUseCase();
+      mockGetCachedSurveysUseCase = MockGetCachedSurveysUseCase();
+
+      const cachedSurveys = [
+        SurveyModel(
+          id: 'id',
+          title: 'title',
+          description: 'description',
+          isActive: true,
+          coverImageUrl: 'coverImageUrl',
+          largeCoverImageUrl: 'largeCoverImageUrl',
+          createdAt: 'createdAt',
+          surveyType: 'surveyType',
+        )
+      ];
+      when(mockGetCachedSurveysUseCase.call())
+          .thenAnswer((_) async => Success(cachedSurveys));
 
       container = ProviderContainer(overrides: [
         homeViewModelProvider.overrideWith((ref) => HomeViewModel(
               mockGetProfileUseCase,
               mockGetSurveysUseCase,
               mockSignOutUseCase,
+              mockGetCachedSurveysUseCase,
             )),
       ]);
       viewModel = container.read(homeViewModelProvider.notifier);
       addTearDown(() => container.dispose());
-    });
-
-    test('When initializing HomeViewModel, it emits Init state', () {
-      expect(container.read(homeViewModelProvider), const HomeViewState.init());
     });
 
     test('When calling init success, it emits Success state', () {
